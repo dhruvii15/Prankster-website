@@ -30,8 +30,8 @@
 
 .heart {
   position: fixed;
-  bottom: 10px;
-  right: 25px;
+  bottom: 55px;
+  right: 40px;
   z-index: 10000;
   font-size: 14px;
   background: transparent;
@@ -218,8 +218,8 @@
     bottom: 20px;
   }
   .heart {
-    bottom: -4px;
-    right: 0px;
+    bottom: 30px;
+    right: 10px;
   }
   .face-bg {
     width: 50%;

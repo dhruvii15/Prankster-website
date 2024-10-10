@@ -68,7 +68,7 @@ const Home = () => {
       </div>
 
       <div className='rounded-1 py-1 heart'>
-        <span className='fs-6 px-4 fw-bold fst-italic text-white text-decoration-underline' 
+        <span className='fs-6 px-4 fw-bold fst-italic text-decoration-underline' 
           style={{ cursor: "pointer" }} 
           onClick={() => window.location.href = "/privacy-policy"}>
           Privacy Policy
