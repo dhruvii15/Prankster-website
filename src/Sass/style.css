@@ -1,0 +1,399 @@
+.cursor {
+  cursor: pointer;
+}
+
+.playstore:hover .picon {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.appstore:hover .aicon {
+  transform: scale(1.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.yellow-bg {
+  z-index: 9999;
+  position: fixed;
+  top: 40px;
+  left: 40px;
+  right: 40px;
+  bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: url("../img/main3.svg");
+  background-size: cover;
+  border-radius: 0px 25px 40px 30px;
+  padding: 30px;
+}
+
+.heart {
+  position: fixed;
+  bottom: 10px;
+  right: 25px;
+  z-index: 10000;
+  font-size: 14px;
+  background: transparent;
+}
+
+@keyframes heart {
+  0% {
+    transform: scale(1);
+  }
+  5% {
+    transform: scale(1.1);
+  }
+  10% {
+    transform: scale(1);
+  }
+  15% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+.fullimg {
+  display: none;
+}
+
+.mainBtn {
+  top: 55px;
+  right: 60px;
+}
+
+.cloud-bg {
+  position: relative;
+  display: block;
+}
+
+.icon-bg {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.face-bg {
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+}
+
+.icon1 {
+  width: 22%;
+  position: absolute;
+  animation: icon1 1s ease-in-out 1;
+  animation-delay: 0s, 2s;
+  left: 220px;
+  bottom: 230px;
+}
+
+@keyframes icon1 {
+  0% {
+    opacity: 0.5;
+    left: 220px;
+    bottom: 140px;
+  }
+  100% {
+    opacity: 1;
+    left: 220px;
+    bottom: 230px;
+  }
+}
+.icon2 {
+  position: absolute;
+  animation: icon2 1s ease-in-out 1;
+  animation-delay: 0s, 2s;
+  left: 50px;
+  top: 20px;
+}
+
+@keyframes icon2 {
+  0% {
+    opacity: 0.5;
+    left: 190px;
+    top: 370px;
+  }
+  100% {
+    opacity: 1;
+    left: 50px;
+    top: 20px;
+  }
+}
+.icon3 {
+  position: absolute;
+  width: 25%;
+  animation: icon3 1s ease-in-out 1;
+  animation-delay: 0s, 2s;
+  right: 20px;
+  bottom: 230px;
+}
+
+@keyframes icon3 {
+  0% {
+    opacity: 0.5;
+    right: 190px;
+    bottom: 80px;
+  }
+  100% {
+    opacity: 1;
+    right: 20px;
+    bottom: 230px;
+  }
+}
+.icon4 {
+  position: absolute;
+  width: 25%;
+  animation: icon4 1s ease-in-out 1;
+  animation-delay: 0s, 2s;
+  left: 20px;
+  top: 140px;
+}
+
+@keyframes icon4 {
+  0% {
+    opacity: 0.5;
+    left: 160px;
+    top: 340px;
+  }
+  100% {
+    opacity: 1;
+    left: 20px;
+    top: 140px;
+  }
+}
+.icon5 {
+  position: absolute;
+  width: 20%;
+  animation: icon5 1s ease-in-out 1;
+  animation-delay: 0s, 2s;
+  right: 90px;
+  top: 20px;
+}
+
+@keyframes icon5 {
+  0% {
+    opacity: 0.5;
+    right: 150px;
+    top: 340px;
+  }
+  100% {
+    opacity: 1;
+    right: 90px;
+    top: 20px;
+  }
+}
+.icon6 {
+  position: absolute;
+  width: 25%;
+  animation: icon6 1s ease-in-out 1;
+  animation-delay: 0s, 2s;
+  right: 200px;
+  top: 70px;
+}
+
+@keyframes icon6 {
+  0% {
+    opacity: 0.5;
+    right: 200px;
+    top: 340px;
+  }
+  100% {
+    opacity: 1;
+    right: 200px;
+    top: 70px;
+  }
+}
+@media (max-width: 576px) and (min-width: 0px) {
+  .yellow-bg {
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+  }
+  .heart {
+    bottom: -4px;
+    right: 0px;
+  }
+  .face-bg {
+    width: 50%;
+    left: 25%;
+  }
+  .mainBtn {
+    top: 40px;
+    right: 25px;
+  }
+}
+@media (max-width: 699px) and (min-width: 600px) {
+  .icon1 {
+    width: 18%;
+    left: 200px;
+    bottom: 170px;
+  }
+  @keyframes icon1 {
+    0% {
+      opacity: 0.5;
+      left: 200px;
+      bottom: 140px;
+    }
+    100% {
+      opacity: 1;
+      left: 200px;
+      bottom: 170px;
+    }
+  }
+  .face-bg {
+    width: 50%;
+    left: 25%;
+  }
+}
+@media (max-width: 599px) and (min-width: 500px) {
+  .icon1 {
+    width: 18%;
+    left: 180px;
+    bottom: 150px;
+  }
+  @keyframes icon1 {
+    0% {
+      opacity: 0.5;
+      left: 180px;
+      bottom: 120px;
+    }
+    100% {
+      opacity: 1;
+      left: 180px;
+      bottom: 150px;
+    }
+  }
+  .icon2 {
+    width: 25%;
+    left: 50px;
+    top: -20px;
+  }
+  @keyframes icon2 {
+    0% {
+      opacity: 0.5;
+      left: 190px;
+      top: 330px;
+    }
+    100% {
+      opacity: 1;
+      left: 50px;
+      top: -20px;
+    }
+  }
+  .face-bg {
+    width: 50%;
+    left: 25%;
+  }
+}
+@media (max-width: 499px) and (min-width: 400px) {
+  .icon1 {
+    width: 18%;
+    left: 155px;
+    bottom: 130px;
+  }
+  @keyframes icon1 {
+    0% {
+      opacity: 0.5;
+      left: 155px;
+      bottom: 110px;
+    }
+    100% {
+      opacity: 1;
+      left: 155px;
+      bottom: 130px;
+    }
+  }
+  .icon2 {
+    width: 25%;
+    left: 50px;
+    top: -20px;
+  }
+  @keyframes icon2 {
+    0% {
+      opacity: 0.5;
+      left: 160px;
+      top: 250px;
+    }
+    100% {
+      opacity: 1;
+      left: 50px;
+      top: -20px;
+    }
+  }
+  .icon3 {
+    right: 20px;
+    bottom: 180px;
+  }
+  @keyframes icon3 {
+    0% {
+      opacity: 0.5;
+      right: 170px;
+      bottom: 40px;
+    }
+    100% {
+      opacity: 1;
+      right: 20px;
+      bottom: 180px;
+    }
+  }
+  @keyframes icon4 {
+    0% {
+      opacity: 0.5;
+      left: 160px;
+      top: 250px;
+    }
+    100% {
+      opacity: 1;
+      left: 20px;
+      top: 140px;
+    }
+  }
+  @keyframes icon5 {
+    0% {
+      opacity: 0.5;
+      right: 150px;
+      top: 250px;
+    }
+    100% {
+      opacity: 1;
+      right: 90px;
+      top: 20px;
+    }
+  }
+  .icon6 {
+    right: 160px;
+    top: 70px;
+  }
+  @keyframes icon6 {
+    0% {
+      opacity: 0.5;
+      right: 140px;
+      top: 250px;
+    }
+    100% {
+      opacity: 1;
+      right: 160px;
+      top: 70px;
+    }
+  }
+  .face-bg {
+    width: 60%;
+    left: 25%;
+  }
+}
+@media (max-width: 399px) and (min-width: 0px) {
+  .fullimg {
+    display: block;
+  }
+  .cloud-bg {
+    display: none;
+  }
+}/*# sourceMappingURL=style.css.map */
