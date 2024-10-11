@@ -63,7 +63,7 @@ const Home = () => {
             <img src={icon6} alt='icon6' className='img-fluid icon6' loading="lazy" />
           </div>
           <div className='face-bg'>
-            <img src={face} alt='face' className='img-fluid' loading="lazy" />
+            <img src={face} alt='face' className='img-fluid' loading="lazy"/>
           </div>
         </div>
 

@@ -38,23 +38,11 @@
 }
 
 @keyframes heart {
-  0% {
+  0%, 10%, 50%, 100% {
     transform: scale(1);
   }
-  5% {
+  5%, 15% {
     transform: scale(1.1);
-  }
-  10% {
-    transform: scale(1);
-  }
-  15% {
-    transform: scale(1.1);
-  }
-  50% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
   }
 }
 .fullimg {
@@ -72,25 +60,46 @@
 }
 
 .cloud {
-  animation: cloud 5s ease-in-out infinite;
+  animation: cloud 10s ease-in-out infinite;
 }
 
 @keyframes cloud {
-  0% {
-    transform: scale(0) translateY(650px);
+  0%, 95%, 100% {
+    transform: scale(0) translateY(700px);
     opacity: 0;
   }
-  10% {
-    transform: scale(0.95) translateY(0px);
+  20%, 85% {
+    transform: scale(0.97) translateY(0px);
     opacity: 1;
   }
-  92% {
-    transform: scale(0.95) translateY(0px);
+  30%, 50%, 70%, 85% {
+    transform: scale(1) translateY(0px);
     opacity: 1;
   }
-  100% {
-    transform: scale(0) translateY(650px);
-    opacity: 0;
+  40%, 60%, 80% {
+    transform: scale(0.97) translateY(0px);
+    opacity: 1;
+  }
+}
+.icon2 {
+  position: absolute;
+  animation: icon2 10s ease-in-out infinite;
+  left: 190px;
+  top: 370px;
+}
+
+@keyframes icon2 {
+  0%, 10%, 80%, 100% {
+    opacity: 0.3;
+    left: 190px;
+    top: 370px;
+    transform: rotate(180deg) scale(0);
+  }
+  30%, 65% {
+    opacity: 1;
+    left: 50px;
+    top: 20px;
+    transform: rotate(0deg) scale(1);
   }
 }
 .icon-bg {
@@ -103,217 +112,118 @@
 
 .face-bg {
   position: absolute;
-  bottom: 0;
+  bottom: -30px;
   left: 20%;
 }
 
 .icon1 {
   width: 22%;
   position: absolute;
-  animation: icon1 5s ease-in-out infinite;
+  animation: icon1 10s ease-in-out infinite;
   left: 220px;
   bottom: 100px;
 }
 
 @keyframes icon1 {
-  0% {
+  0%, 10%, 80%, 100% {
     opacity: 0.5;
     left: 220px;
     bottom: 100px;
+    transform: scale(0);
   }
-  15% {
-    opacity: 0.5;
-    left: 220px;
-    bottom: 100px;
-  }
-  25% {
+  35%, 65% {
     opacity: 1;
     left: 220px;
-    bottom: 230px;
-  }
-  85% {
-    opacity: 1;
-    left: 220px;
-    bottom: 230px;
-  }
-  100% {
-    opacity: 0.5;
-    left: 220px;
-    bottom: 100px;
-  }
-}
-.icon2 {
-  position: absolute;
-  animation: icon2 5s ease-in-out infinite;
-  left: 190px;
-  top: 370px;
-}
-
-@keyframes icon2 {
-  0% {
-    opacity: 0.5;
-    left: 190px;
-    top: 370px;
-  }
-  15% {
-    opacity: 0.5;
-    left: 190px;
-    top: 370px;
-  }
-  25% {
-    opacity: 1;
-    left: 50px;
-    top: 20px;
-  }
-  85% {
-    opacity: 1;
-    left: 50px;
-    top: 20px;
-  }
-  100% {
-    opacity: 0.5;
-    left: 190px;
-    top: 370px;
+    bottom: 200px;
+    transform: scale(1);
   }
 }
 .icon3 {
   position: absolute;
   width: 25%;
-  animation: icon3 5s ease-in-out infinite;
+  animation: icon3 10s ease-in-out infinite;
   right: 190px;
   bottom: 80px;
 }
 
 @keyframes icon3 {
-  0% {
+  0%, 10%, 80%, 100% {
     opacity: 0.5;
     right: 190px;
     bottom: 80px;
+    transform: rotate(125deg) scale(0);
   }
-  15% {
-    opacity: 0.5;
-    right: 190px;
-    bottom: 80px;
-  }
-  25% {
+  35%, 65% {
     opacity: 1;
     right: 20px;
     bottom: 230px;
-  }
-  85% {
-    opacity: 1;
-    right: 20px;
-    bottom: 230px;
-  }
-  100% {
-    opacity: 0.5;
-    right: 190px;
-    bottom: 80px;
+    transform: rotate(0deg) scale(1);
   }
 }
 .icon4 {
   position: absolute;
   width: 25%;
-  animation: icon4 5s ease-in-out infinite;
+  animation: icon4 10s ease-in-out infinite;
   left: 160px;
   top: 340px;
 }
 
 @keyframes icon4 {
-  0% {
+  0%, 10%, 80%, 100% {
     opacity: 0.5;
     left: 160px;
     top: 340px;
+    transform: rotate(180deg) scale(0);
   }
-  15% {
-    opacity: 0.5;
-    left: 160px;
-    top: 340px;
-  }
-  25% {
+  35%, 65% {
     opacity: 1;
     left: 20px;
     top: 140px;
-  }
-  85% {
-    opacity: 1;
-    left: 20px;
-    top: 140px;
-  }
-  100% {
-    opacity: 0.5;
-    left: 160px;
-    top: 340px;
+    transform: rotate(0deg) scale(1);
   }
 }
 .icon5 {
   position: absolute;
   width: 20%;
-  animation: icon5 5s ease-in-out infinite;
+  animation: icon5 10s ease-in-out infinite;
   right: 150px;
   top: 340px;
 }
 
 @keyframes icon5 {
-  0% {
+  0%, 10%, 80%, 100% {
     opacity: 0.5;
     right: 150px;
     top: 340px;
+    transform: rotate(180deg) scale(0);
   }
-  15% {
-    opacity: 0.5;
-    right: 150px;
-    top: 340px;
-  }
-  25% {
+  35%, 65% {
     opacity: 1;
     right: 90px;
     top: 20px;
-  }
-  85% {
-    opacity: 1;
-    right: 90px;
-    top: 20px;
-  }
-  100% {
-    opacity: 0.5;
-    right: 150px;
-    top: 340px;
+    transform: rotate(0deg) scale(1);
   }
 }
 .icon6 {
   position: absolute;
   width: 25%;
-  animation: icon6 5s ease-in-out infinite;
+  animation: icon6 10s ease-in-out infinite;
   right: 200px;
   top: 340px;
 }
 
 @keyframes icon6 {
-  0% {
+  0%, 10%, 80%, 100% {
     opacity: 0.5;
     right: 200px;
     top: 340px;
+    transform: rotate(180deg) scale(0);
   }
-  15% {
-    opacity: 0.5;
-    right: 200px;
-    top: 340px;
-  }
-  25% {
+  35%, 65% {
     opacity: 1;
     right: 200px;
     top: 70px;
-  }
-  85% {
-    opacity: 1;
-    right: 200px;
-    top: 70px;
-  }
-  100% {
-    opacity: 0.5;
-    right: 200px;
-    top: 340px;
+    transform: rotate(0deg) scale(1);
   }
 }
 @media (max-width: 576px) and (min-width: 0px) {
@@ -333,30 +243,17 @@
     bottom: 140px;
   }
   @keyframes icon1 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       left: 200px;
       bottom: 140px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      left: 200px;
-      bottom: 140px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       left: 200px;
       bottom: 170px;
-    }
-    85% {
-      opacity: 1;
-      left: 200px;
-      bottom: 170px;
-    }
-    100% {
-      opacity: 0.5;
-      left: 200px;
-      bottom: 140px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .face-bg {
@@ -371,30 +268,17 @@
     bottom: 120px;
   }
   @keyframes icon1 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       left: 180px;
       bottom: 120px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      left: 180px;
-      bottom: 120px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       left: 180px;
       bottom: 150px;
-    }
-    85% {
-      opacity: 1;
-      left: 180px;
-      bottom: 150px;
-    }
-    100% {
-      opacity: 0.5;
-      left: 180px;
-      bottom: 120px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .icon2 {
@@ -403,30 +287,17 @@
     top: 330px;
   }
   @keyframes icon2 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       left: 190px;
       top: 330px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      left: 190px;
-      top: 330px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       left: 50px;
       top: -20px;
-    }
-    85% {
-      opacity: 1;
-      left: 50px;
-      top: -20px;
-    }
-    100% {
-      opacity: 0.5;
-      left: 190px;
-      top: 330px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .face-bg {
@@ -459,30 +330,17 @@
     bottom: 110px;
   }
   @keyframes icon1 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       left: 155px;
       bottom: 110px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      left: 155px;
-      bottom: 110px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       left: 155px;
       bottom: 130px;
-    }
-    85% {
-      opacity: 1;
-      left: 155px;
-      bottom: 130px;
-    }
-    100% {
-      opacity: 0.5;
-      left: 155px;
-      bottom: 110px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .icon2 {
@@ -491,30 +349,17 @@
     top: 250px;
   }
   @keyframes icon2 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       left: 160px;
       top: 250px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      left: 160px;
-      top: 250px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       left: 50px;
       top: -20px;
-    }
-    85% {
-      opacity: 1;
-      left: 50px;
-      top: -20px;
-    }
-    100% {
-      opacity: 0.5;
-      left: 160px;
-      top: 250px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .icon3 {
@@ -522,84 +367,45 @@
     bottom: 40px;
   }
   @keyframes icon3 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       right: 170px;
       bottom: 40px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      right: 170px;
-      bottom: 40px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       right: 20px;
       bottom: 180px;
-    }
-    85% {
-      opacity: 1;
-      right: 20px;
-      bottom: 180px;
-    }
-    100% {
-      opacity: 0.5;
-      right: 170px;
-      bottom: 40px;
+      transform: rotate(0deg) scale(1);
     }
   }
   @keyframes icon4 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       left: 160px;
       top: 250px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      left: 160px;
-      top: 250px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       left: 20px;
       top: 140px;
-    }
-    85% {
-      opacity: 1;
-      left: 20px;
-      top: 140px;
-    }
-    100% {
-      opacity: 0.5;
-      left: 160px;
-      top: 250px;
+      transform: rotate(0deg) scale(1);
     }
   }
   @keyframes icon5 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       right: 150px;
       top: 250px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      right: 150px;
-      top: 250px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       right: 90px;
       top: 20px;
-    }
-    85% {
-      opacity: 1;
-      right: 90px;
-      top: 20px;
-    }
-    100% {
-      opacity: 0.5;
-      right: 150px;
-      top: 250px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .icon6 {
@@ -607,30 +413,17 @@
     top: 250px;
   }
   @keyframes icon6 {
-    0% {
+    0%, 10%, 80%, 100% {
       opacity: 0.5;
       right: 140px;
       top: 250px;
+      transform: rotate(180deg) scale(0);
     }
-    15% {
-      opacity: 0.5;
-      right: 140px;
-      top: 250px;
-    }
-    25% {
+    35%, 65% {
       opacity: 1;
       right: 160px;
       top: 70px;
-    }
-    85% {
-      opacity: 1;
-      right: 160px;
-      top: 70px;
-    }
-    100% {
-      opacity: 0.5;
-      right: 140px;
-      top: 250px;
+      transform: rotate(0deg) scale(1);
     }
   }
   .face-bg {
