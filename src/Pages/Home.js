@@ -13,21 +13,47 @@ import fullimg from "../img/fullimg.svg";
 import MainButton from '../Component/MainBtn';
 
 const Home = () => {
-
-  // Disables scrolling on mount and re-enables on unmount
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+
+    const triggerAnimations = () => {
+      const cloud = document.querySelector('.cloud');
+      const icons = document.querySelectorAll('.icon1, .icon2, .icon3, .icon4, .icon5, .icon6');
+
+      if (cloud) cloud.classList.add('animate-cloud');
+
+      icons.forEach((icon, index) => {
+        icon.classList.add(`animate-icon-${index + 1}`);
+
+        // Remove animation class after animation completes
+        setTimeout(() => {
+          icon.classList.remove(`animate-icon-${index + 1}`);
+        }, 2000); // Adjust based on your animation duration
+      });
+
+      // Remove cloud animation class after animation completes
+      setTimeout(() => {
+        if (cloud) cloud.classList.remove('animate-cloud');
+      }, 2000);
+    };
+
+    // Initial trigger
+    triggerAnimations();
+
+    // Set interval to trigger animations every 10 seconds
+    const intervalId = setInterval(triggerAnimations, 10000);
+
     return () => {
       document.body.style.overflow = 'auto';
+      clearInterval(intervalId);
     };
   }, []);
-
 
   return (
     <>
       <div className='yellow-bg'>
         <div className='cloud-bg'>
-          <img src={cloud} alt='cloud' className='img-fluid' loading="lazy" />
+          <img src={cloud} alt='cloud' className='img-fluid cloud' loading="lazy" />
           <div className='icon-bg'>
             <img src={icon1} alt='icon1' className='img-fluid icon1' loading="lazy" />
             <img src={icon2} alt='icon2' className='img-fluid icon2' loading="lazy" />
