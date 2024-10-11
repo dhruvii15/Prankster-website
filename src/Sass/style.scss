@@ -80,7 +80,7 @@
     }
 
     20%,
-    85% {
+    80% {
         transform: scale(0.97) translateY(0px);
         opacity: 1;
     }
@@ -113,7 +113,7 @@
         opacity: 0.3;
         left: 190px;
         top: 370px;
-        transform: rotate(180deg) scale(0);
+        transform: rotate(-180deg) scale(0);
     }
 
     30%,
@@ -191,7 +191,7 @@
         opacity: 0.5;
         right: 190px;
         bottom: 80px;
-        transform: rotate(125deg) scale(0);
+        transform: rotate(-180deg) scale(0);
     }
 
     35%,
@@ -252,7 +252,7 @@
         opacity: 0.5;
         right: 150px;
         top: 340px;
-        transform: rotate(180deg) scale(0);
+        transform: rotate(-180deg) scale(0);
     }
 
     35%,
@@ -326,7 +326,7 @@
             opacity: 0.5;
             left: 200px;
             bottom: 140px;
-            transform: rotate(180deg) scale(0);
+            transform: rotate(-180deg) scale(0);
         }
 
         35%,
@@ -388,7 +388,7 @@
             opacity: 0.5;
             left: 190px;
             top: 330px;
-            transform: rotate(180deg) scale(0);
+            transform: rotate(-180deg) scale(0);
         }
 
         35%,
@@ -446,7 +446,7 @@
             opacity: 0.5;
             left: 155px;
             bottom: 110px;
-            transform: rotate(180deg) scale(0);
+            transform: rotate(-180deg) scale(0);
         }
 
         35%,
@@ -498,7 +498,7 @@
             opacity: 0.5;
             right: 170px;
             bottom: 40px;
-            transform: rotate(180deg) scale(0);
+            transform: rotate(-180deg) scale(0);
         }
 
         35%,
@@ -540,7 +540,7 @@
             opacity: 0.5;
             right: 150px;
             top: 250px;
-            transform: rotate(180deg) scale(0);
+            transform: rotate(-180deg) scale(0);
         }
 
         35%,
@@ -566,7 +566,7 @@
             opacity: 0.5;
             right: 140px;
             top: 250px;
-            transform: rotate(180deg) scale(0);
+            transform: rotate(-180deg) scale(0);
         }
 
         35%,
