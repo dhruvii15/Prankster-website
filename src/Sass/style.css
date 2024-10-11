@@ -65,7 +65,7 @@
 
 @keyframes cloud {
   0%, 95%, 100% {
-    transform: scale(0) translateY(700px);
+    transform: scale(0) translateY(380px);
     opacity: 0;
   }
   20%, 75% {
@@ -310,20 +310,23 @@
 }
 @media (max-width: 499px) and (min-width: 400px) {
   @keyframes cloud {
-    0% {
+    0%, 95%, 100% {
       transform: scale(0) translateY(380px);
       opacity: 0;
     }
-    10% {
-      transform: scale(0.95) translateY(0px);
+    20%, 75% {
+      transform: scale(0.97) translateY(0px);
       opacity: 1;
     }
-    92% {
-      transform: scale(0.95) translateY(0px);
+    35%, 45%, 55%, 65%, 75% {
+      transform: scale(1) translateY(0px);
       opacity: 1;
     }
-    100% {
-      transform: scale(0) translateY(380px);
+    40%, 50%, 60%, 70% {
+      transform: scale(0.97) translateY(0px);
+      opacity: 1;
+    }
+    90%, 10% {
       opacity: 0;
     }
   }
@@ -431,7 +434,7 @@
   }
   .face-bg {
     width: 60%;
-    left: 25%;
+    left: 20%;
   }
 }
 @media (max-width: 399px) and (min-width: 0px) {
