@@ -308,7 +308,7 @@
     left: 25%;
   }
 }
-@media (max-width: 499px) and (min-width: 400px) {
+@media (max-width: 499px) and (min-width: 390px) {
   @keyframes cloud {
     0%, 95%, 100% {
       transform: scale(0) translateY(380px);
@@ -437,7 +437,7 @@
     left: 20%;
   }
 }
-@media (max-width: 399px) and (min-width: 0px) {
+@media (max-width: 389px) and (min-width: 0px) {
   .fullimg {
     display: block;
   }
