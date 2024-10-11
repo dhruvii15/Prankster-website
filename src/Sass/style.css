@@ -80,7 +80,7 @@
     transform: scale(0.97) translateY(0px);
     opacity: 1;
   }
-  90%, 10% {
+  88%, 10% {
     opacity: 0;
   }
 }
@@ -235,8 +235,13 @@
     left: 25%;
   }
   .mainBtn {
-    top: 40px;
+    top: 20px;
     right: 25px;
+  }
+  .heart {
+    right: 0px;
+    width: 100%;
+    text-align: center;
   }
 }
 @media (max-width: 699px) and (min-width: 600px) {

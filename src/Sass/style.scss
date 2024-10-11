@@ -94,7 +94,7 @@
         opacity: 1;
     }
 
-    90%, 10%  {
+    88%, 10%  {
         opacity: 0;
     }
 }
@@ -307,8 +307,14 @@
     }
 
     .mainBtn {
-        top: 40px;
+        top: 20px;
         right: 25px;
+    }
+
+    .heart {
+        right: 0px;
+        width: 100%;
+        text-align: center;
     }
 }
 
