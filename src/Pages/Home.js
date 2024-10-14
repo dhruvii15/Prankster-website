@@ -10,6 +10,11 @@ import icon5 from "../img/icon5.svg";
 import icon6 from "../img/icon6.svg";
 import face from "../img/face.svg";
 import fullimg from "../img/fullimg.svg";
+import instagram from "../img//Instagram.svg";
+import snapchat from "../img/Snapchat.svg";
+import textlogo from "../img/textlogo.svg";
+
+
 import MainButton from '../Component/MainBtn';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInstagram, faSnapchat } from '@fortawesome/free-brands-svg-icons';
@@ -66,7 +71,21 @@ const Home = () => {
 
   return (
     <>
-      <div className='yellow-bg'>
+    <div
+        style={{
+          position: 'fixed',
+          color: '#000',
+          zIndex: 10000,
+          fontSize: '14px',
+          top:"30px",
+          left:"25px"
+        }}
+        className='mainBtn'
+      >
+       <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100}/>
+      </div>
+
+      <div className='yellow-bg px-5 px-xl-0'>
         <div className='cloud-bg'>
           <img src={cloud} alt='cloud' className='img-fluid cloud' loading="lazy" />
           <div className='icon-bg'>
@@ -104,15 +123,29 @@ const Home = () => {
           Privacy Policy
         </span>
 
-        <div className="common-footer hover-box box3" onClick={handleInstaClick}>
-          <FontAwesomeIcon icon={faInstagram} className="hover-box2 fs-4" />
+        <div
+          style={{
+            position: 'fixed',
+            color: '#000',
+            zIndex: 10000,
+            fontSize: '14px',
+            top: "0px",
+            right: "0px",
+            height: "100%",
+          }}
+          className='d-flex flex-column gap-2 justify-content-center'
+        >
+          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{borderTopLeftRadius: "30px" , borderBottomLeftRadius:"30px", backgroundColor: "rgba(0 , 0 ,0 ,0.35)"}}>
+            <div className="cursor" onClick={handleInstaClick}>
+              <img src={instagram} alt="instgram" className="fs-4" />
+            </div>
+
+            <div className="cursor" onClick={handleSnapClick}>
+              <img src={snapchat} alt='snapchat' className="fs-4" />
+            </div>
+          </div>
         </div>
 
-        <div className="common-footer hover-box box2" onClick={handleSnapClick}>
-          <FontAwesomeIcon icon={faSnapchat} className="hover-box2 fs-4" />
-        </div>
-
-        
       </div>
     </>
   );

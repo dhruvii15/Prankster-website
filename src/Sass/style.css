@@ -229,35 +229,6 @@
     transform: rotate(0deg) scale(1);
   }
 }
-.common-footer {
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.box3 {
-  background-image: linear-gradient(to right, #CD0076, #DF0041);
-  color: white;
-}
-
-.box2 {
-  background-color: #FFFC00;
-  color: black;
-}
-
-.hover-box2 {
-  transform: rotateZ(0deg);
-  transition: all 0.2s linear;
-}
-
-.hover-box:hover .hover-box2 {
-  transform: rotateZ(360deg);
-}
-
 @media (max-width: 576px) and (min-width: 0px) {
   .face-bg {
     width: 50%;
