@@ -30,21 +30,37 @@ const Home = () => {
     window.open(snapUrl, '_blank');
   };
 
+  const handleShareClick = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Check out this amazing content!',
+          text: 'This is an awesome website I wanted to share with you.',
+          url: window.location.href, // You can use any URL
+        });
+        console.log('Content shared successfully');
+      } catch (error) {
+        console.error('Error sharing content:', error);
+      }
+    } else {
+      alert('Web Share API not supported in this browser.');
+    }
+  };
 
   return (
     <>
-    <div
+      <div
         style={{
           position: 'fixed',
           color: '#000',
           zIndex: 10000,
           fontSize: '14px',
-          top:"20px",
-          left:"25px"
+          top: "20px",
+          left: "25px"
         }}
         className='mainBtn'
       >
-       <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100}/>
+        <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100} />
       </div>
 
       <div className='yellow-bg px-5 px-xl-0'>
@@ -84,7 +100,9 @@ const Home = () => {
           onClick={() => window.location.href = "/privacy-policy"}>
           Privacy Policy
         </span>
-
+        <button onClick={handleShareClick}>
+          Share
+        </button>
         <div
           style={{
             position: 'fixed',
@@ -97,7 +115,7 @@ const Home = () => {
           }}
           className='d-flex flex-column gap-2 justify-content-center'
         >
-          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{borderTopLeftRadius: "30px" , borderBottomLeftRadius:"30px", backgroundColor: "rgba(0 , 0 ,0 ,0.45)"}}>
+          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{ borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px", backgroundColor: "rgba(0 , 0 ,0 ,0.45)" }}>
             <div className="cursor" onClick={handleInstaClick}>
               <img src={instagram} alt="instgram" className="fs-4" />
             </div>

@@ -87,8 +87,6 @@
 .icon2 {
   position: absolute;
   animation: icon2 11s ease-in-out infinite;
-  left: 190px;
-  top: 370px;
 }
 
 @keyframes icon2 {
@@ -123,8 +121,6 @@
   width: 22%;
   position: absolute;
   animation: icon1 11s ease-in-out infinite;
-  left: 220px;
-  bottom: 100px;
 }
 
 @keyframes icon1 {
@@ -145,8 +141,6 @@
   position: absolute;
   width: 25%;
   animation: icon3 11s ease-in-out infinite;
-  right: 190px;
-  bottom: 80px;
 }
 
 @keyframes icon3 {
@@ -167,8 +161,6 @@
   position: absolute;
   width: 25%;
   animation: icon4 11s ease-in-out infinite;
-  left: 160px;
-  top: 340px;
 }
 
 @keyframes icon4 {
@@ -189,8 +181,6 @@
   position: absolute;
   width: 20%;
   animation: icon5 11s ease-in-out infinite;
-  right: 150px;
-  top: 340px;
 }
 
 @keyframes icon5 {
@@ -211,8 +201,6 @@
   position: absolute;
   width: 25%;
   animation: icon6 11s ease-in-out infinite;
-  right: 200px;
-  top: 340px;
 }
 
 @keyframes icon6 {
@@ -243,13 +231,11 @@
     width: 100%;
     text-align: center;
   }
-}
-@media (max-width: 699px) and (min-width: 600px) {
   .icon1 {
     width: 18%;
-    left: 200px;
-    bottom: 140px;
   }
+}
+@media (max-width: 699px) and (min-width: 600px) {
   @keyframes icon1 {
     0%, 10%, 80%, 100% {
       opacity: 0.5;
@@ -270,11 +256,6 @@
   }
 }
 @media (max-width: 599px) and (min-width: 500px) {
-  .icon1 {
-    width: 18%;
-    left: 180px;
-    bottom: 120px;
-  }
   @keyframes icon1 {
     0%, 10%, 80%, 100% {
       opacity: 0.5;
@@ -291,8 +272,6 @@
   }
   .icon2 {
     width: 25%;
-    left: 190px;
-    top: 330px;
   }
   @keyframes icon2 {
     0%, 10%, 80%, 100% {
@@ -337,27 +316,23 @@
   }
   .icon1 {
     width: 18%;
-    left: 155px;
-    bottom: 110px;
   }
   @keyframes icon1 {
     0%, 10%, 80%, 100% {
       opacity: 0.5;
-      left: 155px;
-      bottom: 90px;
+      left: 125px;
+      bottom: 70px;
       transform: rotate(-180deg) scale(0);
     }
     35%, 65% {
       opacity: 1;
-      left: 155px;
-      bottom: 110px;
+      left: 125px;
+      bottom: 90px;
       transform: rotate(0deg) scale(1);
     }
   }
   .icon2 {
     width: 25%;
-    left: 160px;
-    top: 250px;
   }
   @keyframes icon2 {
     0%, 10%, 80%, 100% {
@@ -372,10 +347,6 @@
       top: -20px;
       transform: rotate(0deg) scale(1);
     }
-  }
-  .icon3 {
-    right: 170px;
-    bottom: 40px;
   }
   @keyframes icon3 {
     0%, 10%, 80%, 100% {
@@ -418,10 +389,6 @@
       top: 20px;
       transform: rotate(0deg) scale(1);
     }
-  }
-  .icon6 {
-    right: 140px;
-    top: 250px;
   }
   @keyframes icon6 {
     0%, 10%, 80%, 100% {
