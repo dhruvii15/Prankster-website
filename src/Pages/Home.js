@@ -33,18 +33,18 @@ const Home = () => {
 
   return (
     <>
-      <div
+    <div
         style={{
           position: 'fixed',
           color: '#000',
           zIndex: 10000,
           fontSize: '14px',
-          top: "20px",
-          left: "25px"
+          top:"20px",
+          left:"25px"
         }}
         className='mainBtn'
       >
-        <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100} />
+       <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100}/>
       </div>
 
       <div className='yellow-bg px-5 px-xl-0'>
@@ -97,7 +97,7 @@ const Home = () => {
           }}
           className='d-flex flex-column gap-2 justify-content-center'
         >
-          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{ borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px", backgroundColor: "rgba(0 , 0 ,0 ,0.45)" }}>
+          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{borderTopLeftRadius: "30px" , borderBottomLeftRadius:"30px", backgroundColor: "rgba(0 , 0 ,0 ,0.45)"}}>
             <div className="cursor" onClick={handleInstaClick}>
               <img src={instagram} alt="instgram" className="fs-4" />
             </div>
