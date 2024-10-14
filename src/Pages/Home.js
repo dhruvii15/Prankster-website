@@ -11,8 +11,23 @@ import icon6 from "../img/icon6.svg";
 import face from "../img/face.svg";
 import fullimg from "../img/fullimg.svg";
 import MainButton from '../Component/MainBtn';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faInstagram, faSnapchat } from '@fortawesome/free-brands-svg-icons';
 
 const Home = () => {
+
+  const handleInstaClick = () => {
+    const instaUrl = 'https://www.instagram.com/plexus_technology/?igsh=MWdkdWZheGxrZjZkZQ%3D%3D';
+
+    window.open(instaUrl, '_blank');
+  };
+
+  const handleSnapClick = () => {
+    const snapUrl = 'https://www.snapchat.com/add/username';
+
+    window.open(snapUrl, '_blank');
+  };
+
   useEffect(() => {
     document.body.style.overflow = 'hidden';
 
@@ -63,7 +78,7 @@ const Home = () => {
             <img src={icon6} alt='icon6' className='img-fluid icon6' loading="lazy" />
           </div>
           <div className='face-bg'>
-            <img src={face} alt='face' className='img-fluid' loading="lazy"/>
+            <img src={face} alt='face' className='img-fluid' loading="lazy" />
           </div>
         </div>
 
@@ -82,12 +97,22 @@ const Home = () => {
         <MainButton />
       </div>
 
-      <div className='rounded-1 py-1 heart'>
-        <span className='fs-6 px-4 fw-bold fst-italic text-decoration-underline'
+      <div className='rounded-1 py-1 heart d-flex align-items-center justify-content-center gap-2'>
+        <span className='fs-6 px-2 fw-bold fst-italic text-decoration-underline'
           style={{ cursor: "pointer" }}
           onClick={() => window.location.href = "/privacy-policy"}>
           Privacy Policy
         </span>
+
+        <div className="common-footer hover-box box3" onClick={handleInstaClick}>
+          <FontAwesomeIcon icon={faInstagram} className="hover-box2 fs-4" />
+        </div>
+
+        <div className="common-footer hover-box box2" onClick={handleSnapClick}>
+          <FontAwesomeIcon icon={faSnapchat} className="hover-box2 fs-4" />
+        </div>
+
+        
       </div>
     </>
   );

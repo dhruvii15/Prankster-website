@@ -297,6 +297,40 @@
     }
 }
 
+.common-footer {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.box3{
+    background-image: linear-gradient(to right, #CD0076, #DF0041);
+    // border: 2px solid black;
+    color: white;
+}
+
+.box2{
+    background-color: #FFFC00;
+    // border: 2px solid black;
+    color: black;
+}
+
+
+.hover-box2 {
+    transform: rotateZ(0deg);
+    transition: all 0.2s linear;
+}
+
+.hover-box:hover .hover-box2 {
+    transform: rotateZ(360deg);
+}
+
+
+
 // ============== Media Query======================
 
 @media (max-width:576px) and (min-width:0px) {
@@ -612,3 +646,14 @@
         display: none;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
