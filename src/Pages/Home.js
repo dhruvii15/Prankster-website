@@ -16,8 +16,6 @@ import textlogo from "../img/textlogo.svg";
 
 
 import MainButton from '../Component/MainBtn';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInstagram, faSnapchat } from '@fortawesome/free-brands-svg-icons';
 
 const Home = () => {
 
