@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import MainButton from '../Component/MainBtn';
+
 
 // img
 import cloud from "../img/cloud.svg";
@@ -14,9 +16,6 @@ import instagram from "../img//Instagram.svg";
 import snapchat from "../img/Snapchat.svg";
 import textlogo from "../img/textlogo.svg";
 
-
-import MainButton from '../Component/MainBtn';
-
 const Home = () => {
 
   const handleInstaClick = () => {
@@ -31,56 +30,21 @@ const Home = () => {
     window.open(snapUrl, '_blank');
   };
 
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-
-    const triggerAnimations = () => {
-      const cloud = document.querySelector('.cloud');
-      const icons = document.querySelectorAll('.icon1, .icon2, .icon3, .icon4, .icon5, .icon6');
-
-      if (cloud) cloud.classList.add('animate-cloud');
-
-      icons.forEach((icon, index) => {
-        icon.classList.add(`animate-icon-${index + 1}`);
-
-        // Remove animation class after animation completes
-        setTimeout(() => {
-          icon.classList.remove(`animate-icon-${index + 1}`);
-        }, 2000); // Adjust based on your animation duration
-      });
-
-      // Remove cloud animation class after animation completes
-      setTimeout(() => {
-        if (cloud) cloud.classList.remove('animate-cloud');
-      }, 2000);
-    };
-
-    // Initial trigger
-    triggerAnimations();
-
-    // Set interval to trigger animations every 10 seconds
-    const intervalId = setInterval(triggerAnimations, 10000);
-
-    return () => {
-      document.body.style.overflow = 'auto';
-      clearInterval(intervalId);
-    };
-  }, []);
 
   return (
     <>
-    <div
+      <div
         style={{
           position: 'fixed',
           color: '#000',
           zIndex: 10000,
           fontSize: '14px',
-          top:"20px",
-          left:"25px"
+          top: "20px",
+          left: "25px"
         }}
         className='mainBtn'
       >
-       <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100}/>
+        <img src={textlogo} alt='logo' className='img-fluid' loading="lazy" width={100} />
       </div>
 
       <div className='yellow-bg px-5 px-xl-0'>
@@ -133,7 +97,7 @@ const Home = () => {
           }}
           className='d-flex flex-column gap-2 justify-content-center'
         >
-          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{borderTopLeftRadius: "30px" , borderBottomLeftRadius:"30px", backgroundColor: "rgba(0 , 0 ,0 ,0.45)"}}>
+          <div className='d-flex flex-column gap-4 justify-content-center py-3 px-2' style={{ borderTopLeftRadius: "30px", borderBottomLeftRadius: "30px", backgroundColor: "rgba(0 , 0 ,0 ,0.45)" }}>
             <div className="cursor" onClick={handleInstaClick}>
               <img src={instagram} alt="instgram" className="fs-4" />
             </div>
