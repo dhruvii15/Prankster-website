@@ -30,22 +30,22 @@ const Home = () => {
     window.open(snapUrl, '_blank');
   };
 
-  const handleShareClick = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Check out this amazing content!',
-          text: 'This is an awesome website I wanted to share with you.',
-          url: window.location.href, // You can use any URL
-        });
-        console.log('Content shared successfully');
-      } catch (error) {
-        console.error('Error sharing content:', error);
-      }
-    } else {
-      alert('Web Share API not supported in this browser.');
-    }
-  };
+  // const handleShareClick = async () => {
+  //   if (navigator.share) {
+  //     try {
+  //       await navigator.share({
+  //         title: 'Check out this amazing content!',
+  //         text: 'This is an awesome website I wanted to share with you.',
+  //         url: window.location.href, // You can use any URL
+  //       });
+  //       console.log('Content shared successfully');
+  //     } catch (error) {
+  //       console.error('Error sharing content:', error);
+  //     }
+  //   } else {
+  //     alert('Web Share API not supported in this browser.');
+  //   }
+  // };
 
   return (
     <>
@@ -100,9 +100,6 @@ const Home = () => {
           onClick={() => window.location.href = "/privacy-policy"}>
           Privacy Policy
         </span>
-        <button onClick={handleShareClick}>
-          Share
-        </button>
         <div
           style={{
             position: 'fixed',
