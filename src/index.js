@@ -8,17 +8,41 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Loading from './Component/Loading';
 
-// Lazy load the components
 const Home = React.lazy(() => import('./Pages/Home'));
 const Policy = React.lazy(() => import('./Pages/Policy'));
+const PrankLink = React.lazy(() => import('./Pages/PrankLink'));
 
 const queryClient = new QueryClient();
+
+// Error Boundary Component
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error occurred:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children; 
+  }
+}
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: (
-      <Suspense fallback={<div><Loading /></div>}>
+      <Suspense fallback={<Loading />}>
         <Home />
       </Suspense>
     ),
@@ -26,11 +50,19 @@ const router = createBrowserRouter([
   {
     path: '/privacy-policy',
     element: (
-      <Suspense fallback={<div><Loading /></div>}>
+      <Suspense fallback={<Loading />}>
         <Policy />
       </Suspense>
     ),
-  }
+  },
+  {
+    path: '/:prankName',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <PrankLink />
+      </Suspense>
+    ),
+  },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -38,7 +70,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <ErrorBoundary>
+        <RouterProvider router={router} />
+      </ErrorBoundary>
     </QueryClientProvider>
   </React.StrictMode>
 );

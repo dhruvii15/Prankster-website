@@ -6,14 +6,12 @@ import { faAppStore, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 const MainButton = () => {
     const handleAppstoreClick = () => {
         const appstore = 'https://apps.apple.com/us/app/lol-anonymous-funny-card/id6670788272';
-
         window.open(appstore, '_blank');
     };
 
 
     const handlePlaystoreClick = () => {
         const playstore = 'https://play.google.com/store/apps/details?id=com.lol.android';
-
         window.open(playstore, '_blank');
     };
     return (
