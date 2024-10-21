@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[377],{377:(e,s,c)=>{c.r(s),c.d(s,{default:()=>a});c(43);var t=c(579);const a=()=>(0,t.jsx)(t.Fragment,{children:(0,t.jsx)("h1",{children:"Policy Page"})})}}]);
+//# sourceMappingURL=377.4d691a99.chunk.js.map

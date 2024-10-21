@@ -2,29 +2,30 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
 import Audio from '../Component/PrankLink/Audio';
 import Video from '../Component/PrankLink/Video';
 import Gallery from '../Component/PrankLink/Gallery';
 
-
 const PrankLink = () => {
   const { prankName } = useParams();
-  const [data2, setData2] = useState({});
+  const [data2, setData2] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const getData2 = useCallback(() => {
-    axios.post('http://localhost:5000/api/prank/open-link', { prankName })
-      .then((res) => {
-        if (res.data && res.data.data) {
-          setData2(res.data.data);
-        } else {
-          setData2({});
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Failed to fetch data.");
-      })
+  const getData2 = useCallback(async () => {
+    try {
+      const res = await axios.post('https://pslink.world/api/prank/open-link', { prankName });
+      if (res.data && res.data.data) {
+        setData2(res.data.data);
+      } else {
+        setData2(null); 
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to fetch data.");
+      setData2(null); 
+    } finally {
+      setLoading(false); 
+    }
   }, [prankName]);
 
   useEffect(() => {
@@ -32,6 +33,15 @@ const PrankLink = () => {
       getData2();
     }
   }, [prankName, getData2]);
+
+
+  if (loading) {
+    return <div className="content">Loading...</div>;
+  }
+
+  if (!data2) {
+    return <div className="content">No Data Found...</div>; 
+  }
 
   const renderContent = () => {
     switch (data2.Type) {
@@ -42,27 +52,24 @@ const PrankLink = () => {
       case 'gallery':
         return <Gallery data2={data2} />;
       default:
-        return <p>No content available.</p>;
+        return <div className="content">No content available.</div>;
     }
   };
 
   return (
     <div className="full-page-background">
-
       {renderContent()}
-
       <style>{`
         .full-page-background {
           position: relative;
-          height: 100vh;
-          width: 100vw;
+          min-height: 100vh;
+          width: 100%;
           display: flex;
           align-items: center;
           justify-content: center;
           overflow: hidden;
-          background-color: #808080; /* Grey background */
+          background-color: #808080;
         }
-
         .full-page-background::before {
           content: '';
           position: absolute;
@@ -70,13 +77,11 @@ const PrankLink = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background-image: ${data2.Image ? `url('${data2.Image}')` : 'none'};
+          background-image: ${data2 && data2.Image ? `url('${data2.Image}')` : 'none'};
           background-size: cover;
           background-position: center;
-          filter: ${data2.Image ? 'blur(30px)' : 'none'};
           z-index: 0;
         }
-
         .full-page-background::after {
           content: '';
           position: absolute;
@@ -84,17 +89,21 @@ const PrankLink = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background-color: rgba(0, 0, 0, 0.4);
+          background: rgba(27, 26, 26, 0.3);
+          backdrop-filter: blur(15px);
+          -webkit-backdrop-filter: blur(15px);
           z-index: 1;
         }
-
         .content {
           position: relative;
           z-index: 2;
-          color: white; /* Ensure text is visible on dark background */
+          color: white;
+          padding: 20px;
+          text-align: center;
         }
-
         .centered-image {
+          max-width: 100%;
+          max-height: 80vh;
           object-fit: contain;
         }
       `}</style>

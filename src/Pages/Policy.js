@@ -5,7 +5,7 @@ const Policy = () => {
  
   return (
     <>
-     
+     <h1>Policy Page</h1>
     </>
   );
 };
