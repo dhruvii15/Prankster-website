@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 
 const Video = ({ data2 }) => {
+  
   const handleShareClick = async () => {
     if (navigator.share) {
       try {
@@ -32,9 +33,9 @@ const Video = ({ data2 }) => {
   return (
     <>
       <Row className="content px-3" style={{ minHeight: '100vh' }}>
-        <Col className="d-flex flex-column justify-content-center align-items-center">
+        <Col className="d-flex flex-column contentTop align-items-center">
           <div className="img-div position-relative">
-            <video autoPlay muted loop className='w-100 h-100'>
+            <video autoPlay muted className='w-100 h-100'>
               <source src={data2.File} type="video/mp4"/>
               Your browser does not support the video tag.
             </video>

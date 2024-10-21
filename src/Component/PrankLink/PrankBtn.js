@@ -25,7 +25,7 @@ const PrankBtn = () => {
         style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "90%", height: "50px" }}
       >
         <img src={lol} alt='lol' className='btnlol'/>
-        <p className='btntext text-white'>Download</p>
+        <p className='btntext text-white'>Download!</p>
       </Button>
     </>
   );

@@ -239,6 +239,10 @@
   text-align: center;
 }
 
+.contentTop {
+  justify-content: center;
+}
+
 .btnlol {
   animation: showImage 4s ease-in-out infinite;
 }
@@ -303,6 +307,9 @@
   }
   .icon1 {
     width: 18%;
+  }
+  .contentTop {
+    justify-content: start;
   }
 }
 @media (max-width: 699px) and (min-width: 600px) {

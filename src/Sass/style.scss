@@ -308,6 +308,10 @@
     text-align: center;
 }
 
+.contentTop{
+    justify-content: center;
+}
+
 // ================== PrankBtn ======================
 .btnlol {
     animation: showImage 4s ease-in-out infinite;
@@ -382,6 +386,9 @@
         width: 18%;
     }
 
+    .contentTop{
+        justify-content: start;
+    }
 }
 
 

@@ -30,18 +30,29 @@ const Audio = ({ data2 }) => {
     return (
         <>
             <Row className="content px-3" style={{ minHeight: '100vh' }}>
-                <Col className="d-flex flex-column justify-content-center align-items-center">
+                <Col className="d-flex flex-column align-items-center contentTop mt-5 mt-sm-0">
                     <div className="img-div2 position-relative">
                         <img src={data2.Image} alt='prankImage' className='img-fluid h-75 rounded-4' style={{ width: "95%" }} />
-                        <audio controls autoPlay>
+                        <audio controls muted loop autoPlay className='mt-3'>
                             <source src={data2.File} type="audio/mpeg" />
-                            <source src={data2.File} type="audio/ogg" />
+                            <track
+                                kind="captions"
+                                src={data2.File}
+                                srcLang="en"
+                                label="English"
+                                default
+                            />
                             Your browser does not support the audio element.
                         </audio>
 
-                        <div className='share-btn position-absolute text-black cursor'
+
+                        <div className='share-btn position-absolute text-black cursor' style={{right:"15px"}}
                             onClick={handleShareClick}>
                             <FontAwesomeIcon icon={faShareFromSquare} className='fs-5 ps-1' />
+                        </div>
+
+                        <div className='position-absolute text-black cursor w-100' style={{left:"0" , top:"64%"}}>
+                            <p className='m-0 mx-auto rounded-4 w-50 py-1 text-black' style={{fontWeight:"550" , backgroundColor: "rgba(255, 255, 255, 0.4)"}}>{data2.Name}</p>
                         </div>
                     </div>
                     <PrankBtn />
