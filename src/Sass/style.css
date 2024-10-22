@@ -224,7 +224,7 @@
 
 .img-div2 {
   width: 350px;
-  height: 380px;
+  height: 270px;
 }
 
 .share-btn {
@@ -307,9 +307,6 @@
   }
   .icon1 {
     width: 18%;
-  }
-  .contentTop {
-    justify-content: start;
   }
 }
 @media (max-width: 699px) and (min-width: 600px) {
@@ -499,6 +496,9 @@
   }
   .img-div2 {
     width: 300px;
-    height: 360px;
+    height: 250px;
+  }
+  .contentTop {
+    justify-content: start;
   }
 }/*# sourceMappingURL=style.css.map */

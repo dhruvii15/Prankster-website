@@ -6,9 +6,14 @@ import lol from "../../img/lol.png";
 
 const PrankBtn = () => {
   const playStoreUrl = "https://play.google.com/store/apps/details?id=com.yourapp.package"; // Replace with your app's package name
+  const playStoreUrl2 = "https://play.google.com/store/apps/details?id=com.lol.android";
 
   const handlePrankButtonClick = () => {
     window.open(playStoreUrl, '_blank');
+  };
+
+  const handlePrankButtonClick2 = () => {
+    window.open(playStoreUrl2, '_blank');
   };
 
   return (
@@ -23,6 +28,7 @@ const PrankBtn = () => {
       <Button 
         className='mt-4 border-0 py-2 fs-5 text-black overflow-hidden' 
         style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "90%", height: "50px" }}
+        onClick={handlePrankButtonClick2}
       >
         <img src={lol} alt='lol' className='btnlol'/>
         <p className='btntext text-white'>Download!</p>

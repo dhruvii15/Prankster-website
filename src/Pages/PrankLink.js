@@ -89,9 +89,9 @@ const PrankLink = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(27, 26, 26, 0.3);
-          backdrop-filter: blur(15px);
-          -webkit-backdrop-filter: blur(15px);
+          background: rgba(27, 26, 26, 0.4);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
           z-index: 1;
         }
         .content {

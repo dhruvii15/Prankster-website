@@ -1,10 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 
 const Video = ({ data2 }) => {
+
+  const videoRef = useRef (null);
+
+  useEffect(() => {
+      // Start the video playback and unmute it
+      const video = videoRef.current;
+      if (video) {
+          video.muted = false; // Ensure the video is not muted
+          video.play().catch((error) => {
+              console.error('Error playing video:', error);
+          });
+      }
+  }, []);
   
   const handleShareClick = async () => {
     if (navigator.share) {
@@ -34,8 +47,8 @@ const Video = ({ data2 }) => {
     <>
       <Row className="content px-3" style={{ minHeight: '100vh' }}>
         <Col className="d-flex flex-column contentTop align-items-center">
-          <div className="img-div position-relative">
-            <video autoPlay muted className='w-100 h-100'>
+          <div className="img-div position-relative rounded-4" style={{backgroundColor:"rgba(0,0,0,0.6)"}}>
+            <video ref={videoRef}  className='w-100 h-100'>
               <source src={data2.File} type="video/mp4"/>
               Your browser does not support the video tag.
             </video>
