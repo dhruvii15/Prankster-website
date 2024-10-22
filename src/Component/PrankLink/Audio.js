@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,17 +7,45 @@ import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 const Audio = ({ data2 }) => {
 
     const audioRef = useRef(null);
+    const [currentTime, setCurrentTime] = useState('0:00');
+    const [totalTime, setTotalTime] = useState('0:00');
 
     useEffect(() => {
-        // Start the audio playback and unmute it
         const audio = audioRef.current;
+
+        const updateTime = () => {
+            const current = audio.currentTime;
+            const total = audio.duration;
+
+            // Update current time and total time
+            setCurrentTime(formatTime(current));
+            setTotalTime(formatTime(total));
+        };
+
         if (audio) {
             audio.muted = false; // Ensure the audio is not muted
             audio.play().catch((error) => {
                 console.error('Error playing audio:', error);
             });
+
+            // Add event listeners for time updates and when metadata is loaded (total time)
+            audio.addEventListener('timeupdate', updateTime);
+            audio.addEventListener('loadedmetadata', updateTime);
+
+            return () => {
+                // Clean up event listeners
+                audio.removeEventListener('timeupdate', updateTime);
+                audio.removeEventListener('loadedmetadata', updateTime);
+            };
         }
     }, []);
+
+    // Helper function to format time (mm:ss)
+    const formatTime = (seconds) => {
+        const minutes = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${minutes}:${sec < 10 ? '0' : ''}${sec}`;
+    };
 
     const handleShareClick = async () => {
         if (navigator.share) {
@@ -42,11 +70,11 @@ const Audio = ({ data2 }) => {
 
     return (
         <>
-            <Row className="content px-3" style={{ minHeight: '100vh' }}>
+            <Row className="content p-0" style={{ minHeight: '100vh' }}>
                 <Col className="d-flex flex-column align-items-center contentTop mt-5 mt-sm-0">
                     <div className="img-div2 position-relative">
-                        <img src={data2.Image} alt='prankImage' className='img-fluid h-100 rounded-4' style={{ width: "90%" }} />
-                        <audio ref={audioRef} className='w-100 h-100'>
+                        <img src={data2.Image} alt='prankImage' className='img-fluid h-100 rounded-4' style={{ width: "89%" }} />
+                        <audio ref={audioRef} loop className='w-100 h-100'>
                             <source src={data2.File} type="audio/mp3" />
                             Your browser does not support the audio tag.
                         </audio>
@@ -65,10 +93,14 @@ const Audio = ({ data2 }) => {
                         </div>
                     </div>
 
+                    <div className='d-flex border w-100 justify-content-between align-items-center py-2 mt-3'>
+                        <p className='m-0'>{currentTime}</p>
+                        <p className='m-0'>{totalTime}</p>
+                    </div>
+
                     <div className='pb-5'>
                         <PrankBtn />
                     </div>
-
 
                     <div className='w-100 border position-absolute bottom-0' style={{ height: "100px" }}>
                         <ins className="adsbygoogle"
