@@ -40,8 +40,6 @@ const Video = ({ data2 }) => {
     // Load AdSense ad when component mounts
     (window.adsbygoogle = window.adsbygoogle || []).push({});
   }, []);
-
-  console.log(data2.File);
   
   return (
     <>
