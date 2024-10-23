@@ -26,12 +26,12 @@ const PrankBtn = () => {
         Make own prank 😂
       </Button>
       <Button 
-        className='mt-4 border-0 py-2 fs-5 text-black overflow-hidden' 
+        className='mt-3 border-0 py-2 fs-5 text-black overflow-hidden' 
         style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "90%", height: "50px" }}
         onClick={handlePrankButtonClick2}
       >
         <img src={lol} alt='lol' className='btnlol'/>
-        <p className='btntext text-white'>Download!</p>
+        <p className='btntext text-white' style={{fontWeight:"500"}}>Download!</p>
       </Button>
     </>
   );

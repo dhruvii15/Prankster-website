@@ -4,6 +4,10 @@ import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 
+
+// img
+import gif from "../../img/MuSAo94ViS.gif"
+
 const Audio = ({ data2 }) => {
 
     const audioRef = useRef(null);
@@ -93,7 +97,10 @@ const Audio = ({ data2 }) => {
                         </div>
                     </div>
 
-                    <div className='d-flex border w-100 justify-content-between align-items-center py-2 mt-3'>
+                   
+                        <img src={gif} alt='gif' style={{width:"90%" , height:"50px"}} />
+                   
+                    <div className='d-flex w-100 justify-content-between align-items-start px-3 pb-5'>
                         <p className='m-0'>{currentTime}</p>
                         <p className='m-0'>{totalTime}</p>
                     </div>

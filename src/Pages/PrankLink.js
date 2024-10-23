@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import Audio from '../Component/PrankLink/Audio';
 import Video from '../Component/PrankLink/Video';
 import Gallery from '../Component/PrankLink/Gallery';
+import Loading from '../Component/Loading';
+import NoDataFound from '../Component/NoDataFound';
 
 const PrankLink = () => {
   const { prankName } = useParams();
@@ -36,11 +38,11 @@ const PrankLink = () => {
 
 
   if (loading) {
-    return <div className="content">Loading...</div>;
+    return <div className="content"><Loading /></div>;
   }
 
   if (!data2) {
-    return <div className="content">No Data Found...</div>; 
+    return <div className="content"><NoDataFound /></div>; 
   }
 
   const renderContent = () => {
@@ -89,9 +91,9 @@ const PrankLink = () => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(27, 26, 26, 0.4);
-          backdrop-filter: blur(20px);
-          -webkit-backdrop-filter: blur(20px);
+          background: rgba(27, 26, 26, 0.2);
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
           z-index: 1;
         }
         .content {
