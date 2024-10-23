@@ -19,14 +19,14 @@ const PrankLink = () => {
       if (res.data && res.data.data) {
         setData2(res.data.data);
       } else {
-        setData2(null); 
+        setData2(null);
       }
     } catch (err) {
       console.error(err);
       toast.error("Failed to fetch data.");
-      setData2(null); 
+      setData2(null);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   }, [prankName]);
 
@@ -42,7 +42,7 @@ const PrankLink = () => {
   }
 
   if (!data2) {
-    return <div className="content"><NoDataFound /></div>; 
+    return <div className="content"><NoDataFound /></div>;
   }
 
   const renderContent = () => {
@@ -59,57 +59,9 @@ const PrankLink = () => {
   };
 
   return (
-    <div className="full-page-background">
+    <>
       {renderContent()}
-      <style>{`
-        .full-page-background {
-          position: relative;
-          min-height: 100vh;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          overflow: hidden;
-          background-color: #808080;
-        }
-        .full-page-background::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background-image: ${data2 && data2.Image ? `url('${data2.Image}')` : 'none'};
-          background-size: cover;
-          background-position: center;
-          z-index: 0;
-        }
-        .full-page-background::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(27, 26, 26, 0.2);
-          backdrop-filter: blur(6px);
-          -webkit-backdrop-filter: blur(6px);
-          z-index: 1;
-        }
-        .content {
-          position: relative;
-          z-index: 2;
-          color: white;
-          padding: 20px;
-          text-align: center;
-        }
-        .centered-image {
-          max-width: 100%;
-          max-height: 80vh;
-          object-fit: contain;
-        }
-      `}</style>
-    </div>
+    </>
   );
 };
 
