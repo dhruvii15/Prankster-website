@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import Audio from '../Component/PrankLink/Audio';
-import Video from '../Component/PrankLink/Video';
-import Gallery from '../Component/PrankLink/Gallery';
 import Loading from '../Component/Loading';
 import NoDataFound from '../Component/NoDataFound';
+
+// Lazy load the components
+const Audio = lazy(() => import('../Component/PrankLink/Audio'));
+const Video = lazy(() => import('../Component/PrankLink/Video'));
+const Gallery = lazy(() => import('../Component/PrankLink/Gallery'));
 
 const PrankLink = () => {
   const { prankName } = useParams();
@@ -36,7 +38,6 @@ const PrankLink = () => {
     }
   }, [prankName, getData2]);
 
-
   if (loading) {
     return <div className="content"><Loading /></div>;
   }
@@ -59,9 +60,9 @@ const PrankLink = () => {
   };
 
   return (
-    <>
+    <Suspense fallback={<div className="content"><Loading /></div>}>
       {renderContent()}
-    </>
+    </Suspense>
   );
 };
 

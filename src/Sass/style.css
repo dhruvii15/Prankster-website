@@ -2,6 +2,14 @@
   cursor: pointer;
 }
 
+@keyframes zoom-in-zoom-out2 {
+  0%, 100% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.1, 1.1);
+  }
+}
 .playstore:hover .picon {
   transform: scale(1.1);
   transition: transform 0.3s ease-in-out;
@@ -276,7 +284,7 @@
     transform: translateY(0);
   }
   45%, 65% {
-    transform: translateY(-35px);
+    transform: translateY(-37px);
     opacity: 1;
   }
   80% {
@@ -307,6 +315,14 @@
   }
   .icon1 {
     width: 18%;
+  }
+  .img-div {
+    width: 300px;
+    height: 380px;
+  }
+  .img-div2 {
+    width: 300px;
+    height: 220px;
   }
 }
 @media (max-width: 699px) and (min-width: 600px) {
@@ -489,14 +505,6 @@
   }
   .cloud-bg {
     display: none;
-  }
-  .img-div {
-    width: 300px;
-    height: 430px;
-  }
-  .img-div2 {
-    width: 300px;
-    height: 250px;
   }
   .contentTop {
     justify-content: start;

@@ -2,6 +2,18 @@
     cursor: pointer;
 }
 
+@keyframes zoom-in-zoom-out2 {
+
+    0%,
+    100% {
+        transform: scale(1, 1);
+    }
+
+    50% {
+        transform: scale(1.1, 1.1);
+    }
+}
+
 .playstore:hover .picon {
     transform: scale(1.1);
     transition: transform 0.3s ease-in-out;
@@ -71,6 +83,7 @@
 }
 
 @keyframes cloud {
+
     0%,
     95%,
     100% {
@@ -84,17 +97,25 @@
         opacity: 1;
     }
 
-    35%, 45%, 55% ,65%, 75%  {
+    35%,
+    45%,
+    55%,
+    65%,
+    75% {
         transform: scale(1) translateY(0px);
         opacity: 1;
     }
 
-    40%,50%, 60% , 70% {
+    40%,
+    50%,
+    60%,
+    70% {
         transform: scale(0.97) translateY(0px);
         opacity: 1;
     }
 
-    88%, 10%  {
+    88%,
+    10% {
         opacity: 0;
     }
 }
@@ -286,17 +307,17 @@
 }
 
 // ============== PRANK-LINK ======================
-.img-div{
+.img-div {
     width: 350px;
     height: 480px;
 }
 
-.img-div2{
+.img-div2 {
     width: 350px;
     height: 270px;
 }
 
-.share-btn{
+.share-btn {
     position: absolute;
     right: 10px;
     top: 10px;
@@ -308,7 +329,7 @@
     text-align: center;
 }
 
-.contentTop{
+.contentTop {
     justify-content: center;
 }
 
@@ -318,23 +339,29 @@
 }
 
 @keyframes showImage {
-    0%,20% {
-      transform: translateY(0); 
+
+    0%,
+    20% {
+        transform: translateY(0);
     }
+
     45% {
-      transform: translateY(-50px); 
-      opacity: 1;
+        transform: translateY(-50px);
+        opacity: 1;
     }
+
     50% {
-      transform: translateY(-100px); 
-      opacity: 0; 
+        transform: translateY(-100px);
+        opacity: 0;
     }
+
     75% {
-      transform: translateY(50px);
-      opacity: 0; 
+        transform: translateY(50px);
+        opacity: 0;
     }
+
     95% {
-      transform: translateY(0); 
+        transform: translateY(0);
     }
 }
 
@@ -343,27 +370,34 @@
 }
 
 @keyframes showText {
-    0%,30% {
-      transform: translateY(0); 
+
+    0%,
+    30% {
+        transform: translateY(0);
     }
-    45%, 65% {
-      transform: translateY(-35px);
-      opacity: 1;
+
+    45%,
+    65% {
+        transform: translateY(-37px);
+        opacity: 1;
     }
+
     80% {
-      transform: translateY(-70px);
-      opacity: 0; 
+        transform: translateY(-70px);
+        opacity: 0;
     }
+
     85% {
-      transform: translateY(50px); 
-      opacity: 0; 
+        transform: translateY(50px);
+        opacity: 0;
     }
+
     100% {
-      transform: translateY(0); 
+        transform: translateY(0);
     }
 }
 
-  
+
 // ============== Media Query======================
 
 @media (max-width:576px) and (min-width:0px) {
@@ -382,14 +416,25 @@
         width: 100%;
         text-align: center;
     }
+
     .icon1 {
         width: 18%;
+    }
+
+    .img-div {
+        width: 300px;
+        height: 380px;
+    }
+
+    .img-div2 {
+        width: 300px;
+        height: 220px;
     }
 }
 
 
 @media (max-width:699px) and (min-width:600px) {
-    
+
     @keyframes icon1 {
 
         0%,
@@ -419,7 +464,7 @@
 
 
 @media (max-width:599px) and (min-width:500px) {
-   
+
     @keyframes icon1 {
 
         0%,
@@ -476,30 +521,39 @@
 @media (max-width:499px) and (min-width:390px) {
 
     @keyframes cloud {
+
         0%,
         95%,
         100% {
             transform: scale(0) translateY(380px);
             opacity: 0;
         }
-    
+
         20%,
         75% {
             transform: scale(0.97) translateY(0px);
             opacity: 1;
         }
-    
-        35%, 45%, 55% ,65%, 75%  {
+
+        35%,
+        45%,
+        55%,
+        65%,
+        75% {
             transform: scale(1) translateY(0px);
             opacity: 1;
         }
-    
-        40%,50%, 60% , 70% {
+
+        40%,
+        50%,
+        60%,
+        70% {
             transform: scale(0.97) translateY(0px);
             opacity: 1;
         }
-    
-        90%, 10%  {
+
+        90%,
+        10% {
             opacity: 0;
         }
     }
@@ -534,6 +588,7 @@
     }
 
     @keyframes icon2 {
+
         0%,
         10%,
         80%,
@@ -545,7 +600,7 @@
         }
 
         35%,
-        65%  {
+        65% {
             opacity: 1;
             left: 50px;
             top: -20px;
@@ -566,7 +621,7 @@
         }
 
         35%,
-        65%  {
+        65% {
             opacity: 1;
             right: 20px;
             bottom: 180px;
@@ -579,7 +634,7 @@
         0%,
         10%,
         80%,
-        100%{
+        100% {
             opacity: 0.5;
             left: 160px;
             top: 250px;
@@ -608,7 +663,7 @@
         }
 
         35%,
-        65%  {
+        65% {
             opacity: 1;
             right: 90px;
             top: 20px;
@@ -629,7 +684,7 @@
         }
 
         35%,
-        65%  {
+        65% {
             opacity: 1;
             right: 160px;
             top: 70px;
@@ -655,20 +710,7 @@
         display: none;
     }
 
-    .img-div{
-        width: 300px;
-        height: 430px;
-    }
-
-    .img-div2{
-        width: 300px;
-        height: 250px;
-    }
-
-    .contentTop{
+    .contentTop {
         justify-content: start;
     }
 }
-
-
-
