@@ -2,19 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
-import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faShareFromSquare, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 // img
 import watermark from "../../img/watermark.png"
-
 
 const Video = ({ data2 }) => {
   const videoRef = useRef(null);
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Preload the cover image
   useEffect(() => {
     if (data2?.CoverImage) {
       const img = new Image();
@@ -58,12 +55,11 @@ const Video = ({ data2 }) => {
   }, []);
 
   return (
-    <>
-      <div className="full-page-background">
-        <Row className="content px-3 overflow-hidden" style={{ minHeight: '100vh' }}>
-          <Col className="d-flex flex-column contentTop align-items-center">
-            <div className="img-div position-relative rounded-4" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
-              {/* Video element - only show when not needing interaction or image is loaded */}
+    <div className="full-page-background">
+      <div className="content-container">
+        <Row className="content px-3 overflow-hidden flex-grow-1">
+          <Col className="d-flex flex-column justify-content-center align-items-center">
+            <div className="img-div position-relative rounded-4 overflow-hidden" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
               {(!needsInteraction || isImageLoaded) && (
                 <video
                   ref={videoRef}
@@ -77,7 +73,6 @@ const Video = ({ data2 }) => {
                 </video>
               )}
 
-              {/* Click to play overlay - only show when image is loaded */}
               {needsInteraction && isImageLoaded && (
                 <div
                   className='rounded-4'
@@ -123,7 +118,6 @@ const Video = ({ data2 }) => {
                 </div>
               )}
 
-              {/* Loading state */}
               {!isImageLoaded && (
                 <div className="loading-placeholder rounded-4" style={{
                   position: 'absolute',
@@ -143,7 +137,6 @@ const Video = ({ data2 }) => {
                 </div>
               )}
 
-              {/* Share button - only show when image is loaded */}
               {isImageLoaded && (
                 <>
                   <div
@@ -155,80 +148,93 @@ const Video = ({ data2 }) => {
                     onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                     style={{ zIndex: 3 }}
                   >
-                    <FontAwesomeIcon icon={faShareFromSquare} className="fs-5 ps-1" />
+                    <FontAwesomeIcon icon={faShareFromSquare} style={{paddingLeft:"2px", fontSize:"14px"}} />
                   </div>
 
-                  <div className='position-absolute text-black cursor' style={{ left: "10px", top: "10px", zIndex: 3}}>
-                    <img src={watermark} alt='prankster' width={40} />
+                  <div className='position-absolute text-black cursor' style={{left:"-22px", top:"-23px", zIndex: 3}}>
+                    <img src={watermark} alt='prankster' width={110} />
                   </div>
                 </>
               )}
             </div>
 
-            <PrankBtn />
-
-            <div className="w-100 border mt-3" style={{ height: '50px' }}>
-              <ins
-                className="adsbygoogle"
-                style={{ display: 'block', height: '50px' }}
-                data-ad-format="fluid"
-                data-ad-layout-key="-6t+ed+2i-1n-4w"
-                data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                data-ad-slot="YOUR_AD_SLOT_ID"
-              ></ins>
+            <div className="mt-3">
+              <PrankBtn />
             </div>
           </Col>
         </Row>
-        <style>{`
-.full-page-background {
-  position: relative;
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  background-color: #808080;
-}
-.full-page-background::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: ${isImageLoaded && data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
-}
-.full-page-background::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(27, 26, 26, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  z-index: 1;
-}
-.content {
-  position: relative;
-  z-index: 2;
-  color: white;
-  padding: 20px;
-  text-align: center;
-}
-.centered-image {
-  max-width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
-}
-`}</style>
+
+        {/* Advertisement div */}
+        <div className="ad-container py-2 ads-div mx-auto">
+          <ins
+            className="adsbygoogle border"
+            style={{ display: 'block', height: '50px' }}
+            data-ad-format="fluid"
+            data-ad-layout-key="-6t+ed+2i-1n-4w"
+            data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+            data-ad-slot="YOUR_AD_SLOT_ID"
+          ></ins>
+        </div>
       </div>
-    </>
+
+      <style>{`
+        .full-page-background {
+          position: relative;
+          min-height: 100vh;
+          width: 100%;
+          display: flex;
+          overflow: hidden;
+          background-color: #808080;
+        }
+
+        .content-container {
+          position: relative;
+          z-index: 2;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+        }
+
+        .full-page-background::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background-image: ${isImageLoaded && data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
+          background-size: cover;
+          background-position: center;
+          z-index: 0;
+        }
+
+        .full-page-background::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(27, 26, 26, 0.2);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          z-index: 1;
+        }
+
+        .content {
+          color: white;
+          text-align: center;
+          flex: 1;
+          display: flex;
+          align-items: center;
+        }
+
+        .ad-container {
+          margin-top: auto;
+        }
+      `}</style>
+    </div>
   );
 };
 

@@ -31,7 +31,7 @@ const PrankBtn = () => {
         onClick={handlePrankButtonClick2}
       >
         <img src={lol} alt='lol' className='btnlol' width={60}/>
-        <p className='btntext text-white pt-1' style={{fontWeight:"450"}}>Download!</p>
+        <p className='btntext text-white pt-3' style={{fontWeight:"450"}}>Download!</p>
       </Button>
     </>
   );

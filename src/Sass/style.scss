@@ -2,6 +2,17 @@
     cursor: pointer;
 }
 
+@font-face {
+    font-family: 'Avenir';
+    src: url('../font/AvenirLTProHeavy.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.Avenir {
+    font-family: 'Avenir', sans-serif;
+}
+
 @keyframes zoom-in-zoom-out2 {
 
     0%,
@@ -317,20 +328,20 @@
     height: 270px;
 }
 
+.ads-div {
+    width: 350px;
+}
+
 .share-btn {
     position: absolute;
     right: 10px;
     top: 10px;
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     background-color: #F9E238;
     border-radius: 100%;
-    line-height: 53px;
+    line-height: 38px;
     text-align: center;
-}
-
-.contentTop {
-    justify-content: center;
 }
 
 // ================== PrankBtn ======================
@@ -377,17 +388,17 @@
     }
 
     45%,
-    65% {
-        transform: translateY(-37px);
+    70% {
+        transform: translateY(-45px);
         opacity: 1;
     }
 
-    80% {
-        transform: translateY(-70px);
+    86% {
+        transform: translateY(-90px);
         opacity: 0;
     }
 
-    85% {
+    95% {
         transform: translateY(50px);
         opacity: 0;
     }
@@ -422,13 +433,13 @@
     }
 
     .img-div {
-        width: 300px;
-        height: 380px;
+        width: 350px;
+        height: 430px;
     }
 
     .img-div2 {
-        width: 300px;
-        height: 220px;
+        width: 350px;
+        height: 260px;
     }
 }
 
@@ -708,9 +719,5 @@
 
     .cloud-bg {
         display: none;
-    }
-
-    .contentTop {
-        justify-content: start;
     }
 }

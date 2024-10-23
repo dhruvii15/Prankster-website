@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
+import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 // img
 import watermark from "../../img/watermark.png"
@@ -41,12 +41,11 @@ const Gallery = ({ data2 }) => {
     }, []);
 
     return (
-        <>
-            <div className="full-page-background">
-                <Row className="content px-3 overflow-hidden" style={{ minHeight: '100vh' }}>
+        <div className="full-page-background">
+            <div className="content-container">
+                <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
-                        <div className="img-div position-relative">
-                            {/* Main Image - only show when loaded */}
+                        <div className="img-div position-relative overflow-hidden">
                             <img 
                                 src={data2.File} 
                                 alt='prankImage' 
@@ -79,76 +78,96 @@ const Gallery = ({ data2 }) => {
                                         aria-label="Share this content"
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}>
-                                        <FontAwesomeIcon icon={faShareFromSquare} className='fs-5 ps-1' />
+                                        <FontAwesomeIcon icon={faShareFromSquare} style={{paddingLeft:"2px", fontSize:"14px"}} />
                                     </div>
                                     
-                                    <div className='position-absolute text-black cursor' style={{left:"10px", top:"10px"}}>
-                                        <img src={watermark} alt='prankster' width={40}/>
+                                    <div className='position-absolute text-black cursor' style={{left:"-22px", top:"-23px"}}>
+                                        <img src={watermark} alt='prankster' width={110}/>
                                     </div>
                                 </>
                             )}
                         </div>
-                        <PrankBtn />
-                        <div className='w-100 border mt-3' style={{ height: "50px" }}>
-                            <ins className="adsbygoogle"
-                                style={{ display: 'block', height: '50px' }}
-                                data-ad-format="fluid"
-                                data-ad-layout-key="-6t+ed+2i-1n-4w"
-                                data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                                data-ad-slot="YOUR_AD_SLOT_ID"></ins>
+                        <div className="mt-3">
+                            <PrankBtn />
                         </div>
                     </Col>
                 </Row>
-                <style>{`
-                    .full-page-background {
-                        position: relative;
-                        min-height: 100vh;
-                        width: 100%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        overflow: hidden;
-                        background-color: #808080;
-                    }
-                    .full-page-background::before {
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background-image: ${isImageLoaded && data2?.File ? `url('${data2.File}')` : 'none'};
-                        background-size: cover;
-                        background-position: center;
-                        z-index: 0;
-                    }
-                    .full-page-background::after {
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: rgba(27, 26, 26, 0.2);
-                        backdrop-filter: blur(10px);
-                        -webkit-backdrop-filter: blur(10px);
-                        z-index: 1;
-                    }
-                    .content {
-                        position: relative;
-                        z-index: 2;
-                        color: white;
-                        padding: 20px;
-                        text-align: center;
-                    }
-                    .centered-image {
-                        max-width: 100%;
-                        max-height: 80vh;
-                        object-fit: contain;
-                    }
-                `}</style>
+                
+                {/* Advertisement div */}
+                <div className='ad-container py-2 ads-div mx-auto'>
+                    <ins className="adsbygoogle border"
+                        style={{ display: 'block', height: '50px', width: '100%' }}
+                        data-ad-format="fluid"
+                        data-ad-layout-key="-6t+ed+2i-1n-4w"
+                        data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
+                        data-ad-slot="YOUR_AD_SLOT_ID">
+                    </ins>
+                </div>
             </div>
-        </>
+
+            <style>{`
+                .full-page-background {
+                    position: relative;
+                    min-height: 100vh;
+                    width: 100%;
+                    display: flex;
+                    overflow: hidden;
+                    background-color: #808080;
+                }
+
+                .content-container {
+                    position: relative;
+                    z-index: 2;
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    min-height: 100vh;
+                }
+
+                .full-page-background::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-image: ${isImageLoaded && data2?.File ? `url('${data2.File}')` : 'none'};
+                    background-size: cover;
+                    background-position: center;
+                    z-index: 0;
+                }
+
+                .full-page-background::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(27, 26, 26, 0.2);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    z-index: 1;
+                }
+
+                .content {
+                    color: white;
+                    padding: 20px;
+                    text-align: center;
+                }
+
+                .ad-container {
+                    margin-top: auto; 
+                    padding: 0;
+                }
+
+                .centered-image {
+                    max-width: 100%;
+                    max-height: 80vh;
+                    object-fit: contain;
+                }
+            `}</style>
+        </div>
     );
 };
 
