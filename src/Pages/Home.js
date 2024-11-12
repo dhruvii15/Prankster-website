@@ -19,7 +19,7 @@ import textlogo from "../img/textlogo.svg";
 const Home = () => {
 
   const handleInstaClick = () => {
-    const instaUrl = 'https://www.instagram.com/plexus_technology/?igsh=MWdkdWZheGxrZjZkZQ%3D%3D';
+    const instaUrl = 'https://www.instagram.com/prank__sterr';
 
     window.open(instaUrl, '_blank');
   };

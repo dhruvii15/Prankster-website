@@ -179,10 +179,20 @@ const Audio = ({ data2 }) => {
                                     </div>
 
                                     <div className='position-absolute text-black cursor w-100' style={{ left: "0", bottom: "5px" }}>
-                                        <p className='m-0 mx-auto rounded-4 w-75 py-1 text-black' style={{ fontWeight: "550", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
+                                        <p
+                                            className='m-0 mx-auto rounded-4 w-75 py-1 text-black'
+                                            style={{
+                                                fontWeight: "500",
+                                                backgroundColor: "rgba(255, 255, 255, 0.5)", // White with slight transparency
+                                                backdropFilter: "blur(20px)", // Increase blur intensity if needed
+                                                WebkitBackdropFilter: "blur(20px)", // For Safari compatibility
+                                                borderRadius: "8px" // Optional: softens the background edges
+                                            }}
+                                        >
                                             {data2.Name}
                                         </p>
                                     </div>
+
                                 </>
                             )}
                         </div>
