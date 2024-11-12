@@ -6,6 +6,7 @@ import { faShareFromSquare, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 import gif from "../../img/MuSAo94ViS.gif";
 import watermark from "../../img/watermark.png";
+import AudioVisualizer from './AudioVisualizer';
 
 const Audio = ({ data2 }) => {
     const audioRef = useRef(null);
@@ -13,6 +14,7 @@ const Audio = ({ data2 }) => {
     const [totalTime, setTotalTime] = useState('0:00');
     const [needsInteraction, setNeedsInteraction] = useState(true);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [duration, setDuration] = useState(0);
 
     // Existing useEffect and event handlers remain the same...
     const formatTime = (seconds) => {
@@ -50,6 +52,7 @@ const Audio = ({ data2 }) => {
             const total = audio.duration;
             setCurrentTime(formatTime(current));
             setTotalTime(formatTime(total));
+            setDuration(total); // Add this line
         };
 
         if (audio) {
@@ -168,11 +171,11 @@ const Audio = ({ data2 }) => {
                                         aria-label="Share this content"
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}>
-                                        <FontAwesomeIcon icon={faShareFromSquare} style={{paddingLeft:"2px", fontSize:"14px"}} />
+                                        <FontAwesomeIcon icon={faShareFromSquare} style={{ paddingLeft: "2px", fontSize: "14px" }} />
                                     </div>
 
-                                    <div className='position-absolute text-black cursor' style={{left:"-22px", top:"-23px", zIndex: 3}}>
-                                        <img src={watermark} alt='prankster' width={110}/>
+                                    <div className='position-absolute text-black cursor' style={{ left: "-22px", top: "-23px", zIndex: 3 }}>
+                                        <img src={watermark} alt='prankster' width={110} />
                                     </div>
 
                                     <div className='position-absolute text-black cursor w-100' style={{ left: "0", bottom: "5px" }}>
@@ -184,9 +187,15 @@ const Audio = ({ data2 }) => {
                             )}
                         </div>
 
-                        <img src={gif} alt='gif' className='ads-div' style={{ height: "50px" }} />
+                        {/* <img src={gif} alt='gif' className='ads-div' style={{ height: "50px" }} /> */}
 
-                        <div className='d-flex justify-content-between align-items-start px-3 ads-div'>
+                        <AudioVisualizer
+                            currentTime={audioRef.current?.currentTime || 0}
+                            totalDuration={duration}
+                            className="ads-div"
+                        />
+
+                        <div className='d-flex justify-content-between align-items-start px-1 ads-div mt-2'>
                             <p className='m-0'>{currentTime}</p>
                             <p className='m-0'>{totalTime}</p>
                         </div>
