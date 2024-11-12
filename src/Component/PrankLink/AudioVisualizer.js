@@ -5,7 +5,7 @@ const AudioVisualizer = ({ currentTime, totalDuration, className }) => {
   const progress = totalDuration ? (currentTime / totalDuration) * 100 : 0;
   
   // Number of bars in the visualizer
-  const totalBars = 45;
+  const totalBars = 43;
   
   // Generate bars with random heights up to 25px
   const generateBars = () => {
@@ -13,7 +13,7 @@ const AudioVisualizer = ({ currentTime, totalDuration, className }) => {
     for (let i = 0; i < totalBars; i++) {
       const isActive = (i / totalBars) * 100 <= progress;
       // Random height between 15px and 25px for more dynamic appearance
-      const height = Math.floor(Math.random() * (25 - 2 + 1)) + 10;
+      const height = Math.floor(Math.random() * (25 - 2 + 1)) + 9;
       bars.push(
         <div
           key={i}

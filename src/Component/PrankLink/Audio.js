@@ -4,7 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShareFromSquare, faPlay } from '@fortawesome/free-solid-svg-icons';
 
-import gif from "../../img/MuSAo94ViS.gif";
+// import gif from "../../img/MuSAo94ViS.gif";
 import watermark from "../../img/watermark.png";
 import AudioVisualizer from './AudioVisualizer';
 
@@ -192,7 +192,7 @@ const Audio = ({ data2 }) => {
                         <AudioVisualizer
                             currentTime={audioRef.current?.currentTime || 0}
                             totalDuration={duration}
-                            className="ads-div"
+                            className="ads-div px-1"
                         />
 
                         <div className='d-flex justify-content-between align-items-start px-1 ads-div mt-2'>
