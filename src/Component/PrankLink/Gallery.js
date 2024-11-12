@@ -45,11 +45,11 @@ const Gallery = ({ data2 }) => {
             <div className="content-container">
                 <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
-                        <div className="img-div position-relative overflow-hidden">
+                        <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
                             <img 
                                 src={data2.File} 
                                 alt='prankImage' 
-                                className='img-fluid w-100 h-100 rounded-4' 
+                                className='img-fluid' 
                                 style={{ display: isImageLoaded ? 'block' : 'none' }}
                             />
 
@@ -94,7 +94,7 @@ const Gallery = ({ data2 }) => {
                 </Row>
                 
                 {/* Advertisement div */}
-                <div className='ad-container py-2 ads-div mx-auto'>
+                {/* <div className='ad-container py-2 ads-div mx-auto'>
                     <ins className="adsbygoogle border"
                         style={{ display: 'block', height: '50px', width: '100%' }}
                         data-ad-format="fluid"
@@ -102,7 +102,7 @@ const Gallery = ({ data2 }) => {
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID">
                     </ins>
-                </div>
+                </div> */}
             </div>
 
             <style>{`

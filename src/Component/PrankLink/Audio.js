@@ -89,8 +89,8 @@ const Audio = ({ data2 }) => {
             <div className="content-container">
                 <Row className="content p-0 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column align-items-center justify-content-center">
-                        <div className="img-div2 position-relative overflow-hidden">
-                            <audio ref={audioRef} loop className='w-100 h-100'>
+                        <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
+                            <audio ref={audioRef} loop >
                                 <source src={data2.File} type="audio/mp3" />
                                 Your browser does not support the audio tag.
                             </audio>
@@ -117,8 +117,7 @@ const Audio = ({ data2 }) => {
                                     <img
                                         src={data2.CoverImage}
                                         alt='prankImage'
-                                        className='img-fluid h-100 rounded-4'
-                                        style={{ width: "100%" }}
+                                        className='img-fluid h-100'
                                     />
 
                                     {needsInteraction && (
@@ -176,8 +175,8 @@ const Audio = ({ data2 }) => {
                                         <img src={watermark} alt='prankster' width={110}/>
                                     </div>
 
-                                    <div className='position-absolute text-black cursor w-100' style={{ left: "0", top: "85%" }}>
-                                        <p className='m-0 mx-auto rounded-4 w-50 py-1 text-black' style={{ fontWeight: "550", backgroundColor: "rgba(255, 255, 255, 0.4)" }}>
+                                    <div className='position-absolute text-black cursor w-100' style={{ left: "0", bottom: "5px" }}>
+                                        <p className='m-0 mx-auto rounded-4 w-75 py-1 text-black' style={{ fontWeight: "550", backgroundColor: "rgba(255, 255, 255, 0.5)" }}>
                                             {data2.Name}
                                         </p>
                                     </div>
@@ -199,7 +198,7 @@ const Audio = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div moved to bottom */}
-                <div className='ad-container ads-div mx-auto py-2'>
+                {/* <div className='ad-container ads-div mx-auto py-2'>
                     <ins
                         className="adsbygoogle border"
                         style={{ display: 'block', height: '120px', width: '100%' }}
@@ -208,7 +207,7 @@ const Audio = ({ data2 }) => {
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID"
                     ></ins>
-                </div>
+                </div> */}
             </div>
 
             <style>{`

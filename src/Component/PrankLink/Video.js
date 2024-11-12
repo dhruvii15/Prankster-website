@@ -165,7 +165,7 @@ const Video = ({ data2 }) => {
         </Row>
 
         {/* Advertisement div */}
-        <div className="ad-container py-2 ads-div mx-auto">
+        {/* <div className="ad-container py-2 ads-div mx-auto">
           <ins
             className="adsbygoogle border"
             style={{ display: 'block', height: '50px' }}
@@ -174,7 +174,7 @@ const Video = ({ data2 }) => {
             data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
             data-ad-slot="YOUR_AD_SLOT_ID"
           ></ins>
-        </div>
+        </div> */}
       </div>
 
       <style>{`
