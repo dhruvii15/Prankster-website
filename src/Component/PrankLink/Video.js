@@ -77,13 +77,14 @@ const Video = ({ data2 }) => {
       <div className="content-container">
         <Row className="content px-3 overflow-hidden flex-grow-1">
           <Col className="d-flex flex-column justify-content-center align-items-center">
-            <div className="img-div position-relative rounded-4 overflow-hidden" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
+            <div className="img-div position-relative rounded-4 overflow-hidden">
+              <div className="blurred-bg"></div>
               {(!needsInteraction || isImageLoaded) && (
                 <video
                   ref={videoRef}
                   loop
                   playsInline
-                  className='w-100 h-100'
+                  className='w-100 h-100 position-absolute'
                   style={{ display: needsInteraction ? 'none' : 'block' }}
                 >
                   <source src={data2.File} type="video/mp4" />
@@ -93,7 +94,7 @@ const Video = ({ data2 }) => {
 
               {needsInteraction && isImageLoaded && (
                 <div
-                  className='rounded-4'
+                  className="rounded-4"
                   onClick={startVideoWithSound}
                   style={{
                     position: 'absolute',
@@ -101,27 +102,55 @@ const Video = ({ data2 }) => {
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: `url('${data2.CoverImage}')`,
-                    backgroundRepeat: 'no-repeat',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     cursor: 'pointer',
-                    zIndex: 2
+                    zIndex: 2,
                   }}
                 >
+                  {/* Blurred Background */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      backgroundImage: `url('${data2.CoverImage}')`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                      backgroundSize: 'cover',
+                      filter: 'blur(10px)', // Apply blur effect
+                      zIndex: -1, // Ensure this stays behind the clear image
+                    }}
+                  ></div>
+
+                  {/* Clear Main Image */}
+                  <img
+                    src={data2.CoverImage}
+                    alt="Cover"
+                    style={{
+                      width: 'auto',
+                      maxWidth: '100%',
+                      maxHeight: '100%',
+                      zIndex: 1,
+                    }}
+                  />
+
+                  {/* Play Button */}
                   <div
                     className="play-button"
                     style={{
+                      position: 'absolute',
                       width: '60px',
                       height: '60px',
                       borderRadius: '50%',
                       background: 'rgba(255, 255, 255, 0.8)',
                       display: 'flex',
                       justifyContent: 'center',
-                      alignItems: 'center'
+                      alignItems: 'center',
+                      zIndex: 2, // Ensure button is on top
                     }}
                   >
                     <FontAwesomeIcon
@@ -129,7 +158,7 @@ const Video = ({ data2 }) => {
                       style={{
                         fontSize: '30px',
                         color: '#000',
-                        marginLeft: '6px'
+                        marginLeft: '6px',
                       }}
                     />
                   </div>
@@ -227,7 +256,7 @@ const Video = ({ data2 }) => {
           width: 100%;
           display: flex;
           overflow: hidden;
-          background-color: #808080;
+          background-color: #1c1c1c;
         }
 
         .content-container {
@@ -239,8 +268,7 @@ const Video = ({ data2 }) => {
           min-height: 100vh;
         }
 
-        .full-page-background::before {
-          content: '';
+        .blurred-bg {
           position: absolute;
           top: 0;
           left: 0;
@@ -249,20 +277,8 @@ const Video = ({ data2 }) => {
           background-image: ${isImageLoaded && data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
           background-size: cover;
           background-position: center;
+          filter: blur(8px);
           z-index: 0;
-        }
-
-        .full-page-background::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(27, 26, 26, 0.2);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          z-index: 1;
         }
 
         .content {

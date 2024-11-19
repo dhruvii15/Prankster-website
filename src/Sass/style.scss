@@ -89,7 +89,7 @@
 .cloud-bg {
     position: relative;
     display: block;
-    left: 3% ;
+    left: 3%;
 }
 
 .cloud {
@@ -537,7 +537,7 @@
             bottom: 80px;
             transform: rotate(-180deg) scale(0);
         }
-    
+
         35%,
         65% {
             opacity: 1;
@@ -730,5 +730,12 @@
 
     .cloud-bg {
         display: none;
+    }
+}
+
+@media (max-width:1200px) and (min-width:0px) {
+
+    .cloud-bg {
+        left: 5%;
     }
 }

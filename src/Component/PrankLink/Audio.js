@@ -110,7 +110,8 @@ const Audio = ({ data2 }) => {
             <div className="content-container">
                 <Row className="content p-0 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column align-items-center justify-content-center">
-                        <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
+                        <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center">
+                            <div className="blurred-bg"></div>
                             <audio ref={audioRef} loop >
                                 <source src={data2.File} type="audio/mp3" />
                                 Your browser does not support the audio tag.
@@ -138,7 +139,7 @@ const Audio = ({ data2 }) => {
                                     <img
                                         src={data2.CoverImage}
                                         alt='prankImage'
-                                        className='img-fluid h-100'
+                                        className='img-fluid h-100 position-absolute'
                                     />
 
                                     {needsInteraction && (
@@ -278,7 +279,7 @@ const Audio = ({ data2 }) => {
                     width: 100%;
                     display: flex;
                     overflow: hidden;
-                    background-color: #808080;
+                    background-color: #1c1c1c;
                 }
 
                 .content-container {
@@ -290,8 +291,7 @@ const Audio = ({ data2 }) => {
                     min-height: 100vh;
                 }
 
-                .full-page-background::before {
-                    content: '';
+                .blurred-bg {
                     position: absolute;
                     top: 0;
                     left: 0;
@@ -300,20 +300,8 @@ const Audio = ({ data2 }) => {
                     background-image: ${isImageLoaded && data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
                     background-size: cover;
                     background-position: center;
+                    filter: blur(8px);
                     z-index: 0;
-                }
-
-                .full-page-background::after {
-                    content: '';
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(27, 26, 26, 0.2);
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                    z-index: 1;
                 }
 
                 .content {
