@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faShareFromSquare, faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+  faFacebook,
+  faTwitter,
+  faLinkedin,
+  faWhatsapp
+} from '@fortawesome/free-brands-svg-icons';
 
 // img
 import watermark from "../../img/watermark.png"
@@ -11,6 +17,7 @@ const Video = ({ data2 }) => {
   const videoRef = useRef(null);
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [showShareMenu, setShowShareMenu] = useState(false);
 
   useEffect(() => {
     if (data2?.CoverImage) {
@@ -20,22 +27,33 @@ const Video = ({ data2 }) => {
     }
   }, [data2?.CoverImage]);
 
-  const handleShareClick = async () => {
+  const handleShareClick = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
     if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Check out this amazing content!',
-          text: 'This is an awesome website I wanted to share with you.',
-          url: window.location.href,
-        });
-        console.log('Content shared successfully');
-      } catch (error) {
-        console.error('Error sharing content:', error);
-      }
+      navigator.share({
+        title: 'Check out this amazing content!',
+        url: window.location.href,
+      }).catch(error => console.error('Error sharing content:', error));
     } else {
-      alert('Web Share API not supported in this browser.');
+      setShowShareMenu(!showShareMenu);
     }
   };
+
+  const shareLinks = {
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing content!')}`,
+    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing content!')}`,
+    whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(window.location.href)}`
+  };
+
+  // Close share menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setShowShareMenu(false);
+    if (showShareMenu) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [showShareMenu]);
 
   const startVideoWithSound = async () => {
     if (videoRef.current) {
@@ -148,10 +166,35 @@ const Video = ({ data2 }) => {
                     onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                     style={{ zIndex: 3 }}
                   >
-                    <FontAwesomeIcon icon={faShareFromSquare} style={{paddingLeft:"2px", fontSize:"14px"}} />
+                    <FontAwesomeIcon icon={faShareFromSquare} style={{ paddingLeft: "2px", fontSize: "14px" }} />
+
+                    {showShareMenu && (
+                      <div className="share-menu" onClick={e => e.stopPropagation()}>
+                        <div className="share-menu-header">
+                          <span>Share via</span>
+                          <button onClick={() => setShowShareMenu(false)} className="close-btn">
+                            <FontAwesomeIcon icon={faTimes} />
+                          </button>
+                        </div>
+                        <div className="share-options">
+                          <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="share-option">
+                            <FontAwesomeIcon icon={faFacebook} /> Facebook
+                          </a>
+                          <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" className="share-option">
+                            <FontAwesomeIcon icon={faTwitter} /> Twitter
+                          </a>
+                          <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" className="share-option">
+                            <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+                          </a>
+                          <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="share-option">
+                            <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+                          </a>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  <div className='position-absolute text-black cursor' style={{left:"-22px", top:"-23px", zIndex: 3}}>
+                  <div className='position-absolute text-black cursor' style={{ left: "-22px", top: "-23px", zIndex: 3 }}>
                     <img src={watermark} alt='prankster' width={110} />
                   </div>
                 </>
@@ -233,6 +276,54 @@ const Video = ({ data2 }) => {
         .ad-container {
           margin-top: auto;
         }
+
+        /* New styles for share menu */
+                .share-menu {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    width: 200px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    z-index: 1000;
+                    margin-top: 10px;
+                }
+
+                .share-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px 15px;
+                    border-bottom: 1px solid #eee;
+                }
+
+                .close-btn {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: #666;
+                }
+
+                .share-option {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 0px 0px 0px 10px;
+                    width: 100%;
+                    border: none;
+                    background: none;
+                    color: #333;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                }
+
+                .share-option:hover {
+                    background-color: #f5f5f5;
+                    color: #333;
+                    text-decoration: none;
+                }
       `}</style>
     </div>
   );

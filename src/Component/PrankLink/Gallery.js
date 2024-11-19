@@ -2,13 +2,20 @@ import React, { useEffect, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { faShareFromSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {
+    faFacebook,
+    faTwitter,
+    faLinkedin,
+    faWhatsapp
+} from '@fortawesome/free-brands-svg-icons';
 
 // img
 import watermark from "../../img/watermark.png"
 
 const Gallery = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [showShareMenu, setShowShareMenu] = useState(false);
 
     // Handle image preloading
     useEffect(() => {
@@ -19,22 +26,33 @@ const Gallery = ({ data2 }) => {
         }
     }, [data2?.File]);
 
-    const handleShareClick = async () => {
+    const handleShareClick = (e) => {
+        e.stopPropagation(); // Prevent event bubbling
         if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: 'Check out this amazing content!',
-                    text: 'This is an awesome website I wanted to share with you.',
-                    url: window.location.href,
-                });
-                console.log('Content shared successfully');
-            } catch (error) {
-                console.error('Error sharing content:', error);
-            }
+            navigator.share({
+                title: 'Check out this amazing content!',
+                url: window.location.href,
+            }).catch(error => console.error('Error sharing content:', error));
         } else {
-            alert('Web Share API not supported in this browser.');
+            setShowShareMenu(!showShareMenu);
         }
     };
+
+    const shareLinks = {
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
+        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing content!')}`,
+        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing content!')}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(window.location.href)}`
+    };
+
+    // Close share menu when clicking outside
+    useEffect(() => {
+        const handleClickOutside = () => setShowShareMenu(false);
+        if (showShareMenu) {
+            document.addEventListener('click', handleClickOutside);
+        }
+        return () => document.removeEventListener('click', handleClickOutside);
+    }, [showShareMenu]);
 
     useEffect(() => {
         (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -46,14 +64,13 @@ const Gallery = ({ data2 }) => {
                 <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
                         <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center" style={{ backgroundColor: "rgba(0,0,0,0.6)" }}>
-                            <img 
-                                src={data2.File} 
-                                alt='prankImage' 
-                                className='img-fluid' 
+                            <img
+                                src={data2.File}
+                                alt='prankImage'
+                                className='img-fluid'
                                 style={{ display: isImageLoaded ? 'block' : 'none' }}
                             />
 
-                            {/* Loading state */}
                             {!isImageLoaded && (
                                 <div className="loading-placeholder rounded-4" style={{
                                     width: '100%',
@@ -69,7 +86,6 @@ const Gallery = ({ data2 }) => {
                                 </div>
                             )}
 
-                            {/* Share button and watermark - only show when image is loaded */}
                             {isImageLoaded && (
                                 <>
                                     <div className='share-btn position-absolute text-black cursor'
@@ -78,11 +94,37 @@ const Gallery = ({ data2 }) => {
                                         aria-label="Share this content"
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}>
-                                        <FontAwesomeIcon icon={faShareFromSquare} style={{paddingLeft:"2px", fontSize:"14px"}} />
+                                        <FontAwesomeIcon icon={faShareFromSquare} style={{ paddingLeft: "2px", fontSize: "14px" }} />
+
+                                        {/* Custom Share Menu */}
+                                        {showShareMenu && (
+                                            <div className="share-menu" onClick={e => e.stopPropagation()}>
+                                                <div className="share-menu-header">
+                                                    <span>Share via</span>
+                                                    <button onClick={() => setShowShareMenu(false)} className="close-btn">
+                                                        <FontAwesomeIcon icon={faTimes} />
+                                                    </button>
+                                                </div>
+                                                <div className="share-options">
+                                                    <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faFacebook} /> Facebook
+                                                    </a>
+                                                    <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faTwitter} /> Twitter
+                                                    </a>
+                                                    <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+                                                    </a>
+                                                    <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        )}
                                     </div>
-                                    
-                                    <div className='position-absolute text-black cursor' style={{left:"-22px", top:"-23px"}}>
-                                        <img src={watermark} alt='prankster' width={110}/>
+
+                                    <div className='position-absolute text-black cursor' style={{ left: "-22px", top: "-23px" }}>
+                                        <img src={watermark} alt='prankster' width={110} />
                                     </div>
                                 </>
                             )}
@@ -92,7 +134,7 @@ const Gallery = ({ data2 }) => {
                         </div>
                     </Col>
                 </Row>
-                
+
                 {/* Advertisement div */}
                 {/* <div className='ad-container py-2 ads-div mx-auto'>
                     <ins className="adsbygoogle border"
@@ -156,15 +198,52 @@ const Gallery = ({ data2 }) => {
                     text-align: center;
                 }
 
-                .ad-container {
-                    margin-top: auto; 
-                    padding: 0;
+                /* New styles for share menu */
+                .share-menu {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    width: 200px;
+                    background: white;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                    z-index: 1000;
+                    margin-top: 10px;
                 }
 
-                .centered-image {
-                    max-width: 100%;
-                    max-height: 80vh;
-                    object-fit: contain;
+                .share-menu-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 10px 15px;
+                    border-bottom: 1px solid #eee;
+                }
+
+                .close-btn {
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    color: #666;
+                }
+
+                .share-option {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 0px 0px 0px 10px;
+                    width: 100%;
+                    border: none;
+                    background: none;
+                    color: #333;
+                    text-decoration: none;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+                }
+
+                .share-option:hover {
+                    background-color: #f5f5f5;
+                    color: #333;
+                    text-decoration: none;
                 }
             `}</style>
         </div>

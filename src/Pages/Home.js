@@ -49,7 +49,7 @@ const Home = () => {
 
       <div className='yellow-bg px-5 px-xl-0'>
         <div className='cloud-bg'>
-          <img src={cloud} alt='cloud' className='img-fluid cloud' loading="lazy" />
+          <img src={cloud} alt='cloud' className='img-fluid cloud' loading="lazy" style={{width:"85%"}}/>
           <div className='icon-bg'>
             <img src={icon1} alt='icon1' className='img-fluid icon1' loading="lazy" />
             <img src={icon2} alt='icon2' className='img-fluid icon2' loading="lazy" />
@@ -59,11 +59,11 @@ const Home = () => {
             <img src={icon6} alt='icon6' className='img-fluid icon6' loading="lazy" />
           </div>
           <div className='face-bg'>
-            <img src={face} alt='face' className='img-fluid' loading="lazy" />
+            <img src={face} alt='face' className='img-fluid' loading="lazy" style={{width:"85%"}}/>
           </div>
         </div>
 
-        <img src={fullimg} alt='PrankSters' className='fullimg img-fluid' loading="lazy" />
+        <img src={fullimg} alt='PrankSters' className='fullimg img-fluid px-3' loading="lazy" />
       </div>
 
       <div
@@ -79,7 +79,7 @@ const Home = () => {
       </div>
 
       <div className='rounded-1 py-1 heart d-flex align-items-center justify-content-center gap-2'>
-        <span className='fs-6 px-2 fw-bold fst-italic text-decoration-underline'
+        <span className='fs-6 fw-bold fst-italic text-decoration-underline'
           style={{ cursor: "pointer" }}
           onClick={() => window.location.href = "/privacy-policy"}>
           Privacy Policy
