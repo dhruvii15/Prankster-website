@@ -223,7 +223,7 @@ const Video = ({ data2 }) => {
                     )}
                   </div>
 
-                  <div className='position-absolute text-black cursor' style={{ left: "-22px", top: "-23px", zIndex: 3 }}>
+                  <div className='position-absolute text-black' style={{ left: "-22px", top: "-23px", zIndex: 3 }}>
                     <img src={watermark} alt='prankster' width={110} />
                   </div>
                 </>

@@ -174,7 +174,7 @@ const Gallery = ({ data2 }) => {
 
                                     {/* Watermark */}
                                     <div
-                                        className="position-absolute text-black cursor"
+                                        className="position-absolute text-black"
                                         style={{
                                             top: '-23px',
                                             left: '-22px',
@@ -192,7 +192,7 @@ const Gallery = ({ data2 }) => {
                         </div>
                     </Col>
                 </Row>
-                
+
                 {/* Advertisement div */}
                 {/* <div className='ad-container py-2 ads-div mx-auto'>
                     <ins className="adsbygoogle border"
