@@ -25,7 +25,7 @@ const Home = () => {
   };
 
   const handleSnapClick = () => {
-    const snapUrl = 'https://www.snapchat.com/add/username';
+    const snapUrl = 'https://www.snapchat.com/add/prank_sterrr?share_id=ENxEYD_b8LQ&locale=en-IN';
 
     window.open(snapUrl, '_blank');
   };

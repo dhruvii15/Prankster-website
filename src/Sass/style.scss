@@ -323,13 +323,18 @@
 
 // ============== PRANK-LINK ======================
 .img-div {
-    width: 350px;
-    height: 480px;
+    width: 50%;
+    height: 80%;
 }
 
 .img-div2 {
-    width: 310px;
-    height: 310px;
+    width: 30%;
+    height: 50%;
+}
+
+.img-div3 {
+    width: 30%;
+    height: 480px;
 }
 
 .ads-div {
@@ -344,7 +349,7 @@
     height: 35px;
     background-color: #F9E238;
     border-radius: 100%;
-    line-height: 35px;
+    line-height: 40px;
     text-align: center;
 }
 
@@ -431,17 +436,18 @@
     }
 
     .img-div {
-        width: 318px;
-        height: 430px;
+        width: 98%;
+        height: 80%;
     }
 
     .img-div2 {
-        width: 300px;
-        height: 300px;
+        width: 90%;
+        height: 50%;
     }
 
-    .ads-div {
-        width: 320px;
+    .img-div3 {
+        width: 95%;
+        height: 430px;
     }
 }
 
@@ -549,7 +555,7 @@
 }
 
 
-@media (max-width:499px) and (min-width:390px) {
+@media (max-width:499px) and (min-width:0px) {
 
     @keyframes cloud {
 
@@ -724,18 +730,152 @@
 
 @media (max-width:389px) and (min-width:0px) {
 
-    .fullimg {
-        display: block;
+    @keyframes icon1 {
+
+        0%,
+        10%,
+        80%,
+        100% {
+            opacity: 0.5;
+            left: 80px;
+            bottom: 50px;
+            transform: rotate(-180deg) scale(0);
+        }
+
+        35%,
+        65% {
+            opacity: 1;
+            left: 80px;
+            bottom: 50px;
+            transform: rotate(0deg) scale(1);
+        }
     }
 
-    .cloud-bg {
-        display: none;
+    @keyframes icon2 {
+
+        0%,
+        10%,
+        80%,
+        100% {
+            opacity: 0.5;
+            left: 120px;
+            top: 150px;
+            transform: rotate(180deg) scale(0);
+        }
+
+        35%,
+        65% {
+            opacity: 1;
+            left: 50px;
+            top: 20px;
+            transform: rotate(0deg) scale(1);
+        }
     }
+
+    @keyframes icon3 {
+
+        0%,
+        10%,
+        80%,
+        100% {
+            opacity: 0.5;
+            right: 140px;
+            bottom: 40px;
+            transform: rotate(-180deg) scale(0);
+        }
+
+        35%,
+        65% {
+            opacity: 1;
+            right: 50px;
+            bottom: 100px;
+            transform: rotate(0deg) scale(1);
+        }
+    }
+
+    @keyframes icon4 {
+
+        0%,
+        10%,
+        80%,
+        100% {
+            opacity: 0.5;
+            left: 120px;
+            top: 150px;
+            transform: rotate(180deg) scale(0);
+        }
+
+        35%,
+        65% {
+            opacity: 1;
+            left: 20px;
+            top: 80px;
+            transform: rotate(0deg) scale(1);
+        }
+    }
+
+    @keyframes icon6 {
+
+        0%,
+        10%,
+        80%,
+        100% {
+            opacity: 0.5;
+            right: 140px;
+            top: 150px;
+            transform: rotate(-180deg) scale(0);
+        }
+
+        35%,
+        65% {
+            opacity: 1;
+            right: 120px;
+            top: 70px;
+            transform: rotate(0deg) scale(1);
+        }
+    }
+
 }
 
 @media (max-width:1200px) and (min-width:0px) {
 
     .cloud-bg {
         left: 5%;
+    }
+}
+
+@media (min-width:1300px) {
+
+    .img-div {
+        width: 30%;
+        height: 80%;
+    }
+
+    .img-div2 {
+        width: 30%;
+        height: 60%;
+    }
+
+    .img-div3 {
+        width: 30%;
+        height: 530px;
+    }
+}
+
+@media (max-width:1080px) and (min-width:575px) {
+
+    .img-div {
+        width: 50%;
+        height: 80%;
+    }
+
+    .img-div2 {
+        width: 50%;
+        height: 50%;
+    }
+
+    .img-div3 {
+        width: 50%;
+        height: 480px;
     }
 }

@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const AudioVisualizer = ({ currentTime, totalDuration, className }) => {
+  const [totalBars, setTotalBars] = useState(36);
+  const containerRef = useRef(null);
+
   // Calculate progress percentage
   const progress = totalDuration ? (currentTime / totalDuration) * 100 : 0;
   
-  // Number of bars in the visualizer
-  const totalBars = 43;
-  
-  // Generate bars with random heights up to 25px
+  // Dynamically calculate bars based on container width
+  useEffect(() => {
+    const calculateBars = () => {
+      if (containerRef.current) {
+        // Each bar is 2px wide with 6px total width (2px bar + 4px margin)
+        const containerWidth = containerRef.current.offsetWidth;
+        const calculatedBars = Math.floor(containerWidth / 6);
+        
+        // Ensure we have a minimum and maximum number of bars
+        const newTotalBars = Math.max(16, Math.min(calculatedBars, 64));
+        setTotalBars(newTotalBars);
+      }
+    };
+
+    // Calculate bars on mount and add resize listener
+    calculateBars();
+    window.addEventListener('resize', calculateBars);
+
+    // Cleanup listener
+    return () => window.removeEventListener('resize', calculateBars);
+  }, []);
+
+  // Generate bars with random heights
   const generateBars = () => {
     const bars = [];
     for (let i = 0; i < totalBars; i++) {
@@ -32,7 +54,14 @@ const AudioVisualizer = ({ currentTime, totalDuration, className }) => {
   };
 
   return (
-    <div className={`pt-3 d-flex align-items-center justify-content-center ${className}`} style={{ height: '50px' }}>
+    <div 
+      ref={containerRef}
+      className={`py-3 d-flex align-items-center justify-content-start ${className}`}
+      style={{
+        height: '50px',
+        overflow: 'hidden'
+      }}
+    >
       <div className="d-flex align-items-center">
         {generateBars()}
       </div>

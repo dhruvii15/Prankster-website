@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebook,
     faTwitter,
     faLinkedin,
     faWhatsapp
 } from '@fortawesome/free-brands-svg-icons';
+import PrankBtn from './PrankBtn';
 
 // img
 import watermark from "../../img/watermark.png"
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons/faShareNodes';
 
 const Gallery = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [showShareMenu, setShowShareMenu] = useState(false);
+    const [isShowingAd, setIsShowingAd] = useState(false);
+    const [adCompleted, setAdCompleted] = useState(false);
 
-    // Handle image preloading
     useEffect(() => {
         if (data2?.File) {
             const img = new Image();
@@ -28,15 +30,74 @@ const Gallery = ({ data2 }) => {
 
     const handleShareClick = (e) => {
         e.stopPropagation();
+        if (!adCompleted) {
+            showInterstitialAd();
+        }
+    };
+
+    const showInterstitialAd = () => {
+        setIsShowingAd(true);
+
+        const adContainer = document.getElementById('interstitial-ad');
+        if (adContainer) {
+            const adElement = document.createElement('ins');
+            adElement.className = 'adsbygoogle';
+            adElement.style.display = 'block';
+            adElement.setAttribute('data-ad-client', 'ca-pub-3940256099942544'); // Test client ID
+            adElement.setAttribute('data-ad-slot', '1234567890'); // Replace with the test ad slot ID
+            adElement.setAttribute('data-ad-format', 'fluid');
+            adElement.setAttribute('data-full-width-responsive', 'true');
+
+            adContainer.innerHTML = ''; // Clear previous ad if any
+            adContainer.appendChild(adElement);
+
+            try {
+                // Push ad to Google Ads container
+                (window.adsbygoogle = window.adsbygoogle || []).push({
+                    callback: () => {
+                        console.log('Ad loaded successfully');
+
+                        // After 3 seconds, hide the ad and trigger sharing logic
+                        setTimeout(() => {
+                            setIsShowingAd(false); // Hide the ad
+                            setAdCompleted(true); // Mark ad as completed
+
+                            // Invoke share logic immediately
+                            handleShareAfterAd();
+                        }, 3000); // Show the ad for 3 seconds
+                    },
+                });
+            } catch (err) {
+                console.error('Ad failed to load:', err);
+                setIsShowingAd(false); // Hide the ad in case of failure
+                setAdCompleted(true);
+                handleShareAfterAd(); // Trigger share options even if the ad fails
+            }
+        }
+
+        // Set fallback timeout in case the ad is not loaded or fails
+        setTimeout(() => {
+            setIsShowingAd(false); // Hide the ad
+            setAdCompleted(true); // Mark ad as completed
+            handleShareAfterAd(); // Trigger share options
+        }, 3000); // 3 seconds timeout to trigger share options
+    };
+
+    const handleShareAfterAd = () => {
         if (navigator.share) {
             navigator.share({
                 title: 'Check out this amazing content!',
                 url: window.location.href,
             }).catch(error => console.error('Error sharing content:', error));
+            setAdCompleted(false);
         } else {
             setShowShareMenu(!showShareMenu);
+            setAdCompleted(false);
         }
     };
+
+
+
 
     const shareLinks = {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
@@ -53,12 +114,16 @@ const Gallery = ({ data2 }) => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, [showShareMenu]);
 
-    useEffect(() => {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }, []);
-
     return (
         <div className="full-page-background">
+            {isShowingAd && (
+                <div className="interstitial-overlay">
+                    <div id="interstitial-ad" className="interstitial-ad-container">
+                        <div className="ad-loading">Loading advertisement...</div>
+                    </div>
+                </div>
+            )}
+
             <div className="content-container">
                 <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
@@ -70,7 +135,7 @@ const Gallery = ({ data2 }) => {
                                 src={data2.File}
                                 alt="prankImage"
                                 className="img-fluid position-absolute"
-                                style={{ display: isImageLoaded ? 'block' : 'none' }}
+                                style={{ display: isImageLoaded ? 'block' : 'none'}}
                             />
 
                             {/* Loading Placeholder */}
@@ -104,26 +169,17 @@ const Gallery = ({ data2 }) => {
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                                         style={{
-                                            zIndex: 2, // Ensure it appears above the image
+                                            zIndex: 2,
                                         }}
                                     >
                                         <FontAwesomeIcon
-                                            icon={faShareFromSquare}
-                                            style={{ paddingLeft: '2px', fontSize: '14px' }}
+                                            icon={faShareNodes}
+                                            style={{ fontSize: '18px', paddingRight:"2px" }}
                                         />
                                         {showShareMenu && (
                                             <div
                                                 className="share-menu"
                                                 onClick={(e) => e.stopPropagation()}
-                                                style={{
-                                                    position: 'absolute',
-                                                    top: '100%',
-                                                    right: 0,
-                                                    zIndex: 3,
-                                                    background: '#fff',
-                                                    borderRadius: '4px',
-                                                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-                                                }}
                                             >
                                                 <div className="share-menu-header">
                                                     <span>Share via</span>
@@ -194,15 +250,15 @@ const Gallery = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div */}
-                {/* <div className='ad-container py-2 ads-div mx-auto'>
+                <div className='ad-container py-2 ads-div mx-auto'>
                     <ins className="adsbygoogle border"
-                        style={{ display: 'block', height: '50px', width: '100%' }}
+                        style={{ display: 'block', height: '50px', width: '99%' }}
                         data-ad-format="fluid"
                         data-ad-layout-key="-6t+ed+2i-1n-4w"
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID">
                     </ins>
-                </div> */}
+                </div>
             </div>
 
             <style>{`
@@ -238,7 +294,9 @@ const Gallery = ({ data2 }) => {
                     background-image: ${isImageLoaded && data2?.File ? `url('${data2.File}')` : 'none'};
                     background-size: cover;
                     background-position: center;
-                    filter: blur(8px);
+                    filter: blur(15px); 
+                    backdrop-filter: blur(15px); 
+                    -webkit-backdrop-filter: blur(15px); 
                     z-index: 0;
                 }
 
@@ -284,7 +342,7 @@ const Gallery = ({ data2 }) => {
                     display: flex;
                     align-items: center;
                     gap: 10px;
-                    padding: 0px 0px 0px 10px;
+                    padding: 10px 15px;
                     width: 100%;
                     border: none;
                     background: none;
@@ -298,6 +356,37 @@ const Gallery = ({ data2 }) => {
                     background-color: #f5f5f5;
                     color: #333;
                     text-decoration: none;
+                }
+
+                .interstitial-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                }
+
+                .interstitial-ad-container {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    width: 90%;
+                    max-width: 400px;
+                    min-height: 300px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .ad-loading {
+                    color: #666;
+                    font-size: 16px;
+                    text-align: center;
                 }
             `}</style>
         </div>

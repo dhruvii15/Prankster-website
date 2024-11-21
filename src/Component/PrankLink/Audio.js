@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShareFromSquare, faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebook,
     faTwitter,
@@ -13,6 +13,7 @@ import {
 // import gif from "../../img/MuSAo94ViS.gif";
 import watermark from "../../img/watermark.png";
 import AudioVisualizer from './AudioVisualizer';
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons/faShareNodes';
 
 const Audio = ({ data2 }) => {
     const audioRef = useRef(null);
@@ -22,6 +23,8 @@ const Audio = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [duration, setDuration] = useState(0);
     const [showShareMenu, setShowShareMenu] = useState(false);
+    const [isShowingAd, setIsShowingAd] = useState(false);
+    const [adCompleted, setAdCompleted] = useState(false);
 
     // Existing useEffect and event handlers remain the same...
     const formatTime = (seconds) => {
@@ -75,13 +78,80 @@ const Audio = ({ data2 }) => {
 
     const handleShareClick = (e) => {
         e.stopPropagation(); // Prevent event bubbling
+        // Show interstitial ad if not completed
+        if (!adCompleted) {
+            showInterstitialAd();
+        } else {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out this amazing content!',
+                    url: window.location.href,
+                }).catch(error => console.error('Error sharing content:', error));
+            } else {
+                // Fallback to custom share menu if navigator.share is not supported
+                setShowShareMenu(!showShareMenu);
+            }
+        }
+    };
+
+    const showInterstitialAd = () => {
+        setIsShowingAd(true);
+
+        const adContainer = document.getElementById('interstitial-ad');
+        if (adContainer) {
+            const adElement = document.createElement('ins');
+            adElement.className = 'adsbygoogle';
+            adElement.style.display = 'block';
+            adElement.setAttribute('data-ad-client', 'ca-pub-3940256099942544'); // Test client ID
+            adElement.setAttribute('data-ad-slot', '1234567890'); // Replace with the test ad slot ID
+            adElement.setAttribute('data-ad-format', 'fluid');
+            adElement.setAttribute('data-full-width-responsive', 'true');
+
+            adContainer.innerHTML = ''; // Clear previous ad if any
+            adContainer.appendChild(adElement);
+
+            try {
+                // Push ad to Google Ads container
+                (window.adsbygoogle = window.adsbygoogle || []).push({
+                    callback: () => {
+                        console.log('Ad loaded successfully');
+
+                        // After 3 seconds, hide the ad and trigger sharing logic
+                        setTimeout(() => {
+                            setIsShowingAd(false); // Hide the ad
+                            setAdCompleted(true); // Mark ad as completed
+
+                            // Invoke share logic immediately
+                            handleShareAfterAd();
+                        }, 3000); // Show the ad for 3 seconds
+                    },
+                });
+            } catch (err) {
+                console.error('Ad failed to load:', err);
+                setIsShowingAd(false); // Hide the ad in case of failure
+                setAdCompleted(true);
+                handleShareAfterAd(); // Trigger share options even if the ad fails
+            }
+        }
+
+        // Set fallback timeout in case the ad is not loaded or fails
+        setTimeout(() => {
+            setIsShowingAd(false); // Hide the ad
+            setAdCompleted(true); // Mark ad as completed
+            handleShareAfterAd(); // Trigger share options
+        }, 3000); // 3 seconds timeout to trigger share options
+    };
+
+    const handleShareAfterAd = () => {
         if (navigator.share) {
             navigator.share({
                 title: 'Check out this amazing content!',
                 url: window.location.href,
             }).catch(error => console.error('Error sharing content:', error));
+            setAdCompleted(false);
         } else {
             setShowShareMenu(!showShareMenu);
+            setAdCompleted(false);
         }
     };
 
@@ -101,12 +171,15 @@ const Audio = ({ data2 }) => {
         return () => document.removeEventListener('click', handleClickOutside);
     }, [showShareMenu]);
 
-    useEffect(() => {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-    }, []);
-
     return (
         <div className="full-page-background">
+            {isShowingAd && (
+                <div className="interstitial-overlay">
+                    <div id="interstitial-ad" className="interstitial-ad-container">
+                        <div className="ad-loading">Loading advertisement...</div>
+                    </div>
+                </div>
+            )}
             <div className="content-container">
                 <Row className="content p-0 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column align-items-center justify-content-center">
@@ -165,10 +238,11 @@ const Audio = ({ data2 }) => {
                                                     width: '50px',
                                                     height: '50px',
                                                     borderRadius: '50%',
-                                                    background: 'rgba(255, 255, 255, 0.8)',
+                                                    background: '#F9E238',
                                                     display: 'flex',
                                                     justifyContent: 'center',
-                                                    alignItems: 'center'
+                                                    alignItems: 'center',
+                                                    border: "2px solid black"
                                                 }}
                                             >
                                                 <FontAwesomeIcon
@@ -190,7 +264,7 @@ const Audio = ({ data2 }) => {
                                         aria-label="Share this content"
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}>
-                                        <FontAwesomeIcon icon={faShareFromSquare} style={{ paddingLeft: "2px", fontSize: "14px" }} />
+                                        <FontAwesomeIcon icon={faShareNodes} style={{ fontSize: "18px", paddingRight: "2px" }} />
                                         {showShareMenu && (
                                             <div className="share-menu" onClick={e => e.stopPropagation()}>
                                                 <div className="share-menu-header">
@@ -221,19 +295,22 @@ const Audio = ({ data2 }) => {
                                         <img src={watermark} alt='prankster' width={110} />
                                     </div>
 
-                                    <div className='position-absolute text-black cursor w-100' style={{ left: "0", bottom: "5px" }}>
-                                        <p
-                                            className='m-0 mx-auto rounded-4 w-75 py-1 text-black'
-                                            style={{
-                                                fontWeight: "500",
-                                                backgroundColor: "rgba(255, 255, 255, 0.5)", // White with slight transparency
-                                                backdropFilter: "blur(20px)", // Increase blur intensity if needed
-                                                WebkitBackdropFilter: "blur(20px)", // For Safari compatibility
-                                                borderRadius: "8px" // Optional: softens the background edges
-                                            }}
-                                        >
+                                    <div className='position-absolute text-black cursor w-100 px-2 '
+                                        style={{
+                                            backgroundColor: "rgba(217, 217, 217, 0.4)",
+                                            backdropFilter: "blur(20px)",
+                                            WebkitBackdropFilter: "blur(20px)",
+                                            left: "0", bottom: "0px"
+                                        }}>
+                                        <p className='m-0 mx-auto w-100 pt-2 text-black' >
                                             {data2.Name}
                                         </p>
+
+                                        <AudioVisualizer
+                                            currentTime={audioRef.current?.currentTime || 0}
+                                            totalDuration={duration}
+
+                                        />
                                     </div>
 
                                 </>
@@ -242,17 +319,6 @@ const Audio = ({ data2 }) => {
 
                         {/* <img src={gif} alt='gif' className='ads-div' style={{ height: "50px" }} /> */}
 
-                        <AudioVisualizer
-                            currentTime={audioRef.current?.currentTime || 0}
-                            totalDuration={duration}
-                            className="ads-div px-1"
-                        />
-
-                        <div className='d-flex justify-content-between align-items-start px-1 ads-div mt-2'>
-                            <p className='m-0'>{currentTime}</p>
-                            <p className='m-0'>{totalTime}</p>
-                        </div>
-
                         <div className='mt-3'>
                             <PrankBtn />
                         </div>
@@ -260,16 +326,16 @@ const Audio = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div moved to bottom */}
-                {/* <div className='ad-container ads-div mx-auto py-2'>
+                <div className='ad-container ads-div mx-auto py-2'>
                     <ins
                         className="adsbygoogle border"
-                        style={{ display: 'block', height: '120px', width: '100%' }}
+                        style={{ display: 'block', height: '120px', width: '98%' }}
                         data-ad-format="fluid"
                         data-ad-layout-key="-6t+ed+2i-1n-4w"
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID"
                     ></ins>
-                </div> */}
+                </div>
             </div>
 
             <style>{`
@@ -360,6 +426,37 @@ const Audio = ({ data2 }) => {
                     background-color: #f5f5f5;
                     color: #333;
                     text-decoration: none;
+                }
+
+                .interstitial-overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: rgba(0, 0, 0, 0.8);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    z-index: 9999;
+                }
+
+                .interstitial-ad-container {
+                    background: white;
+                    padding: 20px;
+                    border-radius: 8px;
+                    width: 90%;
+                    max-width: 400px;
+                    min-height: 300px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .ad-loading {
+                    color: #666;
+                    font-size: 16px;
+                    text-align: center;
                 }
             `}</style>
         </div>

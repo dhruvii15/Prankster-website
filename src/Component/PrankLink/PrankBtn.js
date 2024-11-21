@@ -20,14 +20,14 @@ const PrankBtn = () => {
     <>
       <Button 
         className='mt-3 border-0 py-2 fs-5 text-black' 
-        style={{ backgroundColor: "#F9E238", width: "90%" , fontWeight:"600"}} 
+        style={{ backgroundColor: "#F9E238", width: "95%" , fontWeight:"600"}} 
         onClick={handlePrankButtonClick} 
       >
         Make own prank 😂
       </Button>
       <Button 
         className='mt-3 border-0 py-2 fs-5 text-black overflow-hidden' 
-        style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "90%", height: "50px" }}
+        style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "95%", height: "50px" }}
         onClick={handlePrankButtonClick2}
       >
         <img src={lol} alt='lol' className='btnlol' width={60}/>
