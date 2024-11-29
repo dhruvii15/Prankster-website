@@ -63,7 +63,7 @@ const Home = () => {
           </div>
         </div>
 
-        <img src={fullimg} alt='PrankSters' className='fullimg img-fluid px-3' loading="lazy" />
+        <img src={fullimg} alt='Prankster' className='fullimg img-fluid px-3' loading="lazy" />
       </div>
 
       <div

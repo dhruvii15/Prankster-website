@@ -292,7 +292,7 @@ const Audio = ({ data2 }) => {
                                     </div>
 
                                     <div className='position-absolute text-black' style={{ left: "-22px", top: "-23px", zIndex: 3 }}>
-                                        <img src={watermark} alt='prankster' width={110} />
+                                        <img src={watermark} alt='Prankster' width={110} />
                                     </div>
 
                                     <div className='position-absolute text-black cursor w-100 px-2 '

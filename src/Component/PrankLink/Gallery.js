@@ -237,7 +237,7 @@ const Gallery = ({ data2 }) => {
                                             zIndex: 2,
                                         }}
                                     >
-                                        <img src={watermark} alt="prankster" width={110} />
+                                        <img src={watermark} alt="Prankster" width={110} />
                                     </div>
                                 </>
                             )}
