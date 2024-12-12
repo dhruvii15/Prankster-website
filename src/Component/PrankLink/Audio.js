@@ -2,15 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faPause, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebook,
     faTwitter,
     faLinkedin,
     faWhatsapp
 } from '@fortawesome/free-brands-svg-icons';
-
-// import gif from "../../img/MuSAo94ViS.gif";
 import watermark from "../../img/watermark.png";
 import AudioVisualizer from './AudioVisualizer';
 import { faShareNodes } from '@fortawesome/free-solid-svg-icons/faShareNodes';
@@ -23,10 +21,10 @@ const Audio = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [duration, setDuration] = useState(0);
     const [showShareMenu, setShowShareMenu] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [isShowingAd, setIsShowingAd] = useState(false);
     const [adCompleted, setAdCompleted] = useState(false);
 
-    // Existing useEffect and event handlers remain the same...
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
         const sec = Math.floor(seconds % 60);
@@ -40,6 +38,7 @@ const Audio = ({ data2 }) => {
                 audioRef.current.muted = false;
                 await audioRef.current.play();
                 setNeedsInteraction(false);
+                setIsPlaying(true);
             } catch (error) {
                 console.error('Error playing audio:', error);
             }
@@ -77,8 +76,7 @@ const Audio = ({ data2 }) => {
     }, []);
 
     const handleShareClick = (e) => {
-        e.stopPropagation(); // Prevent event bubbling
-        // Show interstitial ad if not completed
+        e.stopPropagation();
         if (!adCompleted) {
             showInterstitialAd();
         } else {
@@ -88,7 +86,6 @@ const Audio = ({ data2 }) => {
                     url: window.location.href,
                 }).catch(error => console.error('Error sharing content:', error));
             } else {
-                // Fallback to custom share menu if navigator.share is not supported
                 setShowShareMenu(!showShareMenu);
             }
         }
@@ -185,7 +182,9 @@ const Audio = ({ data2 }) => {
                     <Col className="d-flex flex-column align-items-center justify-content-center">
                         <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center">
                             <div className="blurred-bg"></div>
-                            <audio ref={audioRef} loop >
+                            <audio ref={audioRef} loop
+                                onEnded={() => setIsPlaying(false)}
+                            >
                                 <source src={data2.File} type="audio/mp3" />
                                 Your browser does not support the audio tag.
                             </audio>
@@ -215,7 +214,8 @@ const Audio = ({ data2 }) => {
                                         className='img-fluid h-100 position-absolute'
                                     />
 
-                                    {needsInteraction && (
+                                    {/* Play Interaction Overlay */}
+                                    {(needsInteraction || !isPlaying) && (
                                         <div
                                             onClick={startAudioWithSound}
                                             className="rounded-4"
@@ -257,14 +257,27 @@ const Audio = ({ data2 }) => {
                                         </div>
                                     )}
 
-                                    <div className='share-btn position-absolute text-black cursor'
-                                        style={{ right: "12px", zIndex: 3 }}
+                                    {/* Share Button */}
+                                    <div
+                                        className='share-btn position-absolute text-black cursor'
+                                        style={{
+                                            right: "12px",
+                                            bottom: "12px",
+                                            zIndex: 3
+                                        }}
                                         onClick={handleShareClick}
                                         role="button"
                                         aria-label="Share this content"
                                         tabIndex={0}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}>
-                                        <FontAwesomeIcon icon={faShareNodes} style={{ fontSize: "18px", paddingRight: "2px" }} />
+                                        onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
+                                    >
+                                        <FontAwesomeIcon
+                                            icon={faShareNodes}
+                                            style={{
+                                                fontSize: "18px",
+                                                paddingRight: "2px",
+                                            }}
+                                        />
                                         {showShareMenu && (
                                             <div className="share-menu" onClick={e => e.stopPropagation()}>
                                                 <div className="share-menu-header">
@@ -302,17 +315,26 @@ const Audio = ({ data2 }) => {
                                             WebkitBackdropFilter: "blur(20px)",
                                             left: "0", bottom: "0px"
                                         }}>
-                                        <p className='m-0 mx-auto w-100 pt-2 text-black' >
-                                            {data2.Name}
+                                        <p className='m-0 mx-auto w-100 pt-2 text-black justify-content-center gap-2' >
+                                            <span>{data2.Name}</span>
                                         </p>
 
-                                        <AudioVisualizer
-                                            currentTime={audioRef.current?.currentTime || 0}
-                                            totalDuration={duration}
+                                        <div className='d-flex align-items-center gap-3 justify-content-center'>
+                                            {/* Pause Button (centered, just above share) */}
+                                            {isPlaying && (
+                                                <div style={{ width: "40px" }}>
+                                                    <div className='pause-btn'>
+                                                        <FontAwesomeIcon icon={faPause} className='fs-5' />
+                                                    </div>
+                                                </div>
+                                            )}
+                                            <AudioVisualizer
+                                                currentTime={audioRef.current?.currentTime || 0}
+                                                totalDuration={duration}
 
-                                        />
+                                            />
+                                        </div>
                                     </div>
-
                                 </>
                             )}
                         </div>

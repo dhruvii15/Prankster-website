@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faPause, faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
   faFacebook,
   faTwitter,
@@ -20,6 +20,7 @@ const Video = ({ data2 }) => {
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [isShowingAd, setIsShowingAd] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [adCompleted, setAdCompleted] = useState(false);
 
   useEffect(() => {
@@ -30,29 +31,44 @@ const Video = ({ data2 }) => {
     }
   }, [data2?.CoverImage]);
 
+
   const handleShareClick = (e) => {
-    e.stopPropagation(); 
+    e.stopPropagation();
     // Show interstitial ad if not completed
     if (!adCompleted) {
       showInterstitialAd();
-  } else {
+    } else {
       if (navigator.share) {
-          navigator.share({
-              title: 'Check out this amazing content!',
-              url: window.location.href,
-          }).catch(error => console.error('Error sharing content:', error));
+        navigator.share({
+          title: 'Check out this amazing content!',
+          url: window.location.href,
+        }).catch(error => console.error('Error sharing content:', error));
       } else {
-          // Fallback to custom share menu if navigator.share is not supported
-          setShowShareMenu(!showShareMenu);
+        // Fallback to custom share menu if navigator.share is not supported
+        setShowShareMenu(!showShareMenu);
       }
-  }
-};
+    }
+  };
 
-const showInterstitialAd = () => {
-  setIsShowingAd(true);
+  const startVideoWithSound = async () => {
+    if (videoRef.current) {
+      try {
+        videoRef.current.volume = 1;
+        videoRef.current.muted = false;
+        await videoRef.current.play();
+        setIsPlaying(true);
+        setNeedsInteraction(false);
+      } catch (error) {
+        console.error('Error playing video:', error);
+      }
+    }
+  };
 
-  const adContainer = document.getElementById('interstitial-ad');
-  if (adContainer) {
+  const showInterstitialAd = () => {
+    setIsShowingAd(true);
+
+    const adContainer = document.getElementById('interstitial-ad');
+    if (adContainer) {
       const adElement = document.createElement('ins');
       adElement.className = 'adsbygoogle';
       adElement.style.display = 'block';
@@ -65,49 +81,49 @@ const showInterstitialAd = () => {
       adContainer.appendChild(adElement);
 
       try {
-          // Push ad to Google Ads container
-          (window.adsbygoogle = window.adsbygoogle || []).push({
-              callback: () => {
-                  console.log('Ad loaded successfully');
+        // Push ad to Google Ads container
+        (window.adsbygoogle = window.adsbygoogle || []).push({
+          callback: () => {
+            console.log('Ad loaded successfully');
 
-                  // After 3 seconds, hide the ad and trigger sharing logic
-                  setTimeout(() => {
-                      setIsShowingAd(false); // Hide the ad
-                      setAdCompleted(true); // Mark ad as completed
+            // After 3 seconds, hide the ad and trigger sharing logic
+            setTimeout(() => {
+              setIsShowingAd(false); // Hide the ad
+              setAdCompleted(true); // Mark ad as completed
 
-                      // Invoke share logic immediately
-                      handleShareAfterAd();
-                  }, 3000); // Show the ad for 3 seconds
-              },
-          });
+              // Invoke share logic immediately
+              handleShareAfterAd();
+            }, 3000); // Show the ad for 3 seconds
+          },
+        });
       } catch (err) {
-          console.error('Ad failed to load:', err);
-          setIsShowingAd(false); // Hide the ad in case of failure
-          setAdCompleted(true);
-          handleShareAfterAd(); // Trigger share options even if the ad fails
+        console.error('Ad failed to load:', err);
+        setIsShowingAd(false); // Hide the ad in case of failure
+        setAdCompleted(true);
+        handleShareAfterAd(); // Trigger share options even if the ad fails
       }
-  }
+    }
 
-  // Set fallback timeout in case the ad is not loaded or fails
-  setTimeout(() => {
+    // Set fallback timeout in case the ad is not loaded or fails
+    setTimeout(() => {
       setIsShowingAd(false); // Hide the ad
       setAdCompleted(true); // Mark ad as completed
       handleShareAfterAd(); // Trigger share options
-  }, 3000); // 3 seconds timeout to trigger share options
-};
+    }, 3000); // 3 seconds timeout to trigger share options
+  };
 
-const handleShareAfterAd = () => {
-  if (navigator.share) {
+  const handleShareAfterAd = () => {
+    if (navigator.share) {
       navigator.share({
-          title: 'Check out this amazing content!',
-          url: window.location.href,
+        title: 'Check out this amazing content!',
+        url: window.location.href,
       }).catch(error => console.error('Error sharing content:', error));
       setAdCompleted(false);
-  } else {
+    } else {
       setShowShareMenu(!showShareMenu);
       setAdCompleted(false);
-  }
-};
+    }
+  };
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
@@ -125,28 +141,15 @@ const handleShareAfterAd = () => {
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showShareMenu]);
 
-  const startVideoWithSound = async () => {
-    if (videoRef.current) {
-      try {
-        videoRef.current.volume = 1;
-        videoRef.current.muted = false;
-        await videoRef.current.play();
-        setNeedsInteraction(false);
-      } catch (error) {
-        console.error('Error playing video:', error);
-      }
-    }
-  };
-
   return (
     <div className="full-page-background">
       {isShowingAd && (
-                <div className="interstitial-overlay">
-                    <div id="interstitial-ad" className="interstitial-ad-container">
-                        <div className="ad-loading">Loading advertisement...</div>
-                    </div>
-                </div>
-            )}
+        <div className="interstitial-overlay">
+          <div id="interstitial-ad" className="interstitial-ad-container">
+            <div className="ad-loading">Loading advertisement...</div>
+          </div>
+        </div>
+      )}
       <div className="content-container">
         <Row className="content px-3 overflow-hidden flex-grow-1">
           <Col className="d-flex flex-column justify-content-center align-items-center">
@@ -223,7 +226,7 @@ const handleShareAfterAd = () => {
                       display: 'flex',
                       justifyContent: 'center',
                       alignItems: 'center',
-                      border:"2px solid black",
+                      border: "2px solid black",
                       zIndex: 2, // Ensure button is on top
                     }}
                   >
@@ -269,7 +272,7 @@ const handleShareAfterAd = () => {
                     onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                     style={{ zIndex: 3 }}
                   >
-                    <FontAwesomeIcon icon={faShareNodes} style={{ fontSize: "18px", paddingRight:"2px" }} />
+                    <FontAwesomeIcon icon={faShareNodes} style={{ fontSize: "18px", paddingRight: "2px" }} />
 
                     {showShareMenu && (
                       <div className="share-menu" onClick={e => e.stopPropagation()}>
@@ -302,7 +305,22 @@ const handleShareAfterAd = () => {
                   </div>
                 </>
               )}
-            </div>
+
+              
+                {isPlaying && (
+                  <div
+                    className='share-btn2 position-absolute'
+                    style={{
+                      left: "5px",
+                      bottom: "10px",
+                      zIndex: 3,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faPause} className='fs-5 text-black' />
+                  </div>
+                )}
+              </div>
 
             <div className="mt-3">
               <PrankBtn />

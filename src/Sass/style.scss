@@ -353,6 +353,26 @@
     text-align: center;
 }
 
+.share-btn2 {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #F9E238;
+    border-radius: 100%;
+    line-height: 40px;
+    text-align: center;
+}
+
+.pause-btn{
+    position: absolute;
+    bottom: 5px;
+    width: 40px;
+    height: 40px;
+    background-color: #F9E238;
+    border-radius: 100%;
+    line-height: 40px;
+    text-align: center;
+}
 // ================== PrankBtn ======================
 .btnlol {
     animation: showImage 4s ease-in-out infinite;
