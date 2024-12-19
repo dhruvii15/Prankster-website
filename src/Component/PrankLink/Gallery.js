@@ -86,9 +86,10 @@ const Gallery = ({ data2 }) => {
     const handleShareAfterAd = () => {
         if (navigator.share) {
             navigator.share({
-                title: 'Check out this amazing content!',
-                url: window.location.href,
-            }).catch(error => console.error('Error sharing content:', error));
+                title: data2.Name,
+                text: `${data2.Name}\n\n🔗Check this out : \n`, // Add line break after Name
+                url: data2.ShareURL,
+            }).catch(error => console.error('Error sharing content:', error));            
             setAdCompleted(false);
         } else {
             setShowShareMenu(!showShareMenu);
@@ -100,10 +101,10 @@ const Gallery = ({ data2 }) => {
 
 
     const shareLinks = {
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing content!')}`,
-        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing content!')}`,
-        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(window.location.href)}`
+        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
+        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent('Check out this amazing content!')}`,
+        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent('Check out this amazing content!')}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(data2.ShareURL)}`
     };
 
     useEffect(() => {
@@ -250,7 +251,7 @@ const Gallery = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div */}
-                <div className='ad-container py-2 ads-div mx-auto'>
+                {/* <div className='ad-container py-2 ads-div mx-auto'>
                     <ins className="adsbygoogle border"
                         style={{ display: 'block', height: '50px', width: '99%' }}
                         data-ad-format="fluid"
@@ -258,7 +259,7 @@ const Gallery = ({ data2 }) => {
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID">
                     </ins>
-                </div>
+                </div> */}
             </div>
 
             <style>{`

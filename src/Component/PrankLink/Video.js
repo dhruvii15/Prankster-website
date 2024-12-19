@@ -40,8 +40,8 @@ const Video = ({ data2 }) => {
     } else {
       if (navigator.share) {
         navigator.share({
-          title: 'Check out this amazing content!',
-          url: window.location.href,
+          title: data2.Name,
+          url: data2.ShareURL,
         }).catch(error => console.error('Error sharing content:', error));
       } else {
         // Fallback to custom share menu if navigator.share is not supported
@@ -115,8 +115,9 @@ const Video = ({ data2 }) => {
   const handleShareAfterAd = () => {
     if (navigator.share) {
       navigator.share({
-        title: 'Check out this amazing content!',
-        url: window.location.href,
+        title: data2.Name,
+        text: `${data2.Name}\n\n🔗Check this out : \n`, // Add line break after Name
+        url: data2.ShareURL,
       }).catch(error => console.error('Error sharing content:', error));
       setAdCompleted(false);
     } else {
@@ -126,10 +127,10 @@ const Video = ({ data2 }) => {
   };
 
   const shareLinks = {
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent('Check out this amazing content!')}`,
-    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(window.location.href)}&title=${encodeURIComponent('Check out this amazing content!')}`,
-    whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(window.location.href)}`
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
+    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent('Check out this amazing content!')}`,
+    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent('Check out this amazing content!')}`,
+    whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(data2.ShareURL)}`
   };
 
   // Close share menu when clicking outside
@@ -306,21 +307,21 @@ const Video = ({ data2 }) => {
                 </>
               )}
 
-              
-                {isPlaying && (
-                  <div
-                    className='share-btn2 position-absolute'
-                    style={{
-                      left: "5px",
-                      bottom: "10px",
-                      zIndex: 3,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faPause} className='fs-5 text-black' />
-                  </div>
-                )}
-              </div>
+
+              {isPlaying && (
+                <div
+                  className='share-btn2 position-absolute'
+                  style={{
+                    left: "5px",
+                    bottom: "10px",
+                    zIndex: 3,
+                    cursor: 'pointer'
+                  }}
+                >
+                  <FontAwesomeIcon icon={faPause} className='fs-5 text-black' />
+                </div>
+              )}
+            </div>
 
             <div className="mt-3">
               <PrankBtn />
