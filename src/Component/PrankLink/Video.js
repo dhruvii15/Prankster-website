@@ -335,7 +335,7 @@ const Video = ({ data2 }) => {
           <ins
             className="adsbygoogle border"
             style={{ display: 'block', height: '50px' }}
-            data-ad-format="fluid"
+            data-ad-format="rectangle"
             data-ad-layout-key="-6t+ed+2i-1n-4w"
             data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
             data-ad-slot="YOUR_AD_SLOT_ID"

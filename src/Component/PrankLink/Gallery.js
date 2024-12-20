@@ -252,13 +252,13 @@ const Gallery = ({ data2 }) => {
 
                 {/* Advertisement div */}
                  <div className='ad-container py-2 ads-div mx-auto'>
-                    <ins className="adsbygoogle border"
+                    {/* <ins className="adsbygoogle border"
                         style={{ display: 'block', height: '50px', width: '99%' }}
-                        data-ad-format="fluid"
-                        data-ad-layout-key="-6t+ed+2i-1n-4w"
+                        data-ad-format="rectangle"
+                        data-ad-layout-key="-6t+ed+2i-1n-4w" //optional
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID">
-                    </ins>
+                    </ins> */}
                 </div> 
             </div>
 
