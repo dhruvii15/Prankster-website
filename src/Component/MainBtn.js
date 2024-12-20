@@ -5,13 +5,13 @@ import { faAppStore, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 
 const MainButton = () => {
     const handleAppstoreClick = () => {
-        const appstore = 'https://apps.apple.com/us/app/lol-anonymous-funny-card/id6670788272';
+        const appstore = 'https://apps.apple.com/us/app/prankster/id6739135275';
         window.open(appstore, '_blank');
     };
 
 
     const handlePlaystoreClick = () => {
-        const playstore = 'https://play.google.com/store/apps/details?id=com.lol.android';
+        const playstore = 'https://play.google.com/store/apps/details?id=com.prank.android';
         window.open(playstore, '_blank');
     };
     return (

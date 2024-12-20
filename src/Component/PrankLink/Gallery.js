@@ -102,9 +102,9 @@ const Gallery = ({ data2 }) => {
 
     const shareLinks = {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
-        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent('Check out this amazing content!')}`,
-        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent('Check out this amazing content!')}`,
-        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(data2.ShareURL)}`
+        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
+        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}${encodeURIComponent(data2.ShareURL)}`
     };
 
     useEffect(() => {
@@ -251,7 +251,7 @@ const Gallery = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div */}
-                {/* <div className='ad-container py-2 ads-div mx-auto'>
+                 <div className='ad-container py-2 ads-div mx-auto'>
                     <ins className="adsbygoogle border"
                         style={{ display: 'block', height: '50px', width: '99%' }}
                         data-ad-format="fluid"
@@ -259,7 +259,7 @@ const Gallery = ({ data2 }) => {
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID">
                     </ins>
-                </div> */}
+                </div> 
             </div>
 
             <style>{`

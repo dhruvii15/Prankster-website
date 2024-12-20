@@ -5,15 +5,32 @@ import { Button } from 'react-bootstrap';
 import lol from "../../img/lol.png";
 
 const PrankBtn = () => {
-  const playStoreUrl = "https://play.google.com/store/apps/details?id=com.yourapp.package"; // Replace with your app's package name
-  const playStoreUrl2 = "https://play.google.com/store/apps/details?id=com.lol.android";
+  const playStoreUrl = "https://play.google.com/store/apps/details?id=com.prank.android"; // Replace with your app's package name
+  const appStoreUrl = "https://apps.apple.com/us/app/prankster/id6739135275"; // Replace with your app's ID
+  const lolplayStoreUrl = "https://play.google.com/store/apps/details?id=com.lol.android";
+  const lolappStoreUrl = "https://apps.apple.com/us/app/lol-anonymous-funny-card/id6670788272";
+
+  const isAndroid = /Android/i.test(navigator.userAgent);
+  const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
   const handlePrankButtonClick = () => {
-    window.open(playStoreUrl, '_blank');
+    if (isAndroid) {
+      window.open(playStoreUrl, '_blank');
+    } else if (isiOS) {
+      window.open(appStoreUrl, '_blank');
+    } else {
+      window.open(playStoreUrl, '_blank');
+    }
   };
 
   const handlePrankButtonClick2 = () => {
-    window.open(playStoreUrl2, '_blank');
+    if (isAndroid) {
+      window.open(lolplayStoreUrl, '_blank');
+    } else if (isiOS) {
+      window.open(lolappStoreUrl, '_blank');
+    } else {
+      window.open(lolplayStoreUrl, '_blank');
+    }
   };
 
   return (

@@ -82,7 +82,7 @@ const Audio = ({ data2 }) => {
         } else {
             if (navigator.share) {
                 navigator.share({
-                    title: 'Check out this amazing content!',
+                    title: `${data2.Name}\n\n🔗Check this out : \n`,
                     url: data2.ShareURL,
                 }).catch(error => console.error('Error sharing content:', error));
             } else {
@@ -155,9 +155,9 @@ const Audio = ({ data2 }) => {
 
     const shareLinks = {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
-        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent('Check out this amazing content!')}`,
-        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent('Check out this amazing content!')}`,
-        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent('Check out this amazing content! ')}${encodeURIComponent(data2.ShareURL)}`
+        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
+        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}${encodeURIComponent(data2.ShareURL)}`
     };
 
     // Close share menu when clicking outside
@@ -349,7 +349,7 @@ const Audio = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div moved to bottom */}
-                <div className='ad-container ads-div mx-auto py-2'>
+                {/* <div className='ad-container ads-div mx-auto py-2'>
                     <ins
                         className="adsbygoogle border"
                         style={{ display: 'block', height: '120px', width: '98%' }}
@@ -358,7 +358,7 @@ const Audio = ({ data2 }) => {
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID"
                     ></ins>
-                </div>
+                </div> */}
             </div>
 
             <style>{`
