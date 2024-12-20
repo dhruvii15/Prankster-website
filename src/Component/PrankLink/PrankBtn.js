@@ -1,8 +1,9 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Col, Row } from 'react-bootstrap';
 
 // img
 import lol from "../../img/lol.png";
+import pranklogo from "../../img/pranklogo.png";
 
 const PrankBtn = () => {
   const playStoreUrl = "https://play.google.com/store/apps/details?id=com.prank.android"; // Replace with your app's package name
@@ -34,23 +35,27 @@ const PrankBtn = () => {
   };
 
   return (
-    <>
-      <Button 
-        className='mt-3 border-0 py-2 fs-5 text-black' 
-        style={{ backgroundColor: "#F9E238", width: "95%" , fontWeight:"600"}} 
-        onClick={handlePrankButtonClick} 
+    <div className='d-flex flex-column align-items-center justify-content-center'>
+      <Button
+        className='mt-3 border-0 py-2 fs-5 text-black overflow-hidden'
+        style={{ backgroundColor: "#F9E238", width: "130%", fontWeight: "600", height: "50px" }}
+        onClick={handlePrankButtonClick}
       >
-        Make own prank 😂
+        <p className='btnlol'>Make your own pranks!</p>
+        <p className='btntext pt-4' style={{ fontWeight: "450" }}>Download</p>
+        <img src={pranklogo} alt='lol' className='btnimg' width={130} />
       </Button>
-      <Button 
-        className='mt-3 border-0 py-2 fs-5 text-black overflow-hidden' 
-        style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "95%", height: "50px" }}
+      <Row className='d-flex align-items-center' style={{ width: "130%" }}>
+        <Col xs={4} className='p-0'><hr style={{ border: "1px solid #ffffff" }}></hr></Col><Col xs={4} className='p-0' style={{fontSize:"14px",fontWeight:"300"}}>More App</Col><Col xs={4} className='p-0'><hr style={{ border: "1px solid white" }}></hr></Col>
+      </Row>
+      <Button
+        className='border-0 py-2 fs-5 text-black overflow-hidden'
+        style={{ background: "linear-gradient(to right, #FA4F54, #FD7C41)", width: "130%", height: "50px" }}
         onClick={handlePrankButtonClick2}
       >
-        <img src={lol} alt='lol' className='btnlol' width={60}/>
-        <p className='btntext text-white pt-3' style={{fontWeight:"450"}}>Download!</p>
+        <img src={lol} alt='lol' width={60} />
       </Button>
-    </>
+    </div>
   );
 };
 

@@ -12,7 +12,7 @@ import {
 
 // img
 import watermark from "../../img/watermark.png"
-import { faShareNodes } from '@fortawesome/free-solid-svg-icons/faShareNodes';
+import share from "../../img/share.png";
 
 const Video = ({ data2 }) => {
   const videoRef = useRef(null);
@@ -155,7 +155,7 @@ const Video = ({ data2 }) => {
       <div className="content-container">
         <Row className="content px-3 overflow-hidden flex-grow-1">
           <Col className="d-flex flex-column justify-content-center align-items-center">
-            <div className="img-div3 position-relative rounded-4 overflow-hidden">
+            <div className="img-div3 position-relative rounded-4 overflow-hidden border border-white">
               <div className="blurred-bg"></div>
               {(!needsInteraction || isImageLoaded) && (
                 <video
@@ -274,7 +274,7 @@ const Video = ({ data2 }) => {
                     onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                     style={{ zIndex: 3 }}
                   >
-                    <FontAwesomeIcon icon={faShareNodes} style={{ fontSize: "18px", paddingRight: "2px" }} />
+                    <img src={share} alt='share' width={18} style={{ paddingRight: "2px"}}/>
 
                     {showShareMenu && (
                       <div className="share-menu" onClick={e => e.stopPropagation()}>
@@ -450,11 +450,9 @@ const Video = ({ data2 }) => {
 
                 .interstitial-ad-container {
                     background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    width: 90%;
-                    max-width: 400px;
-                    min-height: 300px;
+                    width: 100%;
+                    max-width: 100vw;
+                    min-height: 100vh;
                     display: flex;
                     justify-content: center;
                     align-items: center;

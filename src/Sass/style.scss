@@ -349,7 +349,7 @@
     height: 35px;
     background-color: #F9E238;
     border-radius: 100%;
-    line-height: 40px;
+    line-height: 35px;
     text-align: center;
 }
 
@@ -418,17 +418,17 @@
 
     45%,
     70% {
-        transform: translateY(-45px);
+        transform: translateY(-70px);
         opacity: 1;
     }
 
-    86% {
+    83% {
         transform: translateY(-90px);
         opacity: 0;
     }
 
-    95% {
-        transform: translateY(50px);
+    90% {
+        transform: translateY(60px);
         opacity: 0;
     }
 

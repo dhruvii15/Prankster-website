@@ -11,7 +11,10 @@ import {
 } from '@fortawesome/free-brands-svg-icons';
 import watermark from "../../img/watermark.png";
 import AudioVisualizer from './AudioVisualizer';
-import { faShareNodes } from '@fortawesome/free-solid-svg-icons/faShareNodes';
+
+
+// img
+import share from "../../img/share.png";
 
 const Audio = ({ data2 }) => {
     const audioRef = useRef(null);
@@ -181,7 +184,7 @@ const Audio = ({ data2 }) => {
             <div className="content-container">
                 <Row className="content p-0 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column align-items-center justify-content-center">
-                        <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center">
+                        <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
                             <div className="blurred-bg"></div>
                             <audio ref={audioRef} loop
                                 onEnded={() => setIsPlaying(false)}
@@ -260,7 +263,7 @@ const Audio = ({ data2 }) => {
 
                                     {/* Share Button */}
                                     <div
-                                        className='share-btn position-absolute text-black cursor'
+                                        className='share-btn position-absolute text-black cursor text-center'
                                         style={{
                                             right: "12px",
                                             bottom: "12px",
@@ -272,13 +275,7 @@ const Audio = ({ data2 }) => {
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                                     >
-                                        <FontAwesomeIcon
-                                            icon={faShareNodes}
-                                            style={{
-                                                fontSize: "18px",
-                                                paddingRight: "2px",
-                                            }}
-                                        />
+                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px"}}/>
                                         {showShareMenu && (
                                             <div className="share-menu" onClick={e => e.stopPropagation()}>
                                                 <div className="share-menu-header">
@@ -466,11 +463,9 @@ const Audio = ({ data2 }) => {
 
                 .interstitial-ad-container {
                     background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    width: 90%;
-                    max-width: 400px;
-                    min-height: 300px;
+                    width: 100%;
+                    max-width: 100vw;
+                    min-height: 100vh;
                     display: flex;
                     justify-content: center;
                     align-items: center;

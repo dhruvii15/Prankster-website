@@ -12,7 +12,7 @@ import PrankBtn from './PrankBtn';
 
 // img
 import watermark from "../../img/watermark.png"
-import { faShareNodes } from '@fortawesome/free-solid-svg-icons/faShareNodes';
+import share from "../../img/share.png";
 
 const Gallery = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -128,7 +128,7 @@ const Gallery = ({ data2 }) => {
             <div className="content-container">
                 <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
-                        <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center">
+                        <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
                             <div className="blurred-bg"></div>
 
                             {/* Main Image */}
@@ -173,10 +173,7 @@ const Gallery = ({ data2 }) => {
                                             zIndex: 2,
                                         }}
                                     >
-                                        <FontAwesomeIcon
-                                            icon={faShareNodes}
-                                            style={{ fontSize: '18px', paddingRight:"2px" }}
-                                        />
+                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px"}}/>
                                         {showShareMenu && (
                                             <div
                                                 className="share-menu"
@@ -374,11 +371,9 @@ const Gallery = ({ data2 }) => {
 
                 .interstitial-ad-container {
                     background: white;
-                    padding: 20px;
-                    border-radius: 8px;
-                    width: 90%;
-                    max-width: 400px;
-                    min-height: 300px;
+                    width: 100%;
+                    max-width: 100vw;
+                    min-height: 100vh;
                     display: flex;
                     justify-content: center;
                     align-items: center;
