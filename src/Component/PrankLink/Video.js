@@ -22,6 +22,8 @@ const Video = ({ data2 }) => {
   const [isShowingAd, setIsShowingAd] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [adCompleted, setAdCompleted] = useState(false);
+  const canvasRef = useRef(null);
+  const [capturedFrame, setCapturedFrame] = useState(null);
 
   useEffect(() => {
     if (data2?.CoverImage) {
@@ -30,6 +32,30 @@ const Video = ({ data2 }) => {
       img.onload = () => setIsImageLoaded(true);
     }
   }, [data2?.CoverImage]);
+
+  const captureVideoFrame = () => {
+    if (videoRef.current) {
+      // Create canvas if it doesn't exist
+      if (!canvasRef.current) {
+        canvasRef.current = document.createElement('canvas');
+      }
+
+      const canvas = canvasRef.current;
+      const video = videoRef.current;
+      
+      // Set canvas dimensions to match video
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      
+      // Draw current video frame to canvas
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      
+      // Convert canvas to data URL
+      const frameDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+      setCapturedFrame(frameDataUrl);
+    }
+  };
 
 
   const handleShareClick = (e) => {
@@ -59,6 +85,11 @@ const Video = ({ data2 }) => {
         await videoRef.current.play();
         setIsPlaying(true);
         setNeedsInteraction(false);
+        
+        // Capture frame after a small delay to ensure video is playing
+        setTimeout(() => {
+          captureVideoFrame();
+        }, 100);
       } catch (error) {
         console.error('Error playing video:', error);
       }
@@ -156,7 +187,16 @@ const Video = ({ data2 }) => {
         <Row className="content px-3 overflow-hidden flex-grow-1">
           <Col className="d-flex flex-column justify-content-center align-items-center">
             <div className="img-div3 position-relative rounded-4 overflow-hidden border border-white">
-              <div className="blurred-bg"></div>
+            <div 
+                className="blurred-bg"
+                style={{
+                  backgroundImage: capturedFrame 
+                    ? `url('${capturedFrame}')` 
+                    : isImageLoaded && data2?.CoverImage 
+                      ? `url('${data2.CoverImage}')`
+                      : 'none'
+                }}
+              ></div>
               {(!needsInteraction || isImageLoaded) && (
                 <video
                   ref={videoRef}
@@ -368,11 +408,11 @@ const Video = ({ data2 }) => {
           left: 0;
           right: 0;
           bottom: 0;
-          background-image: ${isImageLoaded && data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
           background-size: cover;
           background-position: center;
           filter: blur(8px);
           z-index: 0;
+          transition: background-image 0.3s ease;
         }
 
         .content {

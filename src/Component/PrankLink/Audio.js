@@ -322,7 +322,7 @@ const Audio = ({ data2 }) => {
                                             {isPlaying && (
                                                 <div style={{ width: "40px" }}>
                                                     <div className='pause-btn'>
-                                                        <FontAwesomeIcon icon={faPause} className='fs-5' />
+                                                        <FontAwesomeIcon icon={faPause} className='fs-5 pt-2' />
                                                     </div>
                                                 </div>
                                             )}

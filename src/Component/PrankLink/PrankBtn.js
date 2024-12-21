@@ -46,7 +46,7 @@ const PrankBtn = () => {
         <img src={pranklogo} alt='lol' className='btnimg' width={130} />
       </Button>
       <Row className='d-flex align-items-center' style={{ width: "130%" }}>
-        <Col xs={4} className='p-0'><hr style={{ border: "1px solid #ffffff" }}></hr></Col><Col xs={4} className='p-0' style={{fontSize:"14px",fontWeight:"300"}}>More App</Col><Col xs={4} className='p-0'><hr style={{ border: "1px solid white" }}></hr></Col>
+        <Col xs={4} className='p-0'><hr style={{ border: "1px solid #ffffff" }}></hr></Col><Col xs={4} className='p-0' style={{fontSize:"14px",fontWeight:"300" , color:"#c1c1c1"}}>More App</Col><Col xs={4} className='p-0'><hr style={{ border: "1px solid white" }}></hr></Col>
       </Row>
       <Button
         className='border-0 py-2 fs-5 text-black overflow-hidden'

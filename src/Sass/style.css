@@ -276,7 +276,7 @@
   height: 40px;
   background-color: #F9E238;
   border-radius: 100%;
-  line-height: 40px;
+  line-height: 45px;
   text-align: center;
 }
 
@@ -433,6 +433,9 @@
   }
 }
 @media (max-width: 499px) and (min-width: 0px) {
+  .title-text {
+    font-size: 50px;
+  }
   @keyframes cloud {
     0%, 95%, 100% {
       transform: scale(0) translateY(380px);
@@ -646,4 +649,46 @@
     width: 50%;
     height: 480px;
   }
+}
+.title-bg {
+  background-image: url("../img/title-bg.svg");
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-position: center top;
+  height: 350px;
+}
+
+@media (min-width: 1441px) {
+  .title-bg {
+    background-size: 2500px auto;
+    background-position: center top;
+    height: 650px;
+  }
+}
+.title-text {
+  font-size: 65px;
+}
+
+.BwGradual {
+  font-family: "BwGradual", sans-serif;
+}
+
+@font-face {
+  font-family: "BwGradual";
+  src: url("../font/BwGradualDEMO-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+.BwGradual {
+  font-family: "BwGradual", sans-serif;
+}
+
+@font-face {
+  font-family: "BwGradualBold";
+  src: url("../font/BwGradualDEMO-ExtraBold.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+.BwGradualBold {
+  font-family: "BwGradualBold", sans-serif;
 }/*# sourceMappingURL=style.css.map */

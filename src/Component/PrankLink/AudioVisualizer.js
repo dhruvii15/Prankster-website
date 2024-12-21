@@ -2,50 +2,73 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const AudioVisualizer = ({ currentTime, totalDuration, className }) => {
   const [totalBars, setTotalBars] = useState(36);
+  const [progress, setProgress] = useState(0);
   const containerRef = useRef(null);
+  const animationFrameRef = useRef(null);
 
-  // Calculate progress percentage
-  const progress = totalDuration ? (currentTime / totalDuration) * 100 : 0;
-  
   // Dynamically calculate bars based on container width
   useEffect(() => {
     const calculateBars = () => {
       if (containerRef.current) {
-        // Each bar is 2px wide with 6px total width (2px bar + 4px margin)
         const containerWidth = containerRef.current.offsetWidth;
         const calculatedBars = Math.floor(containerWidth / 6);
-        
-        // Ensure we have a minimum and maximum number of bars
         const newTotalBars = Math.max(16, Math.min(calculatedBars, 64));
         setTotalBars(newTotalBars);
       }
     };
 
-    // Calculate bars on mount and add resize listener
     calculateBars();
     window.addEventListener('resize', calculateBars);
-
-    // Cleanup listener
     return () => window.removeEventListener('resize', calculateBars);
   }, []);
 
-  // Generate bars with random heights
+  // Smooth progress update
+  useEffect(() => {
+    const updateProgress = () => {
+      if (totalDuration) {
+        const targetProgress = (currentTime / totalDuration) * 100;
+
+        if (targetProgress >= 99.9) {
+          // Reset to start
+          setProgress(0);
+        } else {
+          // Smooth interpolation
+          setProgress((prevProgress) => {
+            const delta = (targetProgress - prevProgress) * 0.1; // Adjust smoothness
+            return Math.abs(delta) < 0.01 ? targetProgress : prevProgress + delta;
+          });
+        }
+
+        // Continue animation
+        animationFrameRef.current = requestAnimationFrame(updateProgress);
+      }
+    };
+
+    animationFrameRef.current = requestAnimationFrame(updateProgress);
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [currentTime, totalDuration]);
+
+  // Generate bars based on progress
   const generateBars = () => {
     const bars = [];
     for (let i = 0; i < totalBars; i++) {
       const isActive = (i / totalBars) * 100 <= progress;
-      // Random height between 15px and 25px for more dynamic appearance
       const height = Math.floor(Math.random() * (25 - 2 + 1)) + 9;
       bars.push(
         <div
           key={i}
-          className="d-inline-block rounded transition"         
+          className="d-inline-block rounded"
           style={{
             width: '2px',
             height: `${height}px`,
-            transition: 'all 0.01s',
             backgroundColor: isActive ? '#F9E238' : 'white',
-            margin: '0px 3px'
+            margin: '0px 3px',
+            transition: 'all 0.2s ease-out', // Smooth bar transition
           }}
         />
       );
@@ -54,17 +77,15 @@ const AudioVisualizer = ({ currentTime, totalDuration, className }) => {
   };
 
   return (
-    <div 
+    <div
       ref={containerRef}
       className={`py-3 d-flex align-items-center justify-content-start ${className}`}
       style={{
         height: '50px',
-        overflow: 'hidden'
+        overflow: 'hidden',
       }}
     >
-      <div className="d-flex align-items-center">
-        {generateBars()}
-      </div>
+      <div className="d-flex align-items-center">{generateBars()}</div>
     </div>
   );
 };
