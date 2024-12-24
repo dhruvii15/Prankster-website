@@ -292,23 +292,23 @@
 }
 
 .btnlol {
-  animation: showImage 4s ease-in-out infinite;
+  animation: showImage 8s ease-in-out infinite;
 }
 
 @keyframes showImage {
   0%, 20% {
     transform: translateY(0);
   }
-  45% {
-    transform: translateY(-50px);
+  35% {
+    transform: translateY(-100px);
     opacity: 1;
   }
   50% {
-    transform: translateY(-100px);
+    transform: translateY(-150px);
     opacity: 0;
   }
-  75% {
-    transform: translateY(50px);
+  80% {
+    transform: translateY(80px);
     opacity: 0;
   }
   95% {
@@ -316,19 +316,19 @@
   }
 }
 .btntext {
-  animation: showText 4s ease-in-out infinite;
+  animation: showText 8s ease-in-out infinite;
 }
 
 @keyframes showText {
-  0%, 30% {
+  0%, 20% {
     transform: translateY(0);
   }
-  45%, 70% {
+  35%, 60% {
     transform: translateY(-70px);
     opacity: 1;
   }
-  83% {
-    transform: translateY(-90px);
+  70% {
+    transform: translateY(-140px);
     opacity: 0;
   }
   90% {
@@ -337,6 +337,31 @@
   }
   100% {
     transform: translateY(0);
+  }
+}
+.btnimg {
+  animation: showImg 8s ease-in-out infinite;
+}
+
+@keyframes showImg {
+  0%, 30% {
+    transform: translateY(0);
+  }
+  40%, 55% {
+    transform: translateY(-40px);
+    opacity: 1;
+  }
+  70%, 83% {
+    transform: translateY(-118px);
+    opacity: 1;
+  }
+  90% {
+    transform: translateY(-160px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0;
   }
 }
 @media (max-width: 576px) and (min-width: 0px) {

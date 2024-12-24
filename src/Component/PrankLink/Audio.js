@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faPause, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebook,
-    faTwitter,
-    faLinkedin,
-    faWhatsapp
+    faWhatsapp,
+    faInstagram,
+    faSnapchat
 } from '@fortawesome/free-brands-svg-icons';
 import watermark from "../../img/watermark.png";
 import AudioVisualizer from './AudioVisualizer';
@@ -27,6 +27,7 @@ const Audio = ({ data2 }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isShowingAd, setIsShowingAd] = useState(false);
     const [adCompleted, setAdCompleted] = useState(false);
+    const [currentImage, setCurrentImage] = useState(data2?.CoverImage);
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -42,6 +43,14 @@ const Audio = ({ data2 }) => {
                 await audioRef.current.play();
                 setNeedsInteraction(false);
                 setIsPlaying(true);
+                // Switch to data2.Image if available, otherwise keep CoverImage
+                if (data2?.Image) {
+                    setCurrentImage(data2.Image);
+                    // Preload the new image
+                    const img = new Image();
+                    img.src = data2.Image;
+                    img.onload = () => setIsImageLoaded(true);
+                }
             } catch (error) {
                 console.error('Error playing audio:', error);
             }
@@ -52,7 +61,10 @@ const Audio = ({ data2 }) => {
         if (data2?.CoverImage) {
             const img = new Image();
             img.src = data2.CoverImage;
-            img.onload = () => setIsImageLoaded(true);
+            img.onload = () => {
+                setIsImageLoaded(true);
+                setCurrentImage(data2.CoverImage);
+            };
         }
     }, [data2?.CoverImage]);
 
@@ -146,9 +158,9 @@ const Audio = ({ data2 }) => {
         if (navigator.share) {
             navigator.share({
                 title: data2.Name,
-                text: `${data2.Name}\n\n🔗Check this out : \n`,// Add line break after Name
+                text: `${data2.Name}\n`,// Add line break after Name
                 url: data2.ShareURL,
-            }).catch(error => console.error('Error sharing content:', error));            
+            }).catch(error => console.error('Error sharing content:', error));
             setAdCompleted(false);
         } else {
             setShowShareMenu(!showShareMenu);
@@ -158,9 +170,9 @@ const Audio = ({ data2 }) => {
 
     const shareLinks = {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
-        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
-        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
-        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}${encodeURIComponent(data2.ShareURL)}`
+        instagram: `https://www.instagram.com/?url=${encodeURIComponent(data2.ShareURL)}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n`)}${encodeURIComponent(data2.ShareURL)}`,
+        snapchat: `https://www.snapchat.com/share?url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(data2.Name)}`
     };
 
     // Close share menu when clicking outside
@@ -213,7 +225,7 @@ const Audio = ({ data2 }) => {
                             {isImageLoaded && (
                                 <>
                                     <img
-                                        src={data2.CoverImage}
+                                        src={currentImage}
                                         alt='prankImage'
                                         className='img-fluid h-100 position-absolute'
                                     />
@@ -275,7 +287,7 @@ const Audio = ({ data2 }) => {
                                         tabIndex={0}
                                         onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                                     >
-                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px"}}/>
+                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px" }} />
                                         {showShareMenu && (
                                             <div className="share-menu" onClick={e => e.stopPropagation()}>
                                                 <div className="share-menu-header">
@@ -288,14 +300,14 @@ const Audio = ({ data2 }) => {
                                                     <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="share-option">
                                                         <FontAwesomeIcon icon={faFacebook} /> Facebook
                                                     </a>
-                                                    <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" className="share-option">
-                                                        <FontAwesomeIcon icon={faTwitter} /> Twitter
-                                                    </a>
-                                                    <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" className="share-option">
-                                                        <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+                                                    <a href={shareLinks.instagram} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faInstagram} /> Instagram
                                                     </a>
                                                     <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="share-option">
                                                         <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+                                                    </a>
+                                                    <a href={shareLinks.snapchat} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faSnapchat} /> Snapchat
                                                     </a>
                                                 </div>
                                             </div>
@@ -322,7 +334,7 @@ const Audio = ({ data2 }) => {
                                             {isPlaying && (
                                                 <div style={{ width: "40px" }}>
                                                     <div className='pause-btn'>
-                                                        <FontAwesomeIcon icon={faPause} className='fs-5 pt-2' />
+                                                        <FontAwesomeIcon icon={faPause} className='fs-5' style={{ paddingTop: "10px" }} />
                                                     </div>
                                                 </div>
                                             )}

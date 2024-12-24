@@ -5,9 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPause, faPlay, faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
   faFacebook,
-  faTwitter,
-  faLinkedin,
-  faWhatsapp
+  faWhatsapp,
+  faInstagram,
+  faSnapchat
 } from '@fortawesome/free-brands-svg-icons';
 
 // img
@@ -16,14 +16,19 @@ import share from "../../img/share.png";
 
 const Video = ({ data2 }) => {
   const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const frameCaptureTries = useRef(0);
   const [needsInteraction, setNeedsInteraction] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [showShareMenu, setShowShareMenu] = useState(false);
   const [isShowingAd, setIsShowingAd] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [adCompleted, setAdCompleted] = useState(false);
-  const canvasRef = useRef(null);
   const [capturedFrame, setCapturedFrame] = useState(null);
+
+  useEffect(() => {
+    canvasRef.current = document.createElement('canvas');
+  }, []);
 
   useEffect(() => {
     if (data2?.CoverImage) {
@@ -34,26 +39,49 @@ const Video = ({ data2 }) => {
   }, [data2?.CoverImage]);
 
   const captureVideoFrame = () => {
-    if (videoRef.current) {
-      // Create canvas if it doesn't exist
-      if (!canvasRef.current) {
-        canvasRef.current = document.createElement('canvas');
+    if (!videoRef.current || frameCaptureTries.current >= 5) return;
+
+    try {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+
+      // Wait for video metadata to be loaded
+      if (video.videoWidth === 0 || video.videoHeight === 0) {
+        frameCaptureTries.current++;
+        setTimeout(captureVideoFrame, 200);
+        return;
       }
 
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-      
-      // Set canvas dimensions to match video
+      // Set canvas dimensions
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
-      
-      // Draw current video frame to canvas
+
       const ctx = canvas.getContext('2d');
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      if (!ctx) {
+        console.error('Could not get 2D context');
+        return;
+      }
+
+      // Clear canvas before drawing
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Convert canvas to data URL
-      const frameDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-      setCapturedFrame(frameDataUrl);
+      // Draw current video frame
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convert to data URL with lower quality for better performance
+      const frameDataUrl = canvas.toDataURL('image/jpeg', 0.5);
+      
+      if (frameDataUrl !== 'data:,' && frameDataUrl.length > 100) {
+        setCapturedFrame(frameDataUrl);
+      } else {
+        // If capture failed, retry
+        frameCaptureTries.current++;
+        setTimeout(captureVideoFrame, 200);
+      }
+    } catch (error) {
+      console.error('Frame capture error:', error);
+      frameCaptureTries.current++;
+      setTimeout(captureVideoFrame, 200);
     }
   };
 
@@ -67,7 +95,7 @@ const Video = ({ data2 }) => {
       if (navigator.share) {
         navigator.share({
           title: data2.Name,
-          text: `${data2.Name}\n\n🔗Check this out : \n`, // Add line break after Name
+          text: `${data2.Name}\n`, // Add line break after Name
           url: data2.ShareURL,
         }).catch(error => console.error('Error sharing content:', error));
       } else {
@@ -78,23 +106,67 @@ const Video = ({ data2 }) => {
   };
 
   const startVideoWithSound = async () => {
-    if (videoRef.current) {
-      try {
-        videoRef.current.volume = 1;
-        videoRef.current.muted = false;
-        await videoRef.current.play();
-        setIsPlaying(true);
-        setNeedsInteraction(false);
-        
-        // Capture frame after a small delay to ensure video is playing
+    if (!videoRef.current) return;
+
+    try {
+      const video = videoRef.current;
+      video.volume = 1;
+      video.muted = false;
+      
+      // Reset frame capture counter
+      frameCaptureTries.current = 0;
+
+      // Add loadedmetadata listener
+      video.addEventListener('loadedmetadata', () => {
+        // Try to capture frame after metadata is loaded
+        captureVideoFrame();
+      }, { once: true });
+
+      await video.play();
+      setIsPlaying(true);
+      setNeedsInteraction(false);
+
+      // Multiple capture attempts with increasing delays
+      const captureDelays = [100, 300];
+      // const captureDelays = [200];
+      captureDelays.forEach(delay => {
         setTimeout(() => {
-          captureVideoFrame();
-        }, 100);
-      } catch (error) {
-        console.error('Error playing video:', error);
+          if (!capturedFrame) {
+            captureVideoFrame();
+          }
+        }, delay);
+      });
+
+    } catch (error) {
+      console.error('Error playing video:', error);
+      // Fallback to cover image if video fails
+      if (data2?.CoverImage) {
+        setCapturedFrame(data2.CoverImage);
       }
     }
   };
+  const getBackgroundStyle = () => {
+    if (capturedFrame) {
+      return `url('${capturedFrame}')`;
+    }
+    if (isImageLoaded && data2?.CoverImage) {
+      return `url('${data2.CoverImage}')`;
+    }
+    return 'none';
+  };
+
+  // Update blur view with proper error handling
+  const blurredBgStyle = {
+    backgroundImage: getBackgroundStyle(),
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    filter: 'blur(8px)',
+    transform: 'scale(1.1)', // Prevent blur edges
+    width: '100%',
+    height: '100%'
+  };
+  
 
   const showInterstitialAd = () => {
     setIsShowingAd(true);
@@ -148,7 +220,7 @@ const Video = ({ data2 }) => {
     if (navigator.share) {
       navigator.share({
         title: data2.Name,
-        text: `${data2.Name}\n\n🔗Check this out : \n`, // Add line break after Name
+        text: `${data2.Name}\n`, // Add line break after Name
         url: data2.ShareURL,
       }).catch(error => console.error('Error sharing content:', error));
       setAdCompleted(false);
@@ -160,9 +232,9 @@ const Video = ({ data2 }) => {
 
   const shareLinks = {
     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
-    twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
-    linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
-    whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}${encodeURIComponent(data2.ShareURL)}`
+    instagram: `https://www.instagram.com/?url=${encodeURIComponent(data2.ShareURL)}`,
+    whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n`)}${encodeURIComponent(data2.ShareURL)}`,
+    snapchat: `https://www.snapchat.com/share?url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(data2.Name)}`
   };
 
   // Close share menu when clicking outside
@@ -187,16 +259,7 @@ const Video = ({ data2 }) => {
         <Row className="content px-3 overflow-hidden flex-grow-1">
           <Col className="d-flex flex-column justify-content-center align-items-center">
             <div className="img-div3 position-relative rounded-4 overflow-hidden border border-white">
-            <div 
-                className="blurred-bg"
-                style={{
-                  backgroundImage: capturedFrame 
-                    ? `url('${capturedFrame}')` 
-                    : isImageLoaded && data2?.CoverImage 
-                      ? `url('${data2.CoverImage}')`
-                      : 'none'
-                }}
-              ></div>
+            <div className="blurred-bg" style={blurredBgStyle}></div>
               {(!needsInteraction || isImageLoaded) && (
                 <video
                   ref={videoRef}
@@ -314,12 +377,12 @@ const Video = ({ data2 }) => {
                     onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
                     style={{ zIndex: 3 }}
                   >
-                    <img src={share} alt='share' width={18} style={{ paddingRight: "2px"}}/>
+                    <img src={share} alt='share' width={18} style={{ paddingRight: "2px" }} />
 
                     {showShareMenu && (
                       <div className="share-menu" onClick={e => e.stopPropagation()}>
                         <div className="share-menu-header">
-                          <span>Share via</span>
+                          <span>Share</span>
                           <button onClick={() => setShowShareMenu(false)} className="close-btn">
                             <FontAwesomeIcon icon={faTimes} />
                           </button>
@@ -328,14 +391,14 @@ const Video = ({ data2 }) => {
                           <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="share-option">
                             <FontAwesomeIcon icon={faFacebook} /> Facebook
                           </a>
-                          <a href={shareLinks.twitter} target="_blank" rel="noopener noreferrer" className="share-option">
-                            <FontAwesomeIcon icon={faTwitter} /> Twitter
-                          </a>
-                          <a href={shareLinks.linkedin} target="_blank" rel="noopener noreferrer" className="share-option">
-                            <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
+                          <a href={shareLinks.instagram} target="_blank" rel="noopener noreferrer" className="share-option">
+                            <FontAwesomeIcon icon={faInstagram} /> Instagram
                           </a>
                           <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="share-option">
                             <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+                          </a>
+                          <a href={shareLinks.snapchat} target="_blank" rel="noopener noreferrer" className="share-option">
+                            <FontAwesomeIcon icon={faSnapchat} /> Snapchat
                           </a>
                         </div>
                       </div>

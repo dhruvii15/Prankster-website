@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import {
     faFacebook,
-    faTwitter,
-    faLinkedin,
-    faWhatsapp
+    faWhatsapp,
+    faInstagram,
+    faSnapchat
 } from '@fortawesome/free-brands-svg-icons';
 import PrankBtn from './PrankBtn';
 
@@ -87,9 +87,9 @@ const Gallery = ({ data2 }) => {
         if (navigator.share) {
             navigator.share({
                 title: data2.Name,
-                text: `${data2.Name}\n\n🔗Check this out : \n`, // Add line break after Name
+                text: `${data2.Name}\n`, // Add line break after Name
                 url: data2.ShareURL,
-            }).catch(error => console.error('Error sharing content:', error));            
+            }).catch(error => console.error('Error sharing content:', error));
             setAdCompleted(false);
         } else {
             setShowShareMenu(!showShareMenu);
@@ -98,13 +98,11 @@ const Gallery = ({ data2 }) => {
     };
 
 
-
-
     const shareLinks = {
         facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
-        twitter: `https://twitter.com/intent/tweet?url=${encodeURIComponent(data2.ShareURL)}&text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
-        linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}`,
-        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n\n🔗Check this out : \n`)}${encodeURIComponent(data2.ShareURL)}`
+        instagram: `https://www.instagram.com/?url=${encodeURIComponent(data2.ShareURL)}`,
+        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n`)}${encodeURIComponent(data2.ShareURL)}`,
+        snapchat: `https://www.snapchat.com/share?url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(data2.Name)}`
     };
 
     useEffect(() => {
@@ -136,7 +134,7 @@ const Gallery = ({ data2 }) => {
                                 src={data2.File}
                                 alt="prankImage"
                                 className="img-fluid position-absolute"
-                                style={{ display: isImageLoaded ? 'block' : 'none'}}
+                                style={{ display: isImageLoaded ? 'block' : 'none' }}
                             />
 
                             {/* Loading Placeholder */}
@@ -173,7 +171,7 @@ const Gallery = ({ data2 }) => {
                                             zIndex: 2,
                                         }}
                                     >
-                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px"}}/>
+                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px" }} />
                                         {showShareMenu && (
                                             <div
                                                 className="share-menu"
@@ -189,37 +187,17 @@ const Gallery = ({ data2 }) => {
                                                     </button>
                                                 </div>
                                                 <div className="share-options">
-                                                    <a
-                                                        href={shareLinks.facebook}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="share-option"
-                                                    >
+                                                    <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="share-option">
                                                         <FontAwesomeIcon icon={faFacebook} /> Facebook
                                                     </a>
-                                                    <a
-                                                        href={shareLinks.twitter}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="share-option"
-                                                    >
-                                                        <FontAwesomeIcon icon={faTwitter} /> Twitter
+                                                    <a href={shareLinks.instagram} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faInstagram} /> Instagram
                                                     </a>
-                                                    <a
-                                                        href={shareLinks.linkedin}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="share-option"
-                                                    >
-                                                        <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
-                                                    </a>
-                                                    <a
-                                                        href={shareLinks.whatsapp}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className="share-option"
-                                                    >
+                                                    <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="share-option">
                                                         <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
+                                                    </a>
+                                                    <a href={shareLinks.snapchat} target="_blank" rel="noopener noreferrer" className="share-option">
+                                                        <FontAwesomeIcon icon={faSnapchat} /> Snapchat
                                                     </a>
                                                 </div>
                                             </div>
@@ -248,7 +226,7 @@ const Gallery = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div */}
-                 <div className='ad-container py-2 ads-div mx-auto'>
+                <div className='ad-container py-2 ads-div mx-auto'>
                     {/* <ins className="adsbygoogle border"
                         style={{ display: 'block', height: '50px', width: '99%' }}
                         data-ad-format="rectangle"
@@ -256,7 +234,7 @@ const Gallery = ({ data2 }) => {
                         data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
                         data-ad-slot="YOUR_AD_SLOT_ID">
                     </ins> */}
-                </div> 
+                </div>
             </div>
 
             <style>{`

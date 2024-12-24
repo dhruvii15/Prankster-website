@@ -3,10 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Container } from 'react-bootstrap';
 
-// img
-import textlogo from "../img/textlogo.svg"
-import { faAppStore, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
-import { Link } from 'react-router-dom';
 
 // Lazy load components
 const Loading = lazy(() => import('../Component/Loading'));
@@ -24,16 +20,6 @@ const Policy = () => {
     return () => clearTimeout(timer); // Cleanup the timer on unmount
   }, []);
 
-  const handleAppstoreClick = () => {
-    const appstore = 'https://apps.apple.com/us/app/prankster/id6739135275';
-    window.open(appstore, '_blank');
-  };
-
-
-  const handlePlaystoreClick = () => {
-    const playstore = 'https://play.google.com/store/apps/details?id=com.prank.android';
-    window.open(playstore, '_blank');
-  };
 
   if (loading) {
     return (
@@ -46,20 +32,6 @@ const Policy = () => {
   return (
     <div>
       <Suspense fallback={<div><Loading /></div>}>
-        <div className='container d-flex align-items-center justify-content-between py-3'>
-          <Link to="/">
-            <img src={textlogo} alt="logo" className="img-fluid" loading="lazy" width={100} />
-          </Link>
-          <div className='rounded-pill p-2 bg-black d-flex align-items-center justify-content-center ms-3 ms-lg-0' style={{ width: "120px" }}>
-            <div className='border-end border-light border-2 cursor playstore d-flex align-items-center' onClick={handlePlaystoreClick} >
-              <FontAwesomeIcon icon={faGooglePlay} className='pe-3 fs-4 picon text-white' />
-            </div>
-            <div className='cursor appstore d-flex align-items-center' onClick={handleAppstoreClick}>
-              <FontAwesomeIcon icon={faAppStore} className='ps-3 fs-4 aicon text-white' />
-            </div>
-
-          </div>
-        </div>
         <div className='rounded-5' style={{ backgroundColor: "#F6F6F6" }}>
           <div className='title-bg d-flex align-items-center justify-content-center'>
             <div className='text-center'>

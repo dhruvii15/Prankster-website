@@ -17,10 +17,10 @@ const NoDataFound = () => {
                         animationData={animationData}
                         style={{ width: '300px', height: '300px' }} />
                     <p className='fw-bold fs-5 m-0 pt-4'>No data found.</p>
-                    <p className='m-0 text-center' style={{ color: "#AAAAAA"}}>
+                    {/* <p className='m-0 text-center' style={{ color: "#AAAAAA"}}>
                         Request failed! Please try again <br />
                         with a different link...
-                    </p>
+                    </p> */}
 
                 </Col>
             </Row>
