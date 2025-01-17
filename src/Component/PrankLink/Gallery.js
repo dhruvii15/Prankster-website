@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import {
-    faFacebook,
-    faWhatsapp,
-    faInstagram,
-    faSnapchat
-} from '@fortawesome/free-brands-svg-icons';
 import PrankBtn from './PrankBtn';
-
-// img
-import watermark from "../../img/watermark.png"
+import watermark from "../../img/watermark.png";
 import share from "../../img/share.png";
+import Share from './Share';
+import InterstitialAd from './InterstitialAd'; // Import the InterstitialAd component
 
 const Gallery = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
-    const [showShareMenu, setShowShareMenu] = useState(false);
-    const [isShowingAd, setIsShowingAd] = useState(false);
-    const [adCompleted, setAdCompleted] = useState(false);
+    const [isShareOpen, setIsShareOpen] = useState(false);
+    const [showAd, setShowAd] = useState(false);
+
+    const onShareClick = () => {
+        setShowAd(true); // Show interstitial ad first
+    };
+
+    const handleAdComplete = () => {
+        setShowAd(false); // Hide the ad
+        setIsShareOpen(true); // Show the share component
+    };
 
     useEffect(() => {
         if (data2?.File) {
@@ -28,108 +28,17 @@ const Gallery = ({ data2 }) => {
         }
     }, [data2?.File]);
 
-    const handleShareClick = (e) => {
-        e.stopPropagation();
-        if (!adCompleted) {
-            showInterstitialAd();
-        }
-    };
-
-    const showInterstitialAd = () => {
-        setIsShowingAd(true);
-
-        const adContainer = document.getElementById('interstitial-ad');
-        if (adContainer) {
-            const adElement = document.createElement('ins');
-            adElement.className = 'adsbygoogle';
-            adElement.style.display = 'block';
-            adElement.setAttribute('data-ad-client', 'ca-pub-3940256099942544'); // Test client ID
-            adElement.setAttribute('data-ad-slot', '1234567890'); // Replace with the test ad slot ID
-            adElement.setAttribute('data-ad-format', 'fluid');
-            adElement.setAttribute('data-full-width-responsive', 'true');
-
-            adContainer.innerHTML = ''; // Clear previous ad if any
-            adContainer.appendChild(adElement);
-
-            try {
-                // Push ad to Google Ads container
-                (window.adsbygoogle = window.adsbygoogle || []).push({
-                    callback: () => {
-                        console.log('Ad loaded successfully');
-
-                        // After 3 seconds, hide the ad and trigger sharing logic
-                        setTimeout(() => {
-                            setIsShowingAd(false); // Hide the ad
-                            setAdCompleted(true); // Mark ad as completed
-
-                            // Invoke share logic immediately
-                            handleShareAfterAd();
-                        }, 3000); // Show the ad for 3 seconds
-                    },
-                });
-            } catch (err) {
-                console.error('Ad failed to load:', err);
-                setIsShowingAd(false); // Hide the ad in case of failure
-                setAdCompleted(true);
-                handleShareAfterAd(); // Trigger share options even if the ad fails
-            }
-        }
-
-        // Set fallback timeout in case the ad is not loaded or fails
-        setTimeout(() => {
-            setIsShowingAd(false); // Hide the ad
-            setAdCompleted(true); // Mark ad as completed
-            handleShareAfterAd(); // Trigger share options
-        }, 3000); // 3 seconds timeout to trigger share options
-    };
-
-    const handleShareAfterAd = () => {
-        if (navigator.share) {
-            navigator.share({
-                title: data2.Name,
-                text: `${data2.Name}\n`, // Add line break after Name
-                url: data2.ShareURL,
-            }).catch(error => console.error('Error sharing content:', error));
-            setAdCompleted(false);
-        } else {
-            setShowShareMenu(!showShareMenu);
-            setAdCompleted(false);
-        }
-    };
-
-
-    const shareLinks = {
-        facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(data2.ShareURL)}`,
-        instagram: `https://www.instagram.com/?url=${encodeURIComponent(data2.ShareURL)}`,
-        whatsapp: `https://api.whatsapp.com/send?text=${encodeURIComponent(`${data2.Name}\n`)}${encodeURIComponent(data2.ShareURL)}`,
-        snapchat: `https://www.snapchat.com/share?url=${encodeURIComponent(data2.ShareURL)}&title=${encodeURIComponent(data2.Name)}`
-    };
-
-    useEffect(() => {
-        const handleClickOutside = () => setShowShareMenu(false);
-        if (showShareMenu) {
-            document.addEventListener('click', handleClickOutside);
-        }
-        return () => document.removeEventListener('click', handleClickOutside);
-    }, [showShareMenu]);
-
     return (
         <div className="full-page-background">
-            {isShowingAd && (
-                <div className="interstitial-overlay">
-                    <div id="interstitial-ad" className="interstitial-ad-container">
-                        <div className="ad-loading">Loading advertisement...</div>
-                    </div>
-                </div>
-            )}
+            {/* Show the InterstitialAd when showAd is true */}
+            {showAd && <InterstitialAd onAdComplete={handleAdComplete} />}
 
             <div className="content-container">
                 <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
                         <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
-                            <div className="blurred-bg"></div>
+                            <div className="blurred-bg" />
 
-                            {/* Main Image */}
                             <img
                                 src={data2.File}
                                 alt="prankImage"
@@ -156,55 +65,27 @@ const Gallery = ({ data2 }) => {
                                 </div>
                             )}
 
-                            {/* Share Button and Watermark */}
                             {isImageLoaded && (
                                 <>
-                                    {/* Share Button */}
-                                    <div
-                                        className="share-btn position-absolute text-black cursor"
-                                        onClick={handleShareClick}
-                                        role="button"
-                                        aria-label="Share this content"
-                                        tabIndex={0}
-                                        onKeyPress={(e) => e.key === 'Enter' && handleShareClick()}
-                                        style={{
-                                            zIndex: 2,
-                                        }}
-                                    >
-                                        <img src={share} alt='share' width={18} style={{ paddingRight: "2px" }} />
-                                        {showShareMenu && (
-                                            <div
-                                                className="share-menu"
-                                                onClick={(e) => e.stopPropagation()}
-                                            >
-                                                <div className="share-menu-header">
-                                                    <span>Share via</span>
-                                                    <button
-                                                        onClick={() => setShowShareMenu(false)}
-                                                        className="close-btn"
-                                                    >
-                                                        <FontAwesomeIcon icon={faTimes} />
-                                                    </button>
-                                                </div>
-                                                <div className="share-options">
-                                                    <a href={shareLinks.facebook} target="_blank" rel="noopener noreferrer" className="share-option">
-                                                        <FontAwesomeIcon icon={faFacebook} /> Facebook
-                                                    </a>
-                                                    <a href={shareLinks.instagram} target="_blank" rel="noopener noreferrer" className="share-option">
-                                                        <FontAwesomeIcon icon={faInstagram} /> Instagram
-                                                    </a>
-                                                    <a href={shareLinks.whatsapp} target="_blank" rel="noopener noreferrer" className="share-option">
-                                                        <FontAwesomeIcon icon={faWhatsapp} /> WhatsApp
-                                                    </a>
-                                                    <a href={shareLinks.snapchat} target="_blank" rel="noopener noreferrer" className="share-option">
-                                                        <FontAwesomeIcon icon={faSnapchat} /> Snapchat
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        )}
+                                    <div>
+                                        <div
+                                            className="share-btn position-absolute text-black cursor"
+                                            onClick={onShareClick}
+                                            role="button"
+                                            aria-label="Share this content"
+                                            tabIndex={0}
+                                            onKeyPress={(e) => e.key === 'Enter' && onShareClick()}
+                                            style={{ zIndex: 2 }}
+                                        >
+                                            <img src={share} alt="share" width={18} style={{ paddingRight: "2px" }} />
+                                        </div>
+                                        <Share
+                                            show={isShareOpen}
+                                            onHide={() => setIsShareOpen(false)}
+                                            data2={data2}
+                                        />
                                     </div>
 
-                                    {/* Watermark */}
                                     <div
                                         className="position-absolute text-black"
                                         style={{
@@ -284,82 +165,6 @@ const Gallery = ({ data2 }) => {
                 .content {
                     color: white;
                     padding: 20px;
-                    text-align: center;
-                }
-
-                .share-menu {
-                    position: absolute;
-                    top: 100%;
-                    right: 0;
-                    width: 200px;
-                    background: white;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                    z-index: 1000;
-                    margin-top: 10px;
-                }
-
-                .share-menu-header {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    padding: 10px 15px;
-                    border-bottom: 1px solid #eee;
-                }
-
-                .close-btn {
-                    background: none;
-                    border: none;
-                    cursor: pointer;
-                    color: #666;
-                }
-
-                .share-option {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    padding: 10px 15px;
-                    width: 100%;
-                    border: none;
-                    background: none;
-                    color: #333;
-                    text-decoration: none;
-                    cursor: pointer;
-                    transition: background-color 0.2s;
-                }
-
-                .share-option:hover {
-                    background-color: #f5f5f5;
-                    color: #333;
-                    text-decoration: none;
-                }
-
-                .interstitial-overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    right: 0;
-                    bottom: 0;
-                    background: rgba(0, 0, 0, 0.8);
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 9999;
-                }
-
-                .interstitial-ad-container {
-                    background: white;
-                    width: 100%;
-                    max-width: 100vw;
-                    min-height: 100vh;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .ad-loading {
-                    color: #666;
-                    font-size: 16px;
                     text-align: center;
                 }
             `}</style>

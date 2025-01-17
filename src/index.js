@@ -11,6 +11,7 @@ import Loading from './Component/Loading';
 const Home = React.lazy(() => import('./Pages/Home'));
 const Policy = React.lazy(() => import('./Pages/Policy'));
 const PrankLink = React.lazy(() => import('./Pages/PrankLink'));
+const Termsofuse = React.lazy(() => import('./Pages/Terms'));
 
 const queryClient = new QueryClient();
 
@@ -52,6 +53,14 @@ const router = createBrowserRouter([
     element: (
       <Suspense fallback={<Loading />}>
         <Policy />
+      </Suspense>
+    ),
+  },
+  {
+    path: '/termsofuse',
+    element: (
+      <Suspense fallback={<Loading />}>
+        <Termsofuse />
       </Suspense>
     ),
   },

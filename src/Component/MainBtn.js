@@ -5,7 +5,7 @@ import { faAppStore, faGooglePlay } from '@fortawesome/free-brands-svg-icons';
 
 const MainButton = () => {
     const handleAppstoreClick = () => {
-        const appstore = 'https://apps.apple.com/us/app/prankster/id6739135275';
+        const appstore = 'https://apps.apple.com/us/app/prankster-digital-funny-pranks/id6739135275';
         window.open(appstore, '_blank');
     };
 

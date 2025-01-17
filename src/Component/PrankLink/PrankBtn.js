@@ -7,7 +7,7 @@ import pranklogo from "../../img/pranklogo.png";
 
 const PrankBtn = () => {
   const playStoreUrl = "https://play.google.com/store/apps/details?id=com.prank.android"; // Replace with your app's package name
-  const appStoreUrl = "https://apps.apple.com/us/app/prankster/id6739135275"; // Replace with your app's ID
+  const appStoreUrl = "https://apps.apple.com/us/app/prankster-digital-funny-pranks/id6739135275"; // Replace with your app's ID
   const lolplayStoreUrl = "https://play.google.com/store/apps/details?id=com.lol.android";
   const lolappStoreUrl = "https://apps.apple.com/us/app/lol-anonymous-funny-card/id6670788272";
 
