@@ -244,7 +244,7 @@ const Audio = ({ data2 }) => {
                 </Row>
 
                 {/* Advertisement div moved to bottom */}
-                <div className='ad-container ads-div mx-auto py-2'>
+                {/* <div className='ad-container ads-div mx-auto py-2'>
                     <ins
                         className="adsbygoogle border"
                         style={{ display: 'block', height: '120px', width: '98%' }}
@@ -253,7 +253,7 @@ const Audio = ({ data2 }) => {
                         data-ad-client="pub-7719542074975419"
                         data-ad-slot="f08c47fec0942fa0"
                     ></ins>
-                </div>
+                </div> */}
             </div>
 
             <style>{`
