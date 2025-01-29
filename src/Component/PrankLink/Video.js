@@ -7,6 +7,7 @@ import watermark from "../../img/watermark.png";
 import share from "../../img/share.png";
 import Share from './Share';
 import InterstitialAd from './displayads';
+import AdComponent from './AdSenseAd';
 
 const Video = ({ data2 }) => {
   const videoRef = useRef(null);
@@ -136,7 +137,7 @@ const Video = ({ data2 }) => {
       return `url('${capturedFrame}')`;
     }
     if (isImageLoaded && data2?.CoverImage) {
-      return `url('http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}')`;
+      return `url('${data2.CoverImage}')`;
     }
     return 'none';
   };
@@ -168,7 +169,7 @@ const Video = ({ data2 }) => {
                 className='w-100 h-100 position-absolute'
                 style={{ display: showCoverImage ? 'none' : 'block' }}
               >
-                <source src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}`} type="video/mp4" />
+                <source src={data2.File} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
 
@@ -195,15 +196,19 @@ const Video = ({ data2 }) => {
                 <>
                   {showCoverImage && (
                     <div className="cover-image-overlay">
-                      <button
-                        className="close-button"
+                      <div
+                        className="close-button position-absolute text-black cursor"
                         onClick={startVideoWithSound}
+                        role="button"
                         aria-label="Close cover image"
+                        tabIndex={0}
+                        onKeyPress={(e) => e.key === 'Enter' && startVideoWithSound()}
+                        style={{ zIndex: 2 }}
                       >
                         <FontAwesomeIcon icon={faTimes} />
-                      </button>
+                      </div>
                       <img
-                        src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}`}
+                        src={data2.CoverImage}
                         alt="Cover"
                         className="full-cover-image"
                       />
@@ -253,6 +258,8 @@ const Video = ({ data2 }) => {
             <div className="mt-3">
               <PrankBtn />
             </div>
+
+            <AdComponent />
           </Col>
         </Row>
       </div>
@@ -265,6 +272,22 @@ const Video = ({ data2 }) => {
           display: flex;
           flex-direction: column;
           min-height: 100vh;
+        }
+
+        .cover-image-overlay::before {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -10%;
+            right: -10%;
+            bottom: -10%;
+            background-image: ${data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px); /* Increase blur effect */
+            opacity:0.6;
+            transform: scale(1.1); /* Scale the image slightly to remove black shadow */
+            z-index: -1;
         }
 
         .blurred-bg {

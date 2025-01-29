@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 
 // img
-import pranklogo from "../../img/pranklogo.png";
+import pranklogo from "../../img/pranklogo.svg";
 
 const PrankBtn = () => {
   const playStoreUrl = "https://play.google.com/store/apps/details?id=com.prank.android";
@@ -31,7 +31,7 @@ const PrankBtn = () => {
       >
         <p className='btnlol'>Make your own pranks 😀</p>
         <p className='btntext pt-4' style={{ fontWeight: "450" }}>Download</p>
-        <img src={pranklogo} alt='lol' className='btnimg' width={130} />
+        <img src={pranklogo} alt='prankster' className='btnimg' width={130} />
       </Button>
     </div>
   );

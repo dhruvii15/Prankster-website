@@ -7,6 +7,7 @@ import watermark from "../../img/watermark.png";
 import share from "../../img/share.png";
 import Share from './Share';
 import InterstitialAd from './displayads'; // Import the InterstitialAd component
+import AdComponent from './AdSenseAd';
 
 const Gallery = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -58,7 +59,7 @@ const Gallery = ({ data2 }) => {
             <div className="content-container">
                 <Row className="content px-3 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column justify-content-center align-items-center">
-                        <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
+                        <div className="img-div mt-2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
                             <div className="blurred-bg" />
 
                             {!isImageLoaded && (
@@ -82,22 +83,26 @@ const Gallery = ({ data2 }) => {
                             {isImageLoaded && (
                                 <>
                                     <img
-                                        src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}`}
+                                        src={data2.File}
                                         alt="prankImage"
                                         className="img-fluid position-absolute"
                                     />
 
                                     {showCoverImage && (
                                         <div className="cover-image-overlay">
-                                            <button
-                                                className="close-button"
+                                            <div
+                                                className="close-button position-absolute text-black cursor"
                                                 onClick={handleCloseClick}
+                                                role="button"
                                                 aria-label="Close cover image"
+                                                tabIndex={0}
+                                                onKeyPress={(e) => e.key === 'Enter' && handleCloseClick()}
+                                                style={{ zIndex: 2 }}
                                             >
                                                 <FontAwesomeIcon icon={faTimes} />
-                                            </button>
+                                            </div>
                                             <img
-                                                src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}`}
+                                                src={data2.CoverImage}
                                                 alt="Cover"
                                                 className="full-cover-image"
                                             />
@@ -140,6 +145,8 @@ const Gallery = ({ data2 }) => {
                         <div className="mt-3">
                             <PrankBtn />
                         </div>
+
+                        <AdComponent />
                     </Col>
                 </Row>
             </div>
@@ -152,6 +159,22 @@ const Gallery = ({ data2 }) => {
                     display: flex;
                     overflow: hidden;
                     background-color: #1c1c1c;
+                }
+
+                .cover-image-overlay::before {
+                    content: "";
+                    position: absolute;
+                    top: -10%;
+                    left: -10%;
+                    right: -10%;
+                    bottom: -10%;
+                    background-image: ${data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
+                    background-size: cover;
+                    background-position: center;
+                    filter: blur(20px); /* Increase blur effect */
+                    opacity:0.6;
+                    transform: scale(1.1); /* Scale the image slightly to remove black shadow */
+                    z-index: -1;
                 }
 
                 .content-container {
@@ -174,7 +197,7 @@ const Gallery = ({ data2 }) => {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background-image: ${isImageLoaded && data2?.File ? `url('http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}')` : 'none'};
+                    background-image: ${isImageLoaded && data2?.File ? `url('${data2.File}')` : 'none'};
                     background-size: cover;
                     background-position: center;
                     filter: blur(15px); 

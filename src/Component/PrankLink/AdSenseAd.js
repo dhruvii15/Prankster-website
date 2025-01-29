@@ -10,14 +10,16 @@ const AdComponent = () => {
   }, []);
 
   return (
+    <div style={{height:"60px"}} className="w-100 border mt-4">
     <ins
       className="adsbygoogle"
-      style={{ display: "block" }}
       data-ad-client="ca-pub-7719542074975419"
       data-ad-slot="3943700191"
       data-ad-format="auto"
       data-full-width-responsive="true"
     ></ins>
+
+    </div>
   );
 };
 
