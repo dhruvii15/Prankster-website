@@ -2,26 +2,31 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPause, faTimes } from '@fortawesome/free-solid-svg-icons';
 import watermark from "../../img/watermark.png";
 import share from "../../img/share.png";
 import Share from './Share';
-import InterstitialAd from './InterstitialAd';
+import InterstitialAd from './displayads';
 
 const Video = ({ data2 }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const frameCaptureTries = useRef(0);
-  const [needsInteraction, setNeedsInteraction] = useState(true);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showAd, setShowAd] = useState(false);
   const [capturedFrame, setCapturedFrame] = useState(null);
+  const [showCoverImage, setShowCoverImage] = useState(true);
 
   useEffect(() => {
     canvasRef.current = document.createElement('canvas');
   }, []);
+
+  const handleAdError = () => {
+    setShowAd(false); // Hide the ad if there's an error
+    setIsShareOpen(true); // Directly show the share component
+  };
 
   useEffect(() => {
     if (data2?.CoverImage) {
@@ -29,7 +34,18 @@ const Video = ({ data2 }) => {
       img.src = data2.CoverImage;
       img.onload = () => setIsImageLoaded(true);
     }
-  }, [data2?.CoverImage]);
+
+    // Set a timeout to trigger the error handler in case the ad doesn't load in time
+    const adTimeout = setTimeout(() => {
+      if (showAd) {
+        handleAdError(); // Fallback to share if ad loading fails
+      }
+    }, 500); // 5 seconds timeout for ad
+
+    return () => clearTimeout(adTimeout); // Clean up timeout on component unmount
+  }, [data2?.CoverImage, showAd]);
+
+
 
   const captureVideoFrame = () => {
     if (!videoRef.current || frameCaptureTries.current >= 5) return;
@@ -96,7 +112,7 @@ const Video = ({ data2 }) => {
 
       await video.play();
       setIsPlaying(true);
-      setNeedsInteraction(false);
+      setShowCoverImage(false);
 
       const captureDelays = [100, 300];
       captureDelays.forEach(delay => {
@@ -120,7 +136,7 @@ const Video = ({ data2 }) => {
       return `url('${capturedFrame}')`;
     }
     if (isImageLoaded && data2?.CoverImage) {
-      return `url('${data2.CoverImage}')`;
+      return `url('http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}')`;
     }
     return 'none';
   };
@@ -138,96 +154,23 @@ const Video = ({ data2 }) => {
 
   return (
     <div className="full-page-background">
-      {showAd && <InterstitialAd onAdComplete={handleAdComplete} />}
-
+      {showAd && <InterstitialAd onAdComplete={handleAdComplete} onAdError={handleAdError} />}
       <div className="content-container">
         <Row className="content px-3 overflow-hidden flex-grow-1">
           <Col className="d-flex flex-column justify-content-center align-items-center">
             <div className="img-div3 position-relative rounded-4 overflow-hidden border border-white">
               <div className="blurred-bg" style={blurredBgStyle}></div>
-              {(!needsInteraction || isImageLoaded) && (
-                <video
-                  ref={videoRef}
-                  loop
-                  playsInline
-                  className='w-100 h-100 position-absolute'
-                  style={{ display: needsInteraction ? 'none' : 'block' }}
-                >
-                  <source src={data2.File} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              )}
 
-              {needsInteraction && isImageLoaded && (
-                <div
-                  className="rounded-4"
-                  onClick={startVideoWithSound}
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    cursor: 'pointer',
-                    zIndex: 2,
-                  }}
-                >
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      backgroundImage: `url('${data2.CoverImage}')`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
-                      backgroundSize: 'cover',
-                      filter: 'blur(10px)',
-                      zIndex: -1,
-                    }}
-                  ></div>
-
-                  <img
-                    src={data2.CoverImage}
-                    alt="Cover"
-                    style={{
-                      width: 'auto',
-                      maxWidth: '100%',
-                      maxHeight: '100%',
-                      zIndex: 1,
-                    }}
-                  />
-
-                  <div
-                    className="play-button"
-                    style={{
-                      position: 'absolute',
-                      width: '60px',
-                      height: '60px',
-                      borderRadius: '50%',
-                      background: '#F9E238',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      border: "2px solid black",
-                      zIndex: 2,
-                    }}
-                  >
-                    <FontAwesomeIcon
-                      icon={faPlay}
-                      style={{
-                        fontSize: '28px',
-                        color: '#000',
-                        marginLeft: '5px',
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
+              <video
+                ref={videoRef}
+                loop
+                playsInline
+                className='w-100 h-100 position-absolute'
+                style={{ display: showCoverImage ? 'none' : 'block' }}
+              >
+                <source src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}`} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
 
               {!isImageLoaded && (
                 <div className="loading-placeholder rounded-4" style={{
@@ -250,6 +193,23 @@ const Video = ({ data2 }) => {
 
               {isImageLoaded && (
                 <>
+                  {showCoverImage && (
+                    <div className="cover-image-overlay">
+                      <button
+                        className="close-button"
+                        onClick={startVideoWithSound}
+                        aria-label="Close cover image"
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                      <img
+                        src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}`}
+                        alt="Cover"
+                        className="full-cover-image"
+                      />
+                    </div>
+                  )}
+
                   <div>
                     <div
                       className="share-btn position-absolute text-black cursor-pointer"
@@ -260,7 +220,7 @@ const Video = ({ data2 }) => {
                       onKeyPress={(e) => e.key === 'Enter' && onShareClick()}
                       style={{ zIndex: 3 }}
                     >
-                      <img src={share} alt='share' width={18} style={{ paddingRight: "2px" }} />
+                      <img src={share} alt='share' width={20} style={{ paddingRight: "2px" }} />
                     </div>
                     <Share
                       show={isShareOpen}
@@ -270,23 +230,23 @@ const Video = ({ data2 }) => {
                   </div>
 
                   <div className='position-absolute text-black' style={{ left: "-22px", top: "-23px", zIndex: 3 }}>
-                    <img src={watermark} alt='Prankster' width={110} />
+                    <img src={watermark} alt='Prankster' width={120} />
                   </div>
-                </>
-              )}
 
-              {isPlaying && (
-                <div
-                  className='share-btn2 position-absolute'
-                  style={{
-                    left: "5px",
-                    bottom: "10px",
-                    zIndex: 3,
-                    cursor: 'pointer'
-                  }}
-                >
-                  <FontAwesomeIcon icon={faPause} className='fs-5 text-black' />
-                </div>
+                  {isPlaying && (
+                    <div
+                      className='share-btn2 position-absolute'
+                      style={{
+                        left: "5px",
+                        bottom: "10px",
+                        zIndex: 3,
+                        cursor: 'pointer'
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faPause} className='fs-5 text-black' />
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
@@ -295,29 +255,9 @@ const Video = ({ data2 }) => {
             </div>
           </Col>
         </Row>
-
-        {/* <div className="ad-container py-2 ads-div mx-auto">
-          <ins
-            className="adsbygoogle border"
-            style={{ display: 'block', height: '50px' }}
-            data-ad-format="rectangle"
-            data-ad-layout-key="-6t+ed+2i-1n-4w"
-            data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-            data-ad-slot="YOUR_AD_SLOT_ID"
-          ></ins>
-        </div> */}
       </div>
 
       <style>{`
-        .full-page-background {
-          position: relative;
-          min-height: 100vh;
-          width: 100%;
-          display: flex;
-          overflow: hidden;
-          background-color: #1c1c1c;
-        }
-
         .content-container {
           position: relative;
           z-index: 2;
@@ -346,10 +286,6 @@ const Video = ({ data2 }) => {
           flex: 1;
           display: flex;
           align-items: center;
-        }
-
-        .ad-container {
-          margin-top: auto;
         }
       `}</style>
     </div>

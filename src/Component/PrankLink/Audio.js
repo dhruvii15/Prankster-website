@@ -2,24 +2,29 @@ import React, { useEffect, useRef, useState } from 'react';
 import PrankBtn from './PrankBtn';
 import { Col, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faPause } from '@fortawesome/free-solid-svg-icons';
+import { faPause, faTimes } from '@fortawesome/free-solid-svg-icons';
 import watermark from "../../img/watermark.png";
 import AudioVisualizer from './AudioVisualizer';
 import Share from './Share';
-import InterstitialAd from './InterstitialAd';
+import InterstitialAd from './displayads';
 import share from "../../img/share.png";
 
 const Audio = ({ data2 }) => {
     const audioRef = useRef(null);
     const [currentTime, setCurrentTime] = useState('0:00');
     const [totalTime, setTotalTime] = useState('0:00');
-    const [needsInteraction, setNeedsInteraction] = useState(true);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [duration, setDuration] = useState(0);
     const [isShareOpen, setIsShareOpen] = useState(false);
     const [isPlaying, setIsPlaying] = useState(false);
+    const [showCoverImage, setShowCoverImage] = useState(true);
     const [showAd, setShowAd] = useState(false);
     const [currentImage, setCurrentImage] = useState(data2?.CoverImage);
+    const handleAdError = () => {
+        setShowAd(false); // Hide the ad if there's an error
+        setIsShareOpen(true); // Directly show the share component
+    };
+
 
     const formatTime = (seconds) => {
         const minutes = Math.floor(seconds / 60);
@@ -33,19 +38,22 @@ const Audio = ({ data2 }) => {
                 audioRef.current.volume = 1;
                 audioRef.current.muted = false;
                 await audioRef.current.play();
-                setNeedsInteraction(false);
                 setIsPlaying(true);
                 if (data2?.Image) {
                     setCurrentImage(data2.Image);
-                    const img = new Image();
-                    img.src = data2.Image;
-                    img.onload = () => setIsImageLoaded(true);
                 }
             } catch (error) {
                 console.error('Error playing audio:', error);
             }
         }
     };
+
+    const handleCloseClick = () => {
+        setShowCoverImage(false);
+        startAudioWithSound();
+    };
+
+    
 
     useEffect(() => {
         if (data2?.CoverImage) {
@@ -56,7 +64,16 @@ const Audio = ({ data2 }) => {
                 setCurrentImage(data2.CoverImage);
             };
         }
-    }, [data2?.CoverImage]);
+
+        // Set a timeout to trigger the error handler in case the ad doesn't load in time
+        const adTimeout = setTimeout(() => {
+            if (showAd) {
+                handleAdError(); // Fallback to share if ad loading fails
+            }
+        }, 500); // 5 seconds timeout for ad
+
+        return () => clearTimeout(adTimeout); // Clean up timeout on component unmount
+    }, [data2?.CoverImage , showAd]);
 
     useEffect(() => {
         const audio = audioRef.current;
@@ -92,24 +109,23 @@ const Audio = ({ data2 }) => {
     const getCurrentBackgroundImage = () => {
         if (!isImageLoaded) return 'none';
         if (isPlaying && data2?.Image) {
-            return `url('${data2.Image}')`;
+            return `url('http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.Image)}')`;
         }
-        return `url('${data2.CoverImage}')`;
+        return `url('http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}')`;
     };
 
     return (
         <div className="full-page-background">
-            {showAd && <InterstitialAd onAdComplete={handleAdComplete} />}
-            
+            {showAd && <InterstitialAd onAdComplete={handleAdComplete} onAdError={handleAdError} />}
             <div className="content-container">
                 <Row className="content p-0 overflow-hidden flex-grow-1">
                     <Col className="d-flex flex-column align-items-center justify-content-center">
-                        <div className="img-div2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
+                        <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
                             <div className="blurred-bg"></div>
                             <audio ref={audioRef} loop
                                 onEnded={() => setIsPlaying(false)}
                             >
-                                <source src={data2.File} type="audio/mp3" />
+                                <source src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}`} type="audio/mp3" />
                                 Your browser does not support the audio tag.
                             </audio>
 
@@ -135,53 +151,28 @@ const Audio = ({ data2 }) => {
                                     <img
                                         src={currentImage}
                                         alt='prankImage'
-                                        className='img-fluid h-100 position-absolute'
+                                        className='img-fluid w-100 position-absolute'
                                     />
 
-                                    {(needsInteraction || !isPlaying) && (
-                                        <div
-                                            onClick={startAudioWithSound}
-                                            className="rounded-4"
-                                            style={{
-                                                position: 'absolute',
-                                                top: 0,
-                                                left: '0%',
-                                                width: '100%',
-                                                height: '100%',
-                                                background: 'rgba(0, 0, 0, 0.3)',
-                                                display: 'flex',
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                                cursor: 'pointer',
-                                                zIndex: 2
-                                            }}
-                                        >
-                                            <div
-                                                style={{
-                                                    width: '50px',
-                                                    height: '50px',
-                                                    borderRadius: '50%',
-                                                    background: '#F9E238',
-                                                    display: 'flex',
-                                                    justifyContent: 'center',
-                                                    alignItems: 'center',
-                                                    border: "2px solid black"
-                                                }}
+                                    {showCoverImage && (
+                                        <div className="cover-image-overlay">
+                                            <button 
+                                                className="close-button"
+                                                onClick={handleCloseClick}
+                                                aria-label="Close cover image"
                                             >
-                                                <FontAwesomeIcon
-                                                    icon={faPlay}
-                                                    style={{
-                                                        fontSize: '20px',
-                                                        color: '#000',
-                                                        marginLeft: '3px'
-                                                    }}
-                                                />
-                                            </div>
+                                                <FontAwesomeIcon icon={faTimes} />
+                                            </button>
+                                            <img
+                                                src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}`}
+                                                alt="Cover"
+                                                className="full-cover-image"
+                                            />
                                         </div>
                                     )}
 
                                     <div>
-                                        <div
+                                    <div
                                             className="share-btn position-absolute text-black cursor"
                                             onClick={onShareClick}
                                             role="button"
@@ -242,30 +233,9 @@ const Audio = ({ data2 }) => {
                         </div>
                     </Col>
                 </Row>
-
-                {/* Advertisement div moved to bottom */}
-                {/* <div className='ad-container ads-div mx-auto py-2'>
-                    <ins
-                        className="adsbygoogle border"
-                        style={{ display: 'block', height: '120px', width: '98%' }}
-                        data-ad-format="DIRECT"
-                        data-ad-layout-key="-6t+ed+2i-1n-4w"
-                        data-ad-client="pub-7719542074975419"
-                        data-ad-slot="f08c47fec0942fa0"
-                    ></ins>
-                </div> */}
             </div>
 
             <style>{`
-                .full-page-background {
-                    position: relative;
-                    min-height: 100vh;
-                    width: 100%;
-                    display: flex;
-                    overflow: hidden;
-                    background-color: #1c1c1c;
-                }
-
                 .content-container {
                     position: relative;
                     z-index: 2;
@@ -292,10 +262,6 @@ const Audio = ({ data2 }) => {
                 .content {
                     color: white;
                     text-align: center;
-                }
-
-                .ad-container {
-                    margin-top: auto;
                 }
             `}</style>
         </div>

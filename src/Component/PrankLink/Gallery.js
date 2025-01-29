@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import PrankBtn from './PrankBtn';
 import watermark from "../../img/watermark.png";
 import share from "../../img/share.png";
 import Share from './Share';
-import InterstitialAd from './InterstitialAd'; // Import the InterstitialAd component
+import InterstitialAd from './displayads'; // Import the InterstitialAd component
 
 const Gallery = ({ data2 }) => {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
     const [isShareOpen, setIsShareOpen] = useState(false);
+    const [showCoverImage, setShowCoverImage] = useState(true);
     const [showAd, setShowAd] = useState(false);
 
     const onShareClick = () => {
@@ -20,18 +23,37 @@ const Gallery = ({ data2 }) => {
         setIsShareOpen(true); // Show the share component
     };
 
+    const handleAdError = () => {
+        setShowAd(false); // Hide the ad if there's an error
+        setIsShareOpen(true); // Directly show the share component
+        setShowCoverImage(false); // Hide the cover image if ad fails
+    };
+
+    const handleCloseClick = () => {
+        setShowCoverImage(false);
+    };
+
     useEffect(() => {
         if (data2?.File) {
             const img = new Image();
             img.src = data2.File;
             img.onload = () => setIsImageLoaded(true);
         }
-    }, [data2?.File]);
+
+        // Set a timeout to trigger the error handler in case the ad doesn't load in time
+        const adTimeout = setTimeout(() => {
+            if (showAd) {
+                handleAdError(); // Fallback to share if ad loading fails
+            }
+        }, 500); // 5 seconds timeout for ad
+
+        return () => clearTimeout(adTimeout); // Clean up timeout on component unmount
+    }, [data2?.File, showAd]);
 
     return (
         <div className="full-page-background">
             {/* Show the InterstitialAd when showAd is true */}
-            {showAd && <InterstitialAd onAdComplete={handleAdComplete} />}
+            {showAd && <InterstitialAd onAdComplete={handleAdComplete} onAdError={handleAdError} />}
 
             <div className="content-container">
                 <Row className="content px-3 overflow-hidden flex-grow-1">
@@ -39,14 +61,6 @@ const Gallery = ({ data2 }) => {
                         <div className="img-div position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
                             <div className="blurred-bg" />
 
-                            <img
-                                src={data2.File}
-                                alt="prankImage"
-                                className="img-fluid position-absolute"
-                                style={{ display: isImageLoaded ? 'block' : 'none' }}
-                            />
-
-                            {/* Loading Placeholder */}
                             {!isImageLoaded && (
                                 <div
                                     className="loading-placeholder rounded-4"
@@ -67,6 +81,29 @@ const Gallery = ({ data2 }) => {
 
                             {isImageLoaded && (
                                 <>
+                                    <img
+                                        src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}`}
+                                        alt="prankImage"
+                                        className="img-fluid position-absolute"
+                                    />
+
+                                    {showCoverImage && (
+                                        <div className="cover-image-overlay">
+                                            <button
+                                                className="close-button"
+                                                onClick={handleCloseClick}
+                                                aria-label="Close cover image"
+                                            >
+                                                <FontAwesomeIcon icon={faTimes} />
+                                            </button>
+                                            <img
+                                                src={`http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.CoverImage)}`}
+                                                alt="Cover"
+                                                className="full-cover-image"
+                                            />
+                                        </div>
+                                    )}
+
                                     <div>
                                         <div
                                             className="share-btn position-absolute text-black cursor"
@@ -94,7 +131,7 @@ const Gallery = ({ data2 }) => {
                                             zIndex: 2,
                                         }}
                                     >
-                                        <img src={watermark} alt="Prankster" width={110} />
+                                        <img src={watermark} alt="Prankster" width={120} />
                                     </div>
                                 </>
                             )}
@@ -105,17 +142,6 @@ const Gallery = ({ data2 }) => {
                         </div>
                     </Col>
                 </Row>
-
-                {/* Advertisement div */}
-                <div className='ad-container py-2 ads-div mx-auto'>
-                    {/* <ins className="adsbygoogle border"
-                        style={{ display: 'block', height: '50px', width: '99%' }}
-                        data-ad-format="rectangle"
-                        data-ad-layout-key="-6t+ed+2i-1n-4w" //optional
-                        data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-                        data-ad-slot="YOUR_AD_SLOT_ID">
-                    </ins> */}
-                </div>
             </div>
 
             <style>{`
@@ -148,7 +174,7 @@ const Gallery = ({ data2 }) => {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background-image: ${isImageLoaded && data2?.File ? `url('${data2.File}')` : 'none'};
+                    background-image: ${isImageLoaded && data2?.File ? `url('http://localhost:5001/api/proxy?url=${encodeURIComponent(data2.File)}')` : 'none'};
                     background-size: cover;
                     background-position: center;
                     filter: blur(15px); 
@@ -164,7 +190,6 @@ const Gallery = ({ data2 }) => {
 
                 .content {
                     color: white;
-                    padding: 20px;
                     text-align: center;
                 }
             `}</style>

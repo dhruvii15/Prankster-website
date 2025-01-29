@@ -239,6 +239,50 @@
     transform: rotate(0deg) scale(1);
   }
 }
+.full-page-background {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  background-image: url("../img//main-bg.png");
+}
+
+.full-cover-image {
+  width: 100vw;
+  height: 100vh;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.close-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #F9E238;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 1001;
+  width: 45px;
+  height: 45px;
+  line-height: 45px;
+  border-radius: 50%;
+}
+
+.cover-image-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
 .img-div {
   width: 50%;
   height: 80%;
@@ -251,22 +295,18 @@
 
 .img-div3 {
   width: 30%;
-  height: 480px;
-}
-
-.ads-div {
-  width: 320px;
+  height: 580px;
 }
 
 .share-btn {
   position: absolute;
   right: 10px;
   top: 10px;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   background-color: #F9E238;
   border-radius: 100%;
-  line-height: 35px;
+  line-height: 40px;
   text-align: center;
 }
 
@@ -658,7 +698,7 @@
   }
   .img-div3 {
     width: 30%;
-    height: 530px;
+    height: 580px;
   }
 }
 @media (max-width: 1080px) and (min-width: 575px) {
