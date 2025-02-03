@@ -71,7 +71,7 @@ const router = createBrowserRouter([
         <PrankLink />
       </Suspense>
     ),
-  },
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

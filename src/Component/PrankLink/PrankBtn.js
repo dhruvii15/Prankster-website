@@ -30,8 +30,8 @@ const PrankBtn = () => {
         onClick={handlePrankButtonClick}
       >
         <p className='btnlol'>Make your own pranks 😀</p>
-        <p className='btntext pt-4' style={{ fontWeight: "450" }}>Download</p>
-        <img src={pranklogo} alt='prankster' className='btnimg' width={130} />
+        <p className='btntext pt-4'>Download</p>
+        <img src={pranklogo} alt='prankster' className='btnimg' width={110} />
       </Button>
     </div>
   );

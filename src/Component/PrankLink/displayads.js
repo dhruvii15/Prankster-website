@@ -11,7 +11,7 @@ const InterstitialAd = ({ onAdComplete, onAdError, onAdClose }) => {
       // Simulating successful ad load completion (you would replace this with actual logic)
       setTimeout(() => {
         if (onAdComplete) onAdComplete(); // Trigger onAdComplete after the ad is shown
-      }, 3000); // assuming the ad takes 3 seconds to complete
+      }, 500); // assuming the ad takes 3 seconds to complete
     } catch (e) {
       console.error("Adsense error", e);
       if (onAdError) onAdError(); // If there is an error loading the ad, trigger onAdError

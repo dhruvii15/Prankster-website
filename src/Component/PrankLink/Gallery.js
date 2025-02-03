@@ -91,7 +91,7 @@ const Gallery = ({ data2 }) => {
                                     {showCoverImage && (
                                         <div className="cover-image-overlay">
                                             <div
-                                                className="close-button position-absolute text-black cursor"
+                                                className="close-button position-absolute cursor"
                                                 onClick={handleCloseClick}
                                                 role="button"
                                                 aria-label="Close cover image"
@@ -175,6 +175,7 @@ const Gallery = ({ data2 }) => {
                     opacity:0.6;
                     transform: scale(1.1); /* Scale the image slightly to remove black shadow */
                     z-index: -1;
+                    // background: rgba(0, 0, 0, 1);
                 }
 
                 .content-container {

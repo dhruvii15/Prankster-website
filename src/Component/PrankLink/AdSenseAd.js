@@ -10,7 +10,7 @@ const AdComponent = () => {
   }, []);
 
   return (
-    <div style={{height:"60px"}} className="w-100 border mt-4">
+    <div>
     <ins
       className="adsbygoogle"
       data-ad-client="ca-pub-7719542074975419"

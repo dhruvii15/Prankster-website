@@ -336,21 +336,31 @@
 
 .close-button {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    background: #F9E238;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    backdrop-filter: blur(10px); /* Blur effect */
     border: none;
-    font-size: 24px;
-    cursor: pointer;
+    font-size: 21px;
     z-index: 1001;
-    width: 45px;
-    height: 45px;
-    line-height: 48px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
     border-radius: 50%;
-    color: black !important;
+    color: white !important;
     text-align: center !important;
-    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 400 !important;
+    border: 1px solid #4F5153;
 }
+
+.close-button:hover {
+    background: rgba(255, 255, 255, 0.9);; 
+    color: black !important ;/* Darker on hover */
+}
+
 
 .cover-image-overlay {
     position: fixed;

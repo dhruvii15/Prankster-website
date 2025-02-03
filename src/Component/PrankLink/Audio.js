@@ -158,7 +158,7 @@ const Audio = ({ data2 }) => {
                                     {showCoverImage && (
                                         <div className="cover-image-overlay">
                                             <div
-                                                className="close-button position-absolute text-black cursor"
+                                                className="close-button position-absolute cursor"
                                                 onClick={handleCloseClick}
                                                 role="button"
                                                 aria-label="Close cover image"
