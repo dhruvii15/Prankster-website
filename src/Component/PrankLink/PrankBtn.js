@@ -1,12 +1,14 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { logEvent } from 'firebase/analytics';
+import { analytics } from '../firebase-config';
 
 // img
 import pranklogo from "../../img/pranklogo.svg";
 
 const PrankBtn = () => {
   const playStoreUrl = "https://play.google.com/store/apps/details?id=com.prank.android";
-  const appStoreUrl = "https://apps.apple.com/us/app/prankster-digital-funny-pranks/id6739135275"; 
+  const appStoreUrl = "https://apps.apple.com/us/app/prankster-digital-funny-pranks/id6739135275";
 
   const isAndroid = /Android/i.test(navigator.userAgent);
   const isiOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
@@ -14,10 +16,25 @@ const PrankBtn = () => {
   const handlePrankButtonClick = () => {
     if (isAndroid) {
       window.open(playStoreUrl, '_blank');
+      logEvent(analytics, 'app_redirect', {
+        page_location: window.location.href,
+        page_path: window.location.pathname, 
+        debug: 'true'
+      });
     } else if (isiOS) {
       window.open(appStoreUrl, '_blank');
+      logEvent(analytics, 'app_redirect', {
+        page_location: window.location.href,
+        page_path: window.location.pathname, 
+        debug: 'true'
+      });
     } else {
       window.open(playStoreUrl, '_blank');
+      logEvent(analytics, 'app_redirect', {
+        page_location: window.location.href,
+        page_path: window.location.pathname, 
+        debug: 'true'
+      });
     }
   };
 

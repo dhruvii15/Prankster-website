@@ -1,5 +1,6 @@
 import React from 'react';
 import MainButton from '../Component/MainBtn';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 
 // img
@@ -33,6 +34,14 @@ const Home = () => {
 
   return (
     <>
+      <HelmetProvider>
+        <Helmet>
+          {/* Title */}
+          <title>Prankster</title>
+          <meta property="og:title" content="Prankster" />
+          <meta name="twitter:title" content="Prankster" />
+        </Helmet>
+      </HelmetProvider>
       <div
         style={{
           position: 'fixed',
@@ -49,7 +58,7 @@ const Home = () => {
 
       <div className='yellow-bg px-5 px-xl-0'>
         <div className='cloud-bg'>
-          <img src={cloud} alt='cloud' className='img-fluid cloud' loading="lazy" style={{width:"85%"}}/>
+          <img src={cloud} alt='cloud' className='img-fluid cloud' loading="lazy" style={{ width: "85%" }} />
           <div className='icon-bg'>
             <img src={icon1} alt='icon1' className='img-fluid icon1' loading="lazy" />
             <img src={icon2} alt='icon2' className='img-fluid icon2' loading="lazy" />
@@ -59,7 +68,7 @@ const Home = () => {
             <img src={icon6} alt='icon6' className='img-fluid icon6' loading="lazy" />
           </div>
           <div className='face-bg'>
-            <img src={face} alt='face' className='img-fluid' loading="lazy" style={{width:"85%"}}/>
+            <img src={face} alt='face' className='img-fluid' loading="lazy" style={{ width: "85%" }} />
           </div>
         </div>
 

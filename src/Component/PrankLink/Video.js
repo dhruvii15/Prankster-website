@@ -20,33 +20,34 @@ const Video = ({ data2 }) => {
   const [capturedFrame, setCapturedFrame] = useState(null);
   const [showCoverImage, setShowCoverImage] = useState(true);
 
+  const proxyUrl = "https://pslink.world/api/proxy";
+
+  const getProxiedUrl = (url) => `${proxyUrl}?url=${encodeURIComponent(url)}`;
+
   useEffect(() => {
     canvasRef.current = document.createElement('canvas');
   }, []);
 
   const handleAdError = () => {
-    setShowAd(false); // Hide the ad if there's an error
-    setIsShareOpen(true); // Directly show the share component
+    setShowAd(false);
+    setIsShareOpen(true);
   };
 
   useEffect(() => {
     if (data2?.CoverImage) {
       const img = new Image();
-      img.src = data2.CoverImage;
+      img.src = getProxiedUrl(data2.CoverImage);
       img.onload = () => setIsImageLoaded(true);
     }
 
-    // Set a timeout to trigger the error handler in case the ad doesn't load in time
     const adTimeout = setTimeout(() => {
       if (showAd) {
-        handleAdError(); // Fallback to share if ad loading fails
+        handleAdError();
       }
-    }, 500); // 5 seconds timeout for ad
+    }, 5000); // Increased to 5 seconds to match other components
 
-    return () => clearTimeout(adTimeout); // Clean up timeout on component unmount
+    return () => clearTimeout(adTimeout);
   }, [data2?.CoverImage, showAd]);
-
-
 
   const captureVideoFrame = () => {
     if (!videoRef.current || frameCaptureTries.current >= 5) return;
@@ -127,17 +128,18 @@ const Video = ({ data2 }) => {
     } catch (error) {
       console.error('Error playing video:', error);
       if (data2?.CoverImage) {
-        setCapturedFrame(data2.CoverImage);
+        setCapturedFrame(getProxiedUrl(data2.CoverImage));
       }
     }
   };
 
   const getBackgroundStyle = () => {
     if (capturedFrame) {
+      // Don't proxy capturedFrame as it's already a data URL
       return `url('${capturedFrame}')`;
     }
     if (isImageLoaded && data2?.CoverImage) {
-      return `url('${data2.CoverImage}')`;
+      return `url('${getProxiedUrl(data2.CoverImage)}')`;
     }
     return 'none';
   };
@@ -169,7 +171,7 @@ const Video = ({ data2 }) => {
                 className='w-100 h-100 position-absolute'
                 style={{ display: showCoverImage ? 'none' : 'block' }}
               >
-                <source src={data2.File} type="video/mp4" />
+                <source src={getProxiedUrl(data2.File)} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
 
@@ -208,7 +210,7 @@ const Video = ({ data2 }) => {
                         <FontAwesomeIcon icon={faTimes} />
                       </div>
                       <img
-                        src={data2.CoverImage}
+                        src={getProxiedUrl(data2.CoverImage)}
                         alt="Cover"
                         className="full-cover-image"
                       />
@@ -281,12 +283,12 @@ const Video = ({ data2 }) => {
             left: -10%;
             right: -10%;
             bottom: -10%;
-            background-image: ${data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
+            background-image: ${data2?.CoverImage ? `url('${getProxiedUrl(data2.CoverImage)}')` : 'none'};
             background-size: cover;
             background-position: center;
-            filter: blur(20px); /* Increase blur effect */
-            opacity:0.6;
-            transform: scale(1.1); /* Scale the image slightly to remove black shadow */
+            filter: blur(20px);
+            opacity: 0.6;
+            transform: scale(1.1);
             z-index: -1;
         }
 

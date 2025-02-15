@@ -2,7 +2,7 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { Container } from 'react-bootstrap';
-
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
 // Lazy load components
 const Loading = lazy(() => import('../Component/Loading'));
@@ -31,11 +31,19 @@ const Termsofuse = () => {
 
   return (
     <div>
+      <HelmetProvider>
+        <Helmet>
+          {/* Title */}
+          <title>Terms & Conditions</title>
+          <meta property="og:title" content="Terms & Conditions" />
+          <meta name="twitter:title" content="Terms & Conditions" />
+        </Helmet>
+      </HelmetProvider>
       <Suspense fallback={<div><Loading /></div>}>
         <div className='rounded-5' style={{ backgroundColor: "#F6F6F6" }}>
           <div className='title-bg d-flex align-items-center justify-content-center'>
             <div className='text-center'>
-              <h1 className='title-text BwGradualBold m-0 px-1'>{title}</h1>
+              <h1 className='title-text2 BwGradualBold m-0 px-1'>{title}</h1>
             </div>
           </div>
           <div>
@@ -50,7 +58,7 @@ const Termsofuse = () => {
 
 
               <p className='BwGradualBold py-3 m-0 fs-3 pt-4'>2. Subscription Services</p>
-             
+
               <div className='d-flex gap-3 ps-4'>
                 <p className='m-0'><FontAwesomeIcon icon={faCircle} style={{ fontSize: "8px" }} className='pb-1 pe-3' /></p>
                 <p className='m-0'><b className='BwGradualBold'>2.1. Subscription Plans : </b><br></br>Prankster offers subscription-based access to premium features ("Subscription"). Subscription plans may vary in pricing, duration, and content. Details of the plans are provided in the App and may be updated from time to time.</p>

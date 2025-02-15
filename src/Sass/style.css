@@ -517,6 +517,9 @@
   .title-text {
     font-size: 50px;
   }
+  .title-text2 {
+    font-size: 40px !important;
+  }
   @keyframes cloud {
     0%, 95%, 100% {
       transform: scale(0) translateY(380px);
@@ -747,6 +750,10 @@
   }
 }
 .title-text {
+  font-size: 65px;
+}
+
+.title-text2 {
   font-size: 65px;
 }
 

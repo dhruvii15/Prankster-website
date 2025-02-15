@@ -6,54 +6,87 @@ import PrankBtn from './PrankBtn';
 import watermark from "../../img/watermark.png";
 import share from "../../img/share.png";
 import Share from './Share';
-import InterstitialAd from './displayads'; // Import the InterstitialAd component
+import InterstitialAd from './displayads';
 import AdComponent from './AdSenseAd';
 
 const Gallery = ({ data2 }) => {
-    const [isImageLoaded, setIsImageLoaded] = useState(false);
+    const [imageStates, setImageStates] = useState({
+        main: { loaded: false, error: false },
+        cover: { loaded: false, error: false }
+    });
     const [isShareOpen, setIsShareOpen] = useState(false);
     const [showCoverImage, setShowCoverImage] = useState(true);
     const [showAd, setShowAd] = useState(false);
 
+    const proxyUrl = "http://localhost:5001/api/proxy";
+
+    const loadImage = (url, type) => {
+        if (!url) return;
+
+        const img = new Image();
+        
+        img.onload = () => {
+            setImageStates(prev => ({
+                ...prev,
+                [type]: { loaded: true, error: false }
+            }));
+        };
+
+        img.onerror = () => {
+            setImageStates(prev => ({
+                ...prev,
+                [type]: { loaded: false, error: true }
+            }));
+        };
+
+        img.src = `${proxyUrl}?url=${encodeURIComponent(url)}`;
+
+        return () => {
+            img.onload = null;
+            img.onerror = null;
+        };
+    };
+
+    useEffect(() => {
+        const mainCleanup = loadImage(data2?.File, 'main');
+        const coverCleanup = loadImage(data2?.CoverImage, 'cover');
+
+        const adTimeout = setTimeout(() => {
+            if (showAd) {
+                handleAdError();
+            }
+        }, 5000); // Increased timeout to 5 seconds for better reliability
+
+        return () => {
+            mainCleanup?.();
+            coverCleanup?.();
+            clearTimeout(adTimeout);
+        };
+    }, [data2?.File, data2?.CoverImage, showAd]);
+
     const onShareClick = () => {
-        setShowAd(true); // Show interstitial ad first
+        setShowAd(true);
     };
 
     const handleAdComplete = () => {
-        setShowAd(false); // Hide the ad
-        setIsShareOpen(true); // Show the share component
+        setShowAd(false);
+        setIsShareOpen(true);
     };
 
     const handleAdError = () => {
-        setShowAd(false); // Hide the ad if there's an error
-        setIsShareOpen(true); // Directly show the share component
-        setShowCoverImage(false); // Hide the cover image if ad fails
+        setShowAd(false);
+        setIsShareOpen(true);
+        setShowCoverImage(false);
     };
 
     const handleCloseClick = () => {
         setShowCoverImage(false);
     };
 
-    useEffect(() => {
-        if (data2?.File) {
-            const img = new Image();
-            img.src = data2.File;
-            img.onload = () => setIsImageLoaded(true);
-        }
-
-        // Set a timeout to trigger the error handler in case the ad doesn't load in time
-        const adTimeout = setTimeout(() => {
-            if (showAd) {
-                handleAdError(); // Fallback to share if ad loading fails
-            }
-        }, 500); // 5 seconds timeout for ad
-
-        return () => clearTimeout(adTimeout); // Clean up timeout on component unmount
-    }, [data2?.File, showAd]);
+    const getProxiedUrl = (url) => `${proxyUrl}?url=${encodeURIComponent(url)}`;
 
     return (
         <div className="full-page-background">
-            {/* Show the InterstitialAd when showAd is true */}
             {showAd && <InterstitialAd onAdComplete={handleAdComplete} onAdError={handleAdError} />}
 
             <div className="content-container">
@@ -62,33 +95,29 @@ const Gallery = ({ data2 }) => {
                         <div className="img-div mt-2 position-relative overflow-hidden rounded-4 d-flex align-items-center justify-content-center border border-white">
                             <div className="blurred-bg" />
 
-                            {!isImageLoaded && (
-                                <div
-                                    className="loading-placeholder rounded-4"
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        background: 'rgba(0,0,0,0.5)',
-                                        display: 'flex',
-                                        justifyContent: 'center',
-                                        alignItems: 'center',
-                                    }}
-                                >
+                            {!imageStates.main.loaded && !imageStates.main.error && (
+                                <div className="loading-placeholder rounded-4">
                                     <div className="spinner-border text-light" role="status">
                                         <span className="visually-hidden">Loading...</span>
                                     </div>
                                 </div>
                             )}
 
-                            {isImageLoaded && (
+                            {imageStates.main.error && (
+                                <div className="error-message text-light">
+                                    Failed to load image
+                                </div>
+                            )}
+
+                            {imageStates.main.loaded && (
                                 <>
                                     <img
-                                        src={data2.File}
+                                        src={getProxiedUrl(data2.File)}
                                         alt="prankImage"
                                         className="img-fluid position-absolute"
                                     />
 
-                                    {showCoverImage && (
+                                    {showCoverImage && imageStates.cover.loaded && (
                                         <div className="cover-image-overlay">
                                             <div
                                                 className="close-button position-absolute cursor"
@@ -102,7 +131,7 @@ const Gallery = ({ data2 }) => {
                                                 <FontAwesomeIcon icon={faTimes} />
                                             </div>
                                             <img
-                                                src={data2.CoverImage}
+                                                src={getProxiedUrl(data2.CoverImage)}
                                                 alt="Cover"
                                                 className="full-cover-image"
                                             />
@@ -128,14 +157,7 @@ const Gallery = ({ data2 }) => {
                                         />
                                     </div>
 
-                                    <div
-                                        className="position-absolute text-black"
-                                        style={{
-                                            top: '-23px',
-                                            left: '-22px',
-                                            zIndex: 2,
-                                        }}
-                                    >
+                                    <div className="position-absolute text-black watermark">
                                         <img src={watermark} alt="Prankster" width={120} />
                                     </div>
                                 </>
@@ -168,14 +190,13 @@ const Gallery = ({ data2 }) => {
                     left: -10%;
                     right: -10%;
                     bottom: -10%;
-                    background-image: ${data2?.CoverImage ? `url('${data2.CoverImage}')` : 'none'};
+                    background-image: url('${data2?.CoverImage ? getProxiedUrl(data2.CoverImage) : ''}');
                     background-size: cover;
                     background-position: center;
-                    filter: blur(20px); /* Increase blur effect */
-                    opacity:0.6;
-                    transform: scale(1.1); /* Scale the image slightly to remove black shadow */
+                    filter: blur(20px);
+                    opacity: 0.6;
+                    transform: scale(1.1);
                     z-index: -1;
-                    // background: rgba(0, 0, 0, 1);
                 }
 
                 .content-container {
@@ -198,18 +219,38 @@ const Gallery = ({ data2 }) => {
                     left: 0;
                     right: 0;
                     bottom: 0;
-                    background-image: ${isImageLoaded && data2?.File ? `url('${data2.File}')` : 'none'};
+                    background-image: ${imageStates.main.loaded && data2?.File ? `url('${getProxiedUrl(data2.File)}')` : 'none'};
                     background-size: cover;
                     background-position: center;
-                    filter: blur(15px); 
-                    backdrop-filter: blur(15px); 
-                    -webkit-backdrop-filter: blur(15px); 
+                    filter: blur(15px);
+                    backdrop-filter: blur(15px);
+                    -webkit-backdrop-filter: blur(15px);
                     z-index: 0;
                 }
 
                 .img-fluid {
                     position: relative;
                     z-index: 1;
+                }
+
+                .loading-placeholder {
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .error-message {
+                    padding: 1rem;
+                    text-align: center;
+                }
+
+                .watermark {
+                    top: -23px;
+                    left: -22px;
+                    z-index: 2;
                 }
 
                 .content {
